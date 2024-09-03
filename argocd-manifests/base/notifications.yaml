@@ -1,0 +1,45 @@
+---
+#
+# ArgoCD notification hook. This uses the existing
+# datadog API key secret you will have provisioned to
+# setup the datadog agent.
+#
+# Usage:
+# - 1. Make sure that the namespace reflects where you have deployed ArgoCD
+# - 2. Update the argocd-notifications-secret to include $dd-api-key --> https://argo-cd.readthedocs.io/en/stable/operator-manual/notifications/
+#      Get the secret you configured on the DD operator:
+#        DD_SECRET=`kubectl get secret datadog-secret -o jsonpath="{.data.api-key}"`
+#      Set the secret for ArgoCD:
+#        kubectl patch secret argocd-notifications-secret -n argocd --type merge -p "{\"data\": {\"dd-api-key\": \"$DD_SECRET\"}}"
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-notifications-cm
+  namespace: argocd # Make sure this reflects the namespace you are deploying ArgoCD in
+data:
+  service.webhook.cd-visibility-webhook: |
+    url: https://webhook-intake.datadoghq.eu/api/v2/webhook
+    headers:
+    - name: "DD-CD-PROVIDER-ARGOCD"
+      value: "true"
+    - name: "DD-API-KEY"
+      value: "$dd-api-key"
+    - name: "Content-Type"
+      value: "application/json"
+  template.cd-visibility-template: |
+    webhook:
+      cd-visibility-webhook:
+        method: POST
+        body: |
+            {
+              "app": {{toJson .app}},
+              "context": {{toJson .context}},
+              "service_type": {{toJson .serviceType}},
+              "recipient": {{toJson .recipient}},
+              "commit_metadata": {{toJson (call .repo.GetCommitMetadata .app.status.operationState.syncResult.revision)}}
+            }
+  trigger.cd-visibility-trigger: |
+    - when: app.status.operationState != nil and app.status.operationState.phase in ['Succeeded', 'Failed', 'Error', 'Running'] and app.status.health.status in ['Healthy', 'Degraded']
+      send: [cd-visibility-template]    
+

@@ -1,0 +1,95 @@
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+name: Datadog Analysis
+
+jobs:
+  static-analysis:
+    runs-on: ubuntu-latest
+    name: Datadog Static Analyzer
+    steps:
+      - name: Check if DD_API_KEY and DD_APP_KEY are set
+        id: check-secrets
+        run: |
+          if [ -z "${{ secrets.DD_API_KEY }}" ] || [ -z "${{ secrets.DD_APP_KEY }}" ]; then
+            echo "One or both secrets are not set"
+            echo "run_datadog=false" >> $GITHUB_ENV
+          else
+            echo "run_datadog=true" >> $GITHUB_ENV
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        if: env.run_datadog == 'true'
+
+      - name: Check code meets quality and security standards - simple-api
+        id: datadog-static-analysis-simple-api
+        uses: DataDog/datadog-static-analyzer-github-action@v1
+        if: env.run_datadog == 'true'
+        with:
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+          dd_service: simple-api
+          dd_env: ci
+          dd_site: datadoghq.eu
+          cpu_count: 2
+          subdirectory: apps/simple-api
+
+      - name: Check code meets quality and security standards - downstream-api
+        id: datadog-static-analysis-downstream-api
+        uses: DataDog/datadog-static-analyzer-github-action@v1
+        if: env.run_datadog == 'true'
+        with:
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+          dd_service: simple-api
+          dd_env: ci
+          dd_site: datadoghq.eu
+          cpu_count: 2
+          subdirectory: apps/downstream-api
+
+  software-composition-analysis:
+    runs-on: ubuntu-latest
+    name: Datadog SBOM Generation and Upload
+    steps:
+
+      - name: Check if DD_API_KEY and DD_APP_KEY are set
+        id: check-secrets
+        run: |
+          if [ -z "${{ secrets.DD_API_KEY }}" ] || [ -z "${{ secrets.DD_APP_KEY }}" ]; then
+            echo "One or both secrets are not set"
+            echo "run_datadog=false" >> $GITHUB_ENV
+          else
+            echo "run_datadog=true" >> $GITHUB_ENV
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        if: env.run_datadog == 'true'
+
+      - name: Check imported libraries are secure and compliant - simple-api
+        id: datadog-software-composition-analysis-simple-api
+        uses: DataDog/datadog-sca-github-action@main
+        if: env.run_datadog == 'true'
+        with:
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+          dd_service: simple-api
+          dd_env: ci
+          dd_site: datadoghq.eu
+          subdirectory: apps/simple-api
+
+      - name: Check imported libraries are secure and compliant - downstream-api
+        id: datadog-software-composition-analysis-downstream-api
+        uses: DataDog/datadog-sca-github-action@main
+        if: env.run_datadog == 'true'
+        with:
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+          dd_service: downstream-api
+          dd_env: ci
+          dd_site: datadoghq.eu
+          subdirectory: apps/downstream-api

@@ -1,0 +1,52 @@
+---
+# Read more about writing service definition files:
+# https://docs.datadoghq.com/service_catalog/adding_metadata/#store-and-edit-service-definitions-in-github
+schema-version: v2.2
+dd-service: simple-api
+team: datadog-demo-team
+application: demo-app
+tier: "1"
+type: web
+languages:
+  - go
+contacts:
+  - type: email
+    contact: no-one@localhost
+links:
+  - name: Source
+    type: repo
+    provider: github
+    url: https://github.com/scottgerring/dd-software-lifecycle-demo
+  - name: docs
+    type: doc
+    provider: link
+    url: https://github.com/scottgerring/dd-software-lifecycle-demo
+tags:
+  - cost-center:engineering
+---
+schema-version: v2.2
+dd-service: downstream-api
+team: datadog-demo-team
+application: demo-app
+tier: "1"
+type: web
+languages:
+  - java
+contacts:
+  - type: email
+    contact: no-one@localhost
+links:
+  - name: Source
+    type: repo
+    provider: github
+    url: https://github.com/scottgerring/dd-software-lifecycle-demo
+  - name: docs
+    type: doc
+    provider: link
+    url: https://github.com/scottgerring/dd-software-lifecycle-demo
+tags:
+  - cost-center:engineering
+
+# Where do we get these from? Do we have to set this up in the UI and then edit the files?
+#ci-pipeline-fingerprints:
+#  - how-do-i-get-this

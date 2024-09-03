@@ -1,0 +1,22 @@
+resources:
+  - ../../base
+
+configMapGenerator:
+  - name: simple-api-config
+    behavior: merge
+    literals:
+      - DD_ENVIRONMENT=dev
+      - DD_VERSION=71cf909
+
+  - name: downstream-api-config
+    behavior: merge
+    literals:
+      - DD_ENVIRONMENT=dev
+      - DD_VERSION=71cf909
+
+images:
+  - name: ghcr.io/scottgerring/simple-api
+    newTag: "71cf909"
+
+  - name: ghcr.io/scottgerring/downstream-api
+    newTag: "71cf909"

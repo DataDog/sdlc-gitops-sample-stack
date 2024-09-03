@@ -1,0 +1,16 @@
+resources:
+  - downstream-api/configmap.yaml
+  - downstream-api/deployment.yaml
+  - downstream-api/service.yaml
+  - simple-api/configmap.yaml
+  - simple-api/deployment.yaml
+  - simple-api/service.yaml
+  - db/deployment.yaml
+  - db/service.yaml
+
+secretGenerator:
+  - name: postgres-secret
+    literals:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=your_password
+      - POSTGRES_DB=your_db

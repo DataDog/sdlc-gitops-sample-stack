@@ -1,0 +1,4 @@
+resources:
+  - base/application.yaml
+  - base/notifications.yaml
+  - base/postsync.yaml

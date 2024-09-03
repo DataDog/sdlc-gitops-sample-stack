@@ -1,0 +1,32 @@
+name: Setup after fork
+
+on:
+  workflow_dispatch:
+
+jobs:
+  replace-and-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      PREVIOUS_ORGNAME: 'scottgerring'  # Statically defined original org name. TODO update once we've moved to DD org
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Replace previous orgname with target orgname
+        run: |
+          find . -type f -exec sed -i 's/${{ env.PREVIOUS_ORGNAME }}/${{ github.repository_owner }}/g' {} +
+          git checkout .github
+          git status
+
+      - name: Create new branch
+        run: |
+          git config --global user.name "noreply"
+          git config --global user.email "noreply@localhost"
+          git checkout -b update-after-fork
+          git add .
+          git commit -m "Replace ${{ env.PREVIOUS_ORGNAME }} with ${{ github.repository_owner }}"
+          git push -u origin update-after-fork
