@@ -1,5 +1,8 @@
-
 # Datadog Software Lifecycle Kubernetes Extravaganza
+
+> [!IMPORTANT]  
+> This repo is a WIP and not yet ready to publish. It is being shared in this state internally in order to solicit feedback from the rest of the Datadog pack. 
+
 [![Main Autorelease](https://github.com/scottgerring/dd-software-lifecycle-demo/actions/workflows/main-autorelease.yaml/badge.svg)](https://github.com/scottgerring/dd-software-lifecycle-demo/actions/workflows/main-autorelease.yaml)
 
 This repo gives you a complete, cloneable, end-to-end demo of an golang application hooked up to DataDog and Kubernetes.
