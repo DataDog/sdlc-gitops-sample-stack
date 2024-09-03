@@ -6,17 +6,17 @@ configMapGenerator:
     behavior: merge
     literals:
       - DD_ENVIRONMENT=dev
-      - DD_VERSION=71cf909
+      - DD_VERSION=b1c7655
 
   - name: downstream-api-config
     behavior: merge
     literals:
       - DD_ENVIRONMENT=dev
-      - DD_VERSION=71cf909
+      - DD_VERSION=b1c7655
 
 images:
   - name: ghcr.io/scottgerring/simple-api
-    newTag: "71cf909"
+    newTag: "b1c7655"
 
   - name: ghcr.io/scottgerring/downstream-api
-    newTag: "71cf909"
+    newTag: "b1c7655"
