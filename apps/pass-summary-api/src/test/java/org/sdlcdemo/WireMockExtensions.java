@@ -42,7 +42,7 @@ public class WireMockExtensions implements QuarkusTestResourceLifecycleManager {
                         ]
                         """)));
 
-        return Map.of("quarkus.rest-client.\"org.sdlcdemo.passapi.client.PassApiService\".url", wireMockServer.baseUrl());
+        return Map.of("quarkus.rest-client.pass-api-client.url", wireMockServer.baseUrl());
     }
 
     @Override

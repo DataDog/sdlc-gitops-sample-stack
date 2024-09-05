@@ -115,7 +115,12 @@ func main() {
 	router.DELETE("/passes/:id", respondToDeletePass)
 	router.GET("/primes/v1/:num", makeRespondToCheckPrime(false))
 	router.GET("/primes/v2/:num", makeRespondToCheckPrime(true))
-
+	router.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"ok": true,
+		})
+	})
+	
 	err = router.Run(":8080")
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)

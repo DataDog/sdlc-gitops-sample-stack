@@ -2,6 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pass-api
+  labels:
+    tags.datadoghq.com/service: "pass-api"
+
+
 spec:
   selector:
     app: pass-api

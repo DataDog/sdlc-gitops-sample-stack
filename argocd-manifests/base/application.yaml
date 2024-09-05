@@ -6,7 +6,8 @@ metadata:
   annotations:
     notifications.argoproj.io/subscribe.cd-visibility-trigger.cd-visibility-webhook: ""
     dd_env: dev
-    dd_service: pass-api
+    dd_multiservice: true
+    dd_k8s_cluster: sdlc-gitops-sample-cluster
 spec:
   destination:
     namespace: sdlc-gitops-sample-stack
