@@ -20,10 +20,10 @@ spec:
           image: ghcr.io/scottgerring/sdlc-gitops-sample-stack/pass-api:latest
           ports:
             - containerPort: 8080
-        readinessProbe:
-          httpGet:
-            path: /ping
-            port: 8080            
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8080            
           env:
             - name: POSTGRES_HOST
               value: "postgres"
