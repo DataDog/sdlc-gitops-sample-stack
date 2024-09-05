@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: pass-summary-api
-          image: ghcr.io/scottgerring/sdlc-gitops-sample-stack/pass-summary-api:latest
+          image: ghcr.io/DataDog/sdlc-gitops-sample-stack/pass-summary-api:latest
           ports:
             - containerPort: 8080
           readinessProbe:

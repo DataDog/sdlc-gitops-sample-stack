@@ -15,8 +15,8 @@ configMapGenerator:
       - DD_VERSION=e4f0733
 
 images:
-  - name: ghcr.io/scottgerring/sdlc-gitops-sample-stack/pass-api
+  - name: ghcr.io/DataDog/sdlc-gitops-sample-stack/pass-api
     newTag: "e4f0733"
 
-  - name: ghcr.io/scottgerring/sdlc-gitops-sample-stack/pass-summary-api
+  - name: ghcr.io/DataDog/sdlc-gitops-sample-stack/pass-summary-api
     newTag: "e4f0733"
