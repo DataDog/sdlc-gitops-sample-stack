@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: dd-sdlc-demo
+  name: sdlc-gitops-sample-stack
   namespace: argocd
   annotations:
     notifications.argoproj.io/subscribe.cd-visibility-trigger.cd-visibility-webhook: ""
@@ -9,12 +9,12 @@ metadata:
     dd_service: pass-api
 spec:
   destination:
-    namespace: sdlc-demo
+    namespace: sdlc-gitops-sample-stack
     server: https://kubernetes.default.svc
   project: default
   source:
     path: manifests/overlays/dev
-    repoURL: https://github.com/scottgerring/dd-sdlc-demo.git
+    repoURL: https://github.com/scottgerring/sdlc-gitops-sample-stack.git
     targetRevision: HEAD
   syncPolicy:
     automated:
