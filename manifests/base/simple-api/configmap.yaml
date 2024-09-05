@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: simple-api-config
-data:
-  DD_SERVICE: "simple-api"
-  DD_ENVIRONMENT: "dev"
-  DD_VERSION: "latest"

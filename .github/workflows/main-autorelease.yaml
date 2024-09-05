@@ -9,14 +9,14 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME_SIMPLE_API: ${{ github.repository_owner }}/simple-api
-  IMAGE_NAME_DOWNSTREAM_API: ${{ github.repository_owner }}/downstream-api
+  IMAGE_NAME_SIMPLE_API: ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-api
+  IMAGE_NAME_DOWNSTREAM_API: ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-summary-api
 
 jobs:
   #
-  # Builds the simple-api golang app
+  # Builds the pass-api golang app
   #
-  build-simple-api:
+  build-pass-api:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -39,10 +39,10 @@ jobs:
           go-version: '1.22'
 
       - name: Build
-        run: cd apps/simple-api && go build -v ./...
+        run: cd apps/pass-api && go build -v ./...
 
       - name: Test
-        run: cd apps/simple-api && go test -v ./...
+        run: cd apps/pass-api && go test -v ./...
 
       # Run container build
       - name: Setup Docker Buildx
@@ -68,16 +68,16 @@ jobs:
         id: push
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
-          context: apps/simple-api
+          context: apps/pass-api
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   #
-  # Builds the downstream-api java/quarkus app
+  # Builds the pass-summary-api java/quarkus app
   #
-  build-downstream-api:
+  build-pass-summary-api:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -100,12 +100,12 @@ jobs:
           java-version: '21'
 
       - name: Build
-        run: cd apps/downstream-api && mvn clean install
+        run: cd apps/pass-summary-api && mvn clean install
 
       - name: Test
         env:
           DD_API_KEY: ${{ secrets.DD_API_KEY }}
-        run: cd apps/downstream-api && ./run-tests-with-datadog.sh
+        run: cd apps/pass-summary-api && ./run-tests-with-datadog.sh
 
       # Run container build
       - name: Setup Docker Buildx
@@ -131,8 +131,8 @@ jobs:
         id: push
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
-          context: apps/downstream-api
-          file: apps/downstream-api/src/main/docker/Dockerfile.jvm
+          context: apps/pass-summary-api
+          file: apps/pass-summary-api/src/main/docker/Dockerfile.jvm
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -141,8 +141,8 @@ jobs:
   update-gitops-manifests:
     runs-on: ubuntu-latest
     needs:
-      - build-simple-api
-      - build-downstream-api
+      - build-pass-api
+      - build-pass-summary-api
     permissions:
       contents: write
       id-token: write

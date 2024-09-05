@@ -2,7 +2,7 @@
 # Read more about writing service definition files:
 # https://docs.datadoghq.com/service_catalog/adding_metadata/#store-and-edit-service-definitions-in-github
 schema-version: v2.2
-dd-service: simple-api
+dd-service: pass-api
 team: datadog-demo-team
 application: demo-app
 tier: "1"
@@ -16,16 +16,16 @@ links:
   - name: Source
     type: repo
     provider: github
-    url: https://github.com/scottgerring/dd-software-lifecycle-demo
+    url: https://github.com/scottgerring/sdlc-gitops-sample-stack
   - name: docs
     type: doc
     provider: link
-    url: https://github.com/scottgerring/dd-software-lifecycle-demo
+    url: https://github.com/scottgerring/sdlc-gitops-sample-stack
 tags:
   - cost-center:engineering
 ---
 schema-version: v2.2
-dd-service: downstream-api
+dd-service: pass-summary-api
 team: datadog-demo-team
 application: demo-app
 tier: "1"
@@ -39,11 +39,11 @@ links:
   - name: Source
     type: repo
     provider: github
-    url: https://github.com/scottgerring/dd-software-lifecycle-demo
+    url: https://github.com/scottgerring/sdlc-gitops-sample-stack
   - name: docs
     type: doc
     provider: link
-    url: https://github.com/scottgerring/dd-software-lifecycle-demo
+    url: https://github.com/scottgerring/sdlc-gitops-sample-stack
 tags:
   - cost-center:engineering
 

@@ -1,10 +1,10 @@
 resources:
-  - downstream-api/configmap.yaml
-  - downstream-api/deployment.yaml
-  - downstream-api/service.yaml
-  - simple-api/configmap.yaml
-  - simple-api/deployment.yaml
-  - simple-api/service.yaml
+  - pass-summary-api/configmap.yaml
+  - pass-summary-api/deployment.yaml
+  - pass-summary-api/service.yaml
+  - pass-api/configmap.yaml
+  - pass-api/deployment.yaml
+  - pass-api/service.yaml
   - db/deployment.yaml
   - db/service.yaml
 

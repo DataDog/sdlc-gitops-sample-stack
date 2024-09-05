@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pass-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pass-api
+  template:
+    metadata:
+      labels:
+        app: pass-api
+        admission.datadoghq.com/enabled: "true"
+        tags.datadoghq.com/env: "dev"
+        tags.datadoghq.com/service: "pass-api"
+    spec:
+      containers:
+        - name: pass-api
+          image: ghcr.io/scottgerring/sdlc-gitops-sample-stack/pass-api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_HOST
+              value: "postgres"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
+            - name: DD_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-api-config
+                  key: DD_ENVIRONMENT
+            - name: DD_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-api-config
+                  key: DD_VERSION
+            - name: DD_SERVICE
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-api-config
+                  key: DD_SERVICE
+
+            # Timeline profile
+            # https://docs.datadoghq.com/profiler/connect_traces_and_profiles/#span-execution-timeline-view
+            - name: DD_PROFILING_EXECUTION_TRACE_ENABLED
+              value: "true"
+            - name: DD_PROFILING_EXECUTION_TRACE_PERIOD
+              value: "15m"

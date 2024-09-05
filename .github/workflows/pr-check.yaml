@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  build-simple-api:
+  build-pass-api:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -21,12 +21,12 @@ jobs:
         go-version: '1.22'
 
     - name: Build
-      run: cd apps/simple-api && go build -v ./...
+      run: cd apps/pass-api && go build -v ./...
 
     - name: Test
-      run: cd apps/simple-api && go test -v ./...
+      run: cd apps/pass-api && go test -v ./...
 
-  build-downstream-api:
+  build-pass-summary-api:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,10 +39,10 @@ jobs:
           java-version: '21'
 
       - name: Build
-        run: cd apps/downstream-api && mvn clean install
+        run: cd apps/pass-summary-api && mvn clean install
 
       - name: Test
         env:
           DD_API_KEY: ${{ secrets.DD_API_KEY }}
-        run: cd apps/downstream-api && ./run-tests-with-datadog.sh
+        run: cd apps/pass-summary-api && ./run-tests-with-datadog.sh
 

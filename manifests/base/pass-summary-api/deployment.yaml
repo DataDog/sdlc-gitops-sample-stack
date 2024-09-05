@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pass-summary-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pass-summary-api
+  template:
+    metadata:
+      labels:
+        app: pass-summary-api
+        admission.datadoghq.com/enabled: "true"
+        tags.datadoghq.com/env: "dev"
+        tags.datadoghq.com/service: "pass-summary-api"
+    spec:
+      containers:
+        - name: pass-summary-api
+          image: ghcr.io/scottgerring/pass-summary-api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DD_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-summary-api-config
+                  key: DD_ENVIRONMENT
+            - name: DD_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-summary-api-config
+                  key: DD_VERSION
+            - name: DD_SERVICE
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-summary-api-config
+                  key: DD_SERVICE
+            - name: DD_LOGS_INJECTION
+              value: "true"
+            - name: DD_PROFILING_ENABLED
+              value: "true"
+#            - name: QUARKUS_LOG_LEVEL
+#              value: DEBUG
+
+            # Timeline profile
+            # https://docs.datadoghq.com/profiler/connect_traces_and_profiles/#span-execution-timeline-view
+            - name: DD_PROFILING_EXECUTION_TRACE_ENABLED
+              value: "true"
+            - name: DD_PROFILING_EXECUTION_TRACE_PERIOD
+              value: "15m"

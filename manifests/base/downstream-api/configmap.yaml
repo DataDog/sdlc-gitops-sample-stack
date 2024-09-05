@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: downstream-api-config
-data:
-  DD_SERVICE: "downstream-api"
-  DD_ENVIRONMENT: "dev"
-  DD_VERSION: "latest"
-  SIMPLEAPI_URL: "http://simple-api"

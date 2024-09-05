@@ -6,7 +6,7 @@ metadata:
   annotations:
     notifications.argoproj.io/subscribe.cd-visibility-trigger.cd-visibility-webhook: ""
     dd_env: dev
-    dd_service: simple-api
+    dd_service: pass-api
 spec:
   destination:
     namespace: sdlc-demo

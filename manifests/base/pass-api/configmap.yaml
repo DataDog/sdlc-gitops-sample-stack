@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pass-api-config
+data:
+  DD_SERVICE: "pass-api"
+  DD_ENVIRONMENT: "dev"
+  DD_VERSION: "latest"
