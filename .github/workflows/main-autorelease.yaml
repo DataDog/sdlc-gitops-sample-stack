@@ -69,7 +69,7 @@ jobs:
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: apps/pass-api
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64 #,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -150,6 +150,10 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Checkout all history for all tags and branches 
+          # We need this to update the dev branch
+          fetch-depth: 0
 
       # Get the current commit SHA (shortened)
       - name: Get Commit SHA
@@ -163,6 +167,7 @@ jobs:
           git config --global user.email "gitops@localhost"
 
       # Update the dev branch using the script
+      # Args to script: push for "dev" environment to the "dev" branch
       - name: Update Dev Branch
-        run: |
-          ./scripts/update_deploy_branch.sh ${{ env.COMMIT_SHA }} dev main
+        run: |          
+          ./scripts/update_deploy_branch.sh ${{ env.COMMIT_SHA }} dev dev
