@@ -22,19 +22,16 @@ UPDATE_SCRIPT="${SCRIPTS_DIR}/update_manifests_for_release.sh"
 # Only switch branches and merge if the branch is not 'main'
 echo "Looks like we're not merging to main but rather '$BRANCH_NAME'; checking out target branch" 
 if [ "$BRANCH_NAME" != "main" ]; then
-  
-  # Check if the branch exists
-  echo Checking if "$BRANCH_NAME" exists 
-  if ! git rev-parse --verify "$BRANCH_NAME" >/dev/null 2>&1; then
-    # Create the branch if it doesn't exist
+  # Try to checkout the branch
+  echo "Checking out branch '$BRANCH_NAME'..."
+  if ! git checkout "$BRANCH_NAME"; then
+    # If checkout fails, create the branch from 'main'
     echo "Branch '$BRANCH_NAME' does not exist. Creating it from 'main'."
     git checkout -b "$BRANCH_NAME" main
   fi
 
-  # Checkout the specified branch and merge main into it
-  echo checkout "$BRANCH_NAME"
-  git checkout "$BRANCH_NAME"
-  echo git merge main --no-edit
+  # Merge 'main' into the branch
+  echo "Merging 'main' into '$BRANCH_NAME'..."
   git merge main --no-edit
 fi
 
