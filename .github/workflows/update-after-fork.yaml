@@ -18,7 +18,9 @@ jobs:
 
       - name: Replace previous orgname with target orgname
         run: |
-          find . -type f -exec sed -i 's/${{ env.PREVIOUS_ORGNAME }}/${{ github.repository_owner }}/g' {} +
+          export REPO_OWNER=${{github.repository_owner}}
+          export REPO_OWNER_LC=`echo "$REPO_OWNER" | awk '{print tolower($0)}'`
+          find . -type f -exec sed -i "s/${{ env.PREVIOUS_ORGNAME }}/${REPO_OWNER_LC}/g" {} +
           git checkout .github
           git status
 
