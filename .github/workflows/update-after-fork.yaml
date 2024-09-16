@@ -10,7 +10,7 @@ jobs:
       contents: write
       pull-requests: write
     env:
-      PREVIOUS_ORGNAME: 'scottgerring'  # Statically defined original org name. TODO update once we've moved to DD org
+      PREVIOUS_ORGNAME: 'datadog'  
 
     steps:
       - name: Checkout repository
@@ -20,8 +20,8 @@ jobs:
         run: |
           export REPO_OWNER=${{github.repository_owner}}
           export REPO_OWNER_LC=`echo "$REPO_OWNER" | awk '{print tolower($0)}'`
-          find . -type f -exec sed -i "s/${{ env.PREVIOUS_ORGNAME }}/${REPO_OWNER_LC}/g" {} +
-          git checkout .github
+          find argocd-manifests manifests -name "*.yaml" -type f -exec sed -i "s/ghcr.io\/${{ env.PREVIOUS_ORGNAME }}/ghcr.io\/${REPO_OWNER_LC}/g" {} +
+          find argocd-manifests manifests -name "*.yaml" -type f -exec sed -i "s/github.com\/${{ env.PREVIOUS_ORGNAME }}/github.com\/${REPO_OWNER_LC}/g" {} +
           git status
 
       - name: Create new branch
