@@ -22,6 +22,7 @@ jobs:
           export REPO_OWNER_LC=`echo "$REPO_OWNER" | awk '{print tolower($0)}'`
           find argocd-manifests manifests -name "*.yaml" -type f -exec sed -i "s/ghcr.io\/${{ env.PREVIOUS_ORGNAME }}/ghcr.io\/${REPO_OWNER_LC}/g" {} +
           find argocd-manifests manifests -name "*.yaml" -type f -exec sed -i "s/github.com\/${{ env.PREVIOUS_ORGNAME }}/github.com\/${REPO_OWNER_LC}/g" {} +
+          sed -i "s/github.com\/${{ env.PREVIOUS_ORGNAME }}/github.com\/${REPO_OWNER_LC}/g" service.datadog.yaml
           git status
 
       - name: Create new branch

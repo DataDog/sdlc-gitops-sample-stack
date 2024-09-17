@@ -9,11 +9,11 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 @QuarkusTestResource(WireMockExtensions.class)
-class DownstreamResourceTest {
+class PassSummaryResourceTest {
     @Test
     void testHelloEndpoint() {
         given()
-          .when().get("/downstream")
+          .when().get("/pass-summary")
           .then()
              .statusCode(200)
              .body(is("{\"total_ascent\":6518,\"pass_count\":3}"));
