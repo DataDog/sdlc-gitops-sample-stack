@@ -15,8 +15,8 @@ import java.util.Set;
 /**
  * A resource that is downstream of pass-api
  */
-@Path("/downstream")
-public class DownstreamResource {
+@Path("/pass-summary")
+public class PassSummaryResource {
 
     @RestClient
     PassApiService passApiService;

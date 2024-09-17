@@ -1,16 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: pass-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: pass-db
   template:
     metadata:
       labels:
-        app: postgres
+        app: pass-db
+        tags.datadoghq.com/env: "dev"
+        tags.datadoghq.com/service: "pass-db"        
     spec:
       containers:
         - name: postgres
