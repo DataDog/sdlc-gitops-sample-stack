@@ -9,8 +9,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME_SIMPLE_API: ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-api
-  IMAGE_NAME_DOWNSTREAM_API: ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-summary-api
+  IMAGE_NAME_PASS_API: ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-api
+  IMAGE_NAME_PASS_SUMMARY_API: ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-summary-api
 
 jobs:
   #
@@ -59,7 +59,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_SIMPLE_API }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_PASS_API }}
           tags: |
             latest
             ${{ env.COMMIT_SHA }}
@@ -122,7 +122,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_DOWNSTREAM_API }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_PASS_SUMMARY_API }}
           tags: |
             latest
             ${{ env.COMMIT_SHA }}

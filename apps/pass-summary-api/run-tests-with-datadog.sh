@@ -6,7 +6,7 @@ export DD_CIVISIBILITY_AGENTLESS_ENABLED=true
 export DD_CIVISIBILITY_ENABLED=true
 export DD_SITE=datadoghq.eu
 export DD_ENV=ci
-export DD_SERVICE=downstream-service
+export DD_SERVICE=pass-summary-api
 
 if [ -n "$DD_API_KEY" ]; then
     export MAVEN_OPTS=-javaagent:$HOME/dd-java-agent.jar

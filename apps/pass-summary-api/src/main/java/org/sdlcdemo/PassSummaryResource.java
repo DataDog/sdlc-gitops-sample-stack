@@ -13,7 +13,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A resource that is downstream of pass-api
+ * A resource that provides pass summary information 
+ * using pass information received from the pass-api
  */
 @Path("/pass-summary")
 public class PassSummaryResource {
