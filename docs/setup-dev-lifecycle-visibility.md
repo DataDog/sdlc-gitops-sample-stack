@@ -94,4 +94,4 @@ If you like, you can additionally enable **Github Comments** and **Auto Test Ret
 > [!CAUTION]
 > TODO - link here to more info about test analysis
 
-
+Next up, you can [deploy the mountain passes stack](setup-runtime.md) with ArgoCD. 
