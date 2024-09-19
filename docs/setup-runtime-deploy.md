@@ -4,7 +4,7 @@ Before we push the stack to our cluster with ArgoCD, we need to setup ArgoCD not
 
 The sample application includes [notifications.yaml](../argocd-manifests/base/notifications.yaml), which configures ArgoCD to notify Datadog of the status of deployments. As supplied, this applies to all applications deployed using ArgoCD in this cluster. For this to work you’ll need to [add your Datadog API key to ArgoCD’s secret](https://docs.datadoghq.com/continuous_delivery/deployments/argocd/#setup). 
 
-## Trigger the deployment
+### Trigger the deployment
 
 To deploy the application, simply review and then apply the kustomize manifests from the [argocd-manifests directory](../argocd-manifests) to your cluster. These use the ArgoCD CRDs to setup and deploy the images from your repository. 
 
@@ -37,7 +37,7 @@ curl [http://localhost:8080/downstream](http://localhost:8080/downstream)
 
 The request here calls from the **pass-summary-api**, to the **pass-api**, which retrieves pass data from the database. This will result in log, trace and metric data being pushed to Datadog - let’s go have a look. 
 
-## Find the deployment in Datadog
+### Find the deployment in Datadog
 
 > [!TIP]
 > Datadog Continuous Delivery (CD) Visibility provides observability on your deployments. 
@@ -58,4 +58,4 @@ Clicking over to the **Service** tab shows us the metadata we provided earlier
 on for service ownership, and provides quick access to the logs/traces/metrics
 associated with the deployment in our running environment.
 
-Last of all - [let's go look at runtime visibility](setup-runtime-vis.md)
+Last of all - [let's go look at runtime visibility](setup-runtime-vis.md).

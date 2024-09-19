@@ -46,10 +46,19 @@ Each application is instrumented with the Datadog APM library in order to emit t
 
 
 ### Software Development Lifecycle View
-TODO
+
+This application integrates with the Datadog software development lifecycle services, starting from [code analysis](https://docs.datadoghq.com/code_analysis/static_analysis/) and moving up into runtime monitoring of the application using [application performance monitoring (APM)](https://www.datadoghq.com/product/apm/). 
+
+The diagram below maps these services onto the development lifecycle:
+
+<p align='center'>
+    <img alt="SDLC View" src="docs/assets/sdlc-view.jpeg" width="600px" />
+</p>
+
+As you work through the setup docs, you will be get a chance to play with each of these services in the context of a complete application.
 
 ### Getting Started
 
 Although you don’t need a Datadog account to use this stack, using one will provide visibility end-to-end visibility from the CI pipelines right through to the running application observability. You can sign up for a free 2-week trial [here](https://www.datadoghq.com/free-datadog-trial/)!
 
-When you're ready to go, you can start by [setting up a fork of the repository](docs/setup-fork.md)!
+The documentation walks you through setting up the application, linking it to Datadog, and getting it running in your cluster using ArgoCD. When you're ready to go, you can start by [setting up a fork of the repository](docs/setup-fork.md)!
