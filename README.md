@@ -7,6 +7,23 @@
 
 This repo gives you a complete, cloneable, end-to-end demo of a golang/java stack hooked up to DataDog and Kubernetes. Rather than going service-by-service through a Kubernetes setup and then the Datadog integration, you can simply clone this repo, make some minor modifications to integrate into your environment, and get started. If you don’t intend to run it as it is, it also provides a complete reference for how the different pieces come together. 
 
+Buzzword bingo:
+
+**Application Stack**:
+- **GitHub docker build pipelines** - PR checks and automatic image creation and release onto the GitHub docker registry
+- **GitOps with ArgoCD** - ArgoCD manifests to deploy the stack and application manifests for ArgoCD to deploy. GitHub pipelines are used to automatically update image versions when changes are merged into main
+- **Some example REST services that do important things** - A golang service simple-api provides mountain pass information, and a java service downstream-api provides a summarised view over the top
+
+**Datadog**:
+- **Service Catalog Integration** - provides a consolidated view of the deployed services, performance insights, cost impact, and ownership
+- **CI/CD pipeline visibility** - monitor and assess the performance and cost impact of the GitHub and ArgoCD pipelines as your application changes pass from `main` through to running Kubernetes environments
+- **Test visibility** - promote visibility of unit tests, results, and performance into your Datadog dashboards
+- **Code analysis** - assess the applications and pull requests for security vulnerabilities in their code, and known vulnerabilities in included libraries. Integrated with GitHub provides feedback on pull requests.
+- **Application performance monitoring** - Provide end-to-end visibility into the running applications and the underlying Kubernetes cluster, from distributed application traces to system-level metrics
+
+Want to get started with Datadog + end-to-end SDLC onto Kubernetes? You're in the right place.
+
+
 ## The Mountain Passes App 
 
 The stack focusses on the _very important business_ of cataloging mountain passes. **pass-api** provides CRUD access to the underlying passes, storing a location, country, and total ascent for each, whilst **pass-summary-api** provides aggregate statistics over the top. Pass information is ultimately stored in a PostgreSQL database by the **pass-api**.
@@ -45,3 +62,24 @@ Each application is instrumented with the Datadog APM library in order to emit t
 
 ## The Datadog Software Development Lifecycle View
 TODO
+
+## Getting Started
+
+### Prerequisites
+Although you don’t need a Datadog account to use this stack, using one will provide visibility end-to-end visibility from the CI pipelines right through to the running application observability. You can sign up for a free 2-week trial [here](https://www.datadoghq.com/free-datadog-trial/)!
+
+### Fork Repo
+Fork this Repository [Datadog/sdlc-gitops-sample-stack](Datadog/sdlc-gitops-sample-stack) into your organisation or personal GitHub account. 
+
+![Fork repository](docs/assets/fork-repo.jpeg)
+
+Visit the **Actions** tab of the fork. You will see that the main branch is being built. This will take roughly 10 minutes and will release the container images for the two services to your GitHub repository. 
+
+![Initial build action](docs/assets/actions-initial-build.jpeg)
+
+Wait for the build to complete, then validate that the images produced are visible in the Packages section of the repository home: 
+
+![Initial images built](docs/assets/actions-initial-build.jpeg)
+
+Great! Now we've got our own copy of the code and our container images built, we can move onto [integrating our project with Datadog](docs/setup-github-integration.md).
+
