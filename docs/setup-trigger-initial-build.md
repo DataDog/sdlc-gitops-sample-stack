@@ -20,7 +20,7 @@ Review the changes. You should see that the action has updated references to the
 * the container images for pass-api and pass-summary-api in **manifests** will now point at your GitHub hosted container images 
 * the `service.datadog.yaml` **Service Catalog** manifest, which points service documentation links back to your Github repository
 
-> [!warn]
+> [!IMPORTANT]
 > You should see no other changes outside of these files\! 
 
 Once you have validated this and seen the builds complete, merge to main. This will re-trigger the main build jobs. 

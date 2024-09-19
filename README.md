@@ -5,11 +5,11 @@
 
 [![Main Autorelease](https://github.com/datadog/sdlc-gitops-sample-stack/actions/workflows/main-autorelease.yaml/badge.svg)](https://github.com/datadog/sdlc-gitops-sample-stack/actions/workflows/main-autorelease.yaml)
 
-This repo gives you a complete, cloneable, end-to-end demo of a golang/java stack hooked up to DataDog and Kubernetes. Rather than going service-by-service through a Kubernetes setup and then the Datadog integration, you can simply clone this repo, make some minor modifications to integrate into your environment, and get started. If you don’t intend to run it as it is, it also provides a complete reference for how the different pieces come together. 
+This repo gives you a complete, cloneable, end-to-end demo of a golang/java stack hooked up to Datadog and Kubernetes. Rather than going service-by-service through a Kubernetes setup and then the Datadog integration, you can simply clone this repo, make some minor modifications to integrate into your environment, and get started. If you don’t intend to run it as it is, it also provides a complete reference for how the different pieces come together. 
 
 Want to get started with Datadog + end-to-end SDLC onto Kubernetes? You're in the right place.
 
-## The Mountain Passes App 
+### The Mountain Passes App 
 
 The stack focusses on the _very important business_ of cataloging mountain passes. **pass-api** provides CRUD access to the underlying passes, storing a location, country, and total ascent for each, whilst **pass-summary-api** provides aggregate statistics over the top. Pass information is ultimately stored in a PostgreSQL database by the **pass-api**.
 
@@ -45,15 +45,15 @@ Each application is instrumented with the Datadog APM library in order to emit t
 | **pass-db**    | [deployment.yaml](manifests/base/db/deployment.yaml) | n/a | 
 
 
-## The Datadog Software Development Lifecycle View
+### Software Development Lifecycle View
 TODO
 
-## Getting Started
+### Getting Started
 
-### Prerequisites
+#### Prerequisites
 Although you don’t need a Datadog account to use this stack, using one will provide visibility end-to-end visibility from the CI pipelines right through to the running application observability. You can sign up for a free 2-week trial [here](https://www.datadoghq.com/free-datadog-trial/)!
 
-### Fork Repo
+#### Fork Repo
 Fork this Repository [Datadog/sdlc-gitops-sample-stack](Datadog/sdlc-gitops-sample-stack) into your organisation or personal GitHub account. 
 
 
