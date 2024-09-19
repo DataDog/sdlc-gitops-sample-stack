@@ -72,7 +72,7 @@ Although you don’t need a Datadog account to use this stack, using one will pr
 Fork this Repository [Datadog/sdlc-gitops-sample-stack](Datadog/sdlc-gitops-sample-stack) into your organisation or personal GitHub account. 
 
 <p align='center'>
-    <img alt="Fork repository" src="dodocs/assets/fork-repo.jpeg" width="400px" />
+    <img alt="Fork repository" src="docs/assets/fork-repo.jpeg" width="400px" />
 </p>
 
 Visit the **Actions** tab of the fork. You will see that the main branch is being built. This will take roughly 10 minutes and will release the container images for the two services to your GitHub repository. 
