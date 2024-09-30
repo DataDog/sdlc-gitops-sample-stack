@@ -8,6 +8,7 @@ From the Datadog console, pressing cmd-k or ctrl-k opens the “Go To” dialog 
 
 > [!TIP]
 > Datadog Service Catalog provides a consolidated view of your services, combining ownership metadata, performance insights, security analysis, cost allocation, and much more. 
+> TODO - link here to more info about service catalog
 
 Let’s start by jumping over to the **Service Catalog**. You should see both services from our application have been discovered automatically now that Datadog has indexed the [service.datadog.yaml](..//service.datadog.yaml) manifest: 
 
@@ -17,13 +18,11 @@ Let’s start by jumping over to the **Service Catalog**. You should see both se
 
 This lets us track our services and their versions and changes throughout their lifecycle, as well as assign ownership for incident management and supporting metadata to them. 
 
-> [!CAUTION]
-> TODO - link here to more info about service catalog
-
 ### CI Visibility
 
 > [!TIP]
 > Datadog CI/CD Pipeline Visibility enables platform engineering and DevOps teams to monitor and improve the performance of their CI/CD pipelines.
+> TODO - link here to more info about CI Vis
 
 Using the **Go To** dialog again, jump over to **CI Visibility**. From **Pipeline Executions**, you should immediately see the results of the builds that have run within your repository:
 
@@ -39,14 +38,11 @@ Clicking on **Main Autorelease**, we can quickly analyze the time spent building
 
 Why could this be? A hint can be found in the main-autorelease.yaml build file, and the platforms targeted for the Go build 🙂
 
-> [!CAUTION]
-> TODO - link here to more info about CI Vis
-
-
 ### Code Analysis
 
 > [!TIP]
 > Datadog Code Analysis evaluates your code for security, performance, best practices, and more without needing to executing the code. 
+> TODO - link here to more info about static analysis and SCA
 
 
 Using the **Go To** dialog, jump to **Code Analysis**. Code Analysis can be setup using a runner within your code pipelines, or on the Datadog side, with Datadog itself cloning and analyzing your repository.
@@ -65,13 +61,11 @@ Once our repository is connected and a scan has been completed, we will see both
     <img alt="Static analysis dashboard" src="assets/setup-dev-lifecycle-visibility-code-analysis-results.jpeg" width="600px" />
 </p>
 
-> [!CAUTION]
-> TODO - link here to more info about static analysis and SCA
-
 ### Test Visibility 
 
 > [!TIP]
 > Datadog Test Visibility provides a test-first view into your CI health by displaying important metrics and results from your tests. It can help you investigate performance problems and test failures that are most relevant to your work, focusing on the code you are responsible for, rather than the pipelines which run your tests.
+> TODO - link here to more info about test analysis
 
 If you want to use test visibility, you need to setup the Github actions secrets as described above in the **Code Analysis** section. If this is turned off the unit tests will run regardless, but will not post their results to Datadog. 
 
@@ -90,8 +84,5 @@ Clicking through to Test Executions allows you to see detailed information for e
 
 
 If you like, you can additionally enable **Github Comments** and **Auto Test Retries** from the **Test Visibility Sections** pane in the Datadog console. 
-
-> [!CAUTION]
-> TODO - link here to more info about test analysis
 
 Next up, you can [deploy the mountain passes stack](setup-runtime.md) with ArgoCD. 

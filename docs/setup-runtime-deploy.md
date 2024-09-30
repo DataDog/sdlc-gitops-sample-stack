@@ -26,11 +26,13 @@ Wait for the stack to come up, and then forward a port to **pass-summary-api**:
 
 ```bash
  kubectl port-forward svc/pass-summary-api 8080:8080 \-n sdlc-gitops-sample-stack
-
-# Then, in another shell   
-curl [http://localhost:8080/downstream](http://localhost:8080/downstream)  
-{"total\_ascent":6518,"pass\_count":3}%  
 ```
+
+Then, in another shell:
+```bash
+curl [http://localhost:8080/downstream](http://localhost:8080/downstream)  
+```
+Which should return something like `{"total_ascent":6518,"pass_count":3}`
 
 > [!TIP]
 > [k9s](https://k9scli.io/) is a great terminal UI to work with Kubernetes clusters if you're looking for an alternative to `kubectl`.

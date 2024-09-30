@@ -11,7 +11,9 @@ Want to get started with Datadog + end-to-end SDLC onto Kubernetes? You're in th
 
 ### The Mountain Passes App 
 
-The stack focusses on the _very important business_ of cataloging mountain passes. **pass-api** provides CRUD access to the underlying passes, storing a location, country, and total ascent for each, whilst **pass-summary-api** provides aggregate statistics over the top. Pass information is ultimately stored in a PostgreSQL database by the **pass-api**.
+The stack focusses on the _very important business_ of cataloging [mountain passes](https://en.wikipedia.org/wiki/Mountain_pass). Cycling and automotive enthusiasts have a shared passtime of travelling rapidly up and down these passes. Often-times halfway up a pass, a cyclist will find themselves in need of a good, robust, REST API cataloging important pass information. This project provides that API!
+
+**pass-api** provides CRUD access to the underlying passes, storing a location, country, and total ascent for each, whilst **pass-summary-api** provides aggregate statistics over the top. Pass information is ultimately stored in a PostgreSQL database by the **pass-api**.
 
 > [!IMPORTANT]
 > To keep things simple, the PostgreSQL DB is a simple single container deployment, and is not setup for production-grade storage of important data!
@@ -58,6 +60,10 @@ The diagram below maps these services onto the development lifecycle:
 As you work through the setup docs, you will be get a chance to play with each of these services in the context of a complete application.
 
 ### Getting Started
+
+> [!TIP]  
+> To complete this guide you'll need a **Kubernetes cluster** with **ArgoCD** running, as well as access to a **Datadog account**. We suggest getting started 
+> locally with [Minikube](https://minikube.sigs.k8s.io/), the [ArgoCD single manifest deployment](https://argo-cd.readthedocs.io/en/stable/getting_started/), ana [free Datadog trial](https://www.datadoghq.com/free-datadog-trial/); this will let you test things out in isolation on your own machine. 
 
 Although you don’t need a Datadog account to use this stack, using one will provide visibility end-to-end visibility from the CI pipelines right through to the running application observability. You can sign up for a free 2-week trial [here](https://www.datadoghq.com/free-datadog-trial/)!
 
