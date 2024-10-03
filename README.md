@@ -63,7 +63,7 @@ As you work through the setup docs, you will be get a chance to play with each o
 
 > [!TIP]  
 > To complete this guide you'll need a **Kubernetes cluster** with **ArgoCD** running, as well as access to a **Datadog account**. We suggest getting started 
-> locally with [Minikube](https://minikube.sigs.k8s.io/), the [ArgoCD single manifest deployment](https://argo-cd.readthedocs.io/en/stable/getting_started/), ana [free Datadog trial](https://www.datadoghq.com/free-datadog-trial/); this will let you test things out in isolation on your own machine. 
+> locally with [Minikube](https://minikube.sigs.k8s.io/), the [ArgoCD single manifest deployment](https://argo-cd.readthedocs.io/en/stable/getting_started/), and a [free Datadog trial](https://www.datadoghq.com/free-datadog-trial/); this will let you test things out in isolation on your own machine. 
 
 Although you don’t need a Datadog account to use this stack, using one will provide visibility end-to-end visibility from the CI pipelines right through to the running application observability. You can sign up for a free 2-week trial [here](https://www.datadoghq.com/free-datadog-trial/)!
 
