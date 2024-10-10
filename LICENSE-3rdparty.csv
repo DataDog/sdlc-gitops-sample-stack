@@ -204,7 +204,7 @@ pass-summary-api,jakarta.json/jakarta.json-api:2.1.3,GPL-2.0-with-classpath-exce
 pass-summary-api,jakarta.transaction/jakarta.transaction-api:2.0.1,GPL-2.0-with-classpath-exception,Copyright Placeholder
 pass-summary-api,jakarta.ws.rs/jakarta.ws.rs-api:3.1.0,GPL-2.0-with-classpath-exception,Copyright Placeholder
 pass-summary-api,jakarta.xml.bind/jakarta.xml.bind-api:4.0.2,EDL-1.0,Copyright Placeholder
-pass-summary-api,javax.annotation/javax.annotation-api:1.3.2,CDDL-1.1 AND GPL-2.0-only WITH Classpath-exception-2.0,Copyright Placeholder
+pass-summary-api,javax.annotation/javax.annotation-api:1.3.2,GPL-2.0-with-classpath-exception,Copyright Placeholder
 pass-summary-api,javax.inject/javax.inject:1,Apache-2.0,Copyright Placeholder
 pass-summary-api,net.javacrumbs.json-unit/json-unit-core:2.40.0,Apache-2.0,Copyright Placeholder
 pass-summary-api,net.minidev/accessors-smart:2.5.0,Apache-2.0,Copyright Placeholder
@@ -249,7 +249,7 @@ pass-summary-api,org.apache.maven/maven-resolver-provider:3.9.8,Apache-2.0,Copyr
 pass-summary-api,org.apache.maven/maven-settings-builder:3.9.8,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.apache.maven/maven-settings:3.9.8,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.apache.maven/maven-xml-impl:4.0.0-alpha-5,Apache-2.0,Copyright Placeholder
-pass-summary-api,org.apiguardian/apiguardian-api:1.1.2,The Apache-2.0,Copyright Placeholder
+pass-summary-api,org.apiguardian/apiguardian-api:1.1.2,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.ccil.cowan.tagsoup/tagsoup:1.2.1,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.checkerframework/checker-qual:3.46.0,MIT,Copyright Placeholder
 pass-summary-api,org.codehaus.plexus/plexus-cipher:2.0,Apache-2.0,Copyright Placeholder
@@ -259,25 +259,25 @@ pass-summary-api,org.codehaus.plexus/plexus-interpolation:1.26,Apache-2.0,Copyri
 pass-summary-api,org.codehaus.plexus/plexus-sec-dispatcher:2.0,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.codehaus.plexus/plexus-utils:3.5.1,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.codehaus.plexus/plexus-xml:4.0.1,Apache-2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty.http2/http2-common:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty.http2/http2-hpack:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty.http2/http2-server:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty.toolchain/jetty-jakarta-servlet-api:5.0.2,Apache-2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-alpn-client:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-alpn-java-client:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-alpn-java-server:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-alpn-server:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-client:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-http:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-io:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-proxy:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-security:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-server:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-servlet:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-servlets:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-util:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-webapp:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty/jetty-xml:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty.http2/http2-common:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty.http2/http2-hpack:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty.http2/http2-server:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty.toolchain/jetty-jakarta-servlet-api:5.0.2,EPL-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-alpn-client:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-alpn-java-client:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-alpn-java-server:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-alpn-server:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-client:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-http:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-io:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-proxy:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-security:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-server:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-servlet:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-servlets:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-util:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-webapp:11.0.20,Apache-2.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty/jetty-xml:11.0.20,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.eclipse.microprofile.config/microprofile-config-api:3.1,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.eclipse.microprofile.context-propagation/microprofile-context-propagation-api:1.3,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.eclipse.microprofile.rest.client/microprofile-rest-client-api:3.0.1,Apache-2.0,Copyright Placeholder
@@ -297,14 +297,14 @@ pass-summary-api,org.jboss.marshalling/jboss-marshalling:2.1.4.SP1,Apache-2.0,Co
 pass-summary-api,org.jboss.slf4j/slf4j-jboss-logmanager:2.0.0.Final,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.jboss.threads/jboss-threads:3.6.1.Final,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.jctools/jctools-core:4.0.5,Apache-2.0,Copyright Placeholder
-pass-summary-api,org.junit.jupiter/junit-jupiter-api:5.10.3,EPL-2.0 v2.0,Copyright Placeholder
-pass-summary-api,org.junit.jupiter/junit-jupiter-engine:5.10.3,EPL-2.0 v2.0,Copyright Placeholder
-pass-summary-api,org.junit.jupiter/junit-jupiter-params:5.10.3,EPL-2.0 v2.0,Copyright Placeholder
-pass-summary-api,org.junit.jupiter/junit-jupiter:5.10.3,EPL-2.0 v2.0,Copyright Placeholder
-pass-summary-api,org.junit.platform/junit-platform-commons:1.10.3,EPL-2.0 v2.0,Copyright Placeholder
-pass-summary-api,org.junit.platform/junit-platform-engine:1.10.3,EPL-2.0 v2.0,Copyright Placeholder
-pass-summary-api,org.junit.platform/junit-platform-launcher:1.10.3,EPL-2.0 v2.0,Copyright Placeholder
-pass-summary-api,org.opentest4j/opentest4j:1.3.0,The Apache-2.0,Copyright Placeholder
+pass-summary-api,org.junit.jupiter/junit-jupiter-api:5.10.3,EPL-2.0,Copyright Placeholder
+pass-summary-api,org.junit.jupiter/junit-jupiter-engine:5.10.3,EPL-2.0,Copyright Placeholder
+pass-summary-api,org.junit.jupiter/junit-jupiter-params:5.10.3,EPL-2.0,Copyright Placeholder
+pass-summary-api,org.junit.jupiter/junit-jupiter:5.10.3,EPL-2.0,Copyright Placeholder
+pass-summary-api,org.junit.platform/junit-platform-commons:1.10.3,EPL-2.0,Copyright Placeholder
+pass-summary-api,org.junit.platform/junit-platform-engine:1.10.3,EPL-2.0,Copyright Placeholder
+pass-summary-api,org.junit.platform/junit-platform-launcher:1.10.3,EPL-2.0,Copyright Placeholder
+pass-summary-api,org.opentest4j/opentest4j:1.3.0,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.ow2.asm/asm-analysis:9.7,BSD-3-Clause,Copyright Placeholder
 pass-summary-api,org.ow2.asm/asm-commons:9.7,BSD-3-Clause,Copyright Placeholder
 pass-summary-api,org.ow2.asm/asm-tree:9.7,BSD-3-Clause,Copyright Placeholder
