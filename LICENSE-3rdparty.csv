@@ -185,14 +185,14 @@ pass-summary-api,io.smallrye/smallrye-context-propagation-api:2.1.2,Apache-2.0,C
 pass-summary-api,io.smallrye/smallrye-context-propagation-storage:2.1.2,Apache-2.0,Copyright Placeholder
 pass-summary-api,io.smallrye/smallrye-context-propagation:2.1.2,Apache-2.0,Copyright Placeholder
 pass-summary-api,io.smallrye/smallrye-fault-tolerance-vertx:6.4.0,Apache-2.0,Copyright Placeholder
-pass-summary-api,io.vertx/vertx-auth-common:4.5.9,EPL-1.0,Copyright Placeholder
-pass-summary-api,io.vertx/vertx-bridge-common:4.5.9,EPL-1.0,Copyright Placeholder
-pass-summary-api,io.vertx/vertx-codegen:4.5.9,EPL-1.0,Copyright Placeholder
-pass-summary-api,io.vertx/vertx-core:4.5.9,EPL-2.0,Copyright Placeholder
-pass-summary-api,io.vertx/vertx-uri-template:4.5.9,EPL-1.0,Copyright Placeholder
-pass-summary-api,io.vertx/vertx-web-client:4.5.9,EPL-1.0,Copyright Placeholder
-pass-summary-api,io.vertx/vertx-web-common:4.5.9,EPL-1.0,Copyright Placeholder
-pass-summary-api,io.vertx/vertx-web:4.5.9,EPL-2.0,Copyright Placeholder
+pass-summary-api,io.vertx/vertx-auth-common:4.5.9,Apache-2.0,Copyright Placeholder
+pass-summary-api,io.vertx/vertx-bridge-common:4.5.9,Apache-2.0,Copyright Placeholder
+pass-summary-api,io.vertx/vertx-codegen:4.5.9,Apache-2.0,Copyright Placeholder
+pass-summary-api,io.vertx/vertx-core:4.5.9,Apache-2.0,Copyright Placeholder
+pass-summary-api,io.vertx/vertx-uri-template:4.5.9,Apache-2.0,Copyright Placeholder
+pass-summary-api,io.vertx/vertx-web-client:4.5.9,Apache-2.0,Copyright Placeholder
+pass-summary-api,io.vertx/vertx-web-common:4.5.9,Apache-2.0,Copyright Placeholder
+pass-summary-api,io.vertx/vertx-web:4.5.9,Apache-2.0,Copyright Placeholder
 pass-summary-api,jakarta.activation/jakarta.activation-api:2.1.3,EDL-1.0,Copyright Placeholder
 pass-summary-api,jakarta.annotation/jakarta.annotation-api:3.0.0,GPL-2.0-with-classpath-exception,Copyright Placeholder
 pass-summary-api,jakarta.el/jakarta.el-api:5.0.1,GPL-2.0-with-classpath-exception,Copyright Placeholder
@@ -262,7 +262,7 @@ pass-summary-api,org.codehaus.plexus/plexus-xml:4.0.1,Apache-2.0,Copyright Place
 pass-summary-api,org.eclipse.jetty.http2/http2-common:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
 pass-summary-api,org.eclipse.jetty.http2/http2-hpack:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
 pass-summary-api,org.eclipse.jetty.http2/http2-server:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
-pass-summary-api,org.eclipse.jetty.toolchain/jetty-jakarta-servlet-api:5.0.2,EPL-2.0 - Version 1.0,Copyright Placeholder
+pass-summary-api,org.eclipse.jetty.toolchain/jetty-jakarta-servlet-api:5.0.2,Apache-2.0,Copyright Placeholder
 pass-summary-api,org.eclipse.jetty/jetty-alpn-client:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
 pass-summary-api,org.eclipse.jetty/jetty-alpn-java-client:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
 pass-summary-api,org.eclipse.jetty/jetty-alpn-java-server:11.0.20,Apache Software License - Version 2.0,Copyright Placeholder
