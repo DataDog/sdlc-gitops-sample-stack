@@ -1,4 +1,4 @@
-# Datadog Software Lifecycle Kubernetes Extravaganza
+# Datadog Software Lifecycle GitOps demo
 
 [![Main Autorelease](https://github.com/datadog/sdlc-gitops-sample-stack/actions/workflows/main-autorelease.yaml/badge.svg)](https://github.com/datadog/sdlc-gitops-sample-stack/actions/workflows/main-autorelease.yaml)
 
