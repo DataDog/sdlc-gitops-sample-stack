@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
+set -e 
 
-go-licenses csv ./... | \
-    awk -F',' 'BEGIN { OFS=","; print "Component,Origin,License,Copyright" } { print "pass-api", $1, $3, "" }' | \
-    grep -v "apps/pass-api" > license-3rdparty.csv
+invoke generate-licenses
+sed -i '' 's/^core,/pass-api,/g' LICENSE-3rdparty.csv 
+echo "CSV generated at $OUTPUT_FILE"

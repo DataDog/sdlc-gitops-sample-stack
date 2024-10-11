@@ -2,7 +2,7 @@
 
 # Define the input XML file
 INPUT_FILE="target/generated-resources/licenses.xml"
-OUTPUT_FILE="license-3rdparty.csv"
+OUTPUT_FILE="LICENSE-3rdparty.csv"
 
 # Write the header to the CSV file
 echo "Component,Origin,License,Copyright" > "$OUTPUT_FILE"

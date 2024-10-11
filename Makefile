@@ -1,12 +1,12 @@
 license-raw-pass-api.csv: apps/pass-api/go.sum
 	cd apps/pass-api && \
 	./write-licenses.sh && \
-	cp license-3rdparty.csv ../../license-raw-pass-api.csv
+	cp LICENSE-3rdparty.csv ../../license-raw-pass-api.csv
 
 license-raw-summary-api.csv: apps/pass-summary-api/pom.xml
 	cd apps/pass-summary-api && \
 	./write-licenses.sh && \
-	cp license-3rdparty.csv ../../license-raw-summary-api.csv
+	cp LICENSE-3rdparty.csv ../../license-raw-summary-api.csv
 
 license-raw-combined.csv: license-raw-pass-api.csv license-raw-summary-api.csv
 	cat license-raw-pass-api.csv > license-raw-combined.csv
