@@ -28,6 +28,7 @@ html5lib==1.1
 idna==3.7
 importlib_metadata==8.5.0
 intbitset==3.1.0
+invoke==2.2.0
 isodate==0.6.1
 jaraco.functools==4.1.0
 javaproperties==0.8.1
@@ -58,7 +59,7 @@ Pygments==2.18.0
 pymaven-patch==0.3.2
 pyparsing==3.1.4
 pywal==3.3.0
-PyYAML==6.0.1
+PyYAML==6.0.2
 rdflib==7.0.0
 requests==2.32.3
 resolvelib==1.0.1
