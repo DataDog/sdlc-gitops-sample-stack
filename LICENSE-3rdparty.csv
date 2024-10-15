@@ -1,0 +1,244 @@
+Component,Origin,License,Copyright
+pass-api,github.com/DataDog/appsec-internal-go/appsec,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/appsec-internal-go/httpsec,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/appsec-internal-go/limiter,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/appsec-internal-go/log,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/appsec-internal-go/netip,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/datadog-go/v5/statsd,MIT,"Copyright (c) 2015 Datadog, Inc"
+pass-api,github.com/DataDog/go-libddwaf/v3,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/go-libddwaf/v3/errors,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/go-libddwaf/v3/internal/bindings,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/go-libddwaf/v3/internal/lib,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/go-libddwaf/v3/internal/log,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/go-libddwaf/v3/internal/support,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/go-libddwaf/v3/internal/unsafe,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/go-libddwaf/v3/timer,Apache-2.0,"Copyright 2016-present Datadog, Inc"
+pass-api,github.com/DataDog/gostackparse,Apache-2.0,"Copyright (c) 2021-Present, Datadog <info@datadoghq.com> | Copyright 2021 Datadog, Inc"
+pass-api,github.com/DataDog/sketches-go/ddsketch,Apache-2.0,"Copyright 2021 DataDog, Inc | Copyright 2021 Datadog, Inc"
+pass-api,github.com/DataDog/sketches-go/ddsketch/encoding,Apache-2.0,"Copyright 2021 DataDog, Inc | Copyright 2021 Datadog, Inc"
+pass-api,github.com/DataDog/sketches-go/ddsketch/mapping,Apache-2.0,"Copyright 2021 DataDog, Inc | Copyright 2021 Datadog, Inc"
+pass-api,github.com/DataDog/sketches-go/ddsketch/pb/sketchpb,Apache-2.0,"Copyright 2021 DataDog, Inc | Copyright 2021 Datadog, Inc"
+pass-api,github.com/DataDog/sketches-go/ddsketch/stat,Apache-2.0,"Copyright 2021 DataDog, Inc | Copyright 2021 Datadog, Inc"
+pass-api,github.com/DataDog/sketches-go/ddsketch/store,Apache-2.0,"Copyright 2021 DataDog, Inc | Copyright 2021 Datadog, Inc"
+pass-api,github.com/Microsoft/go-winio,MIT,Copyright (c) 2015 Microsoft
+pass-api,github.com/Microsoft/go-winio/internal/fs,MIT,Copyright (c) 2015 Microsoft
+pass-api,github.com/Microsoft/go-winio/internal/socket,MIT,Copyright (c) 2015 Microsoft
+pass-api,github.com/Microsoft/go-winio/internal/stringbuffer,MIT,Copyright (c) 2015 Microsoft
+pass-api,github.com/Microsoft/go-winio/pkg/guid,MIT,Copyright (c) 2015 Microsoft
+pass-api,github.com/bytedance/sonic,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/base64,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/caching,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/cpu,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/decoder/consts,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/decoder/errors,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/decoder/jitdec,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/decoder/optdec,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/encoder/alg,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/encoder/ir,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/encoder/vars,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/encoder/vm,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/encoder/x86,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/envs,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/jit,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/native,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/native/types,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/optcaching,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/resolver,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/internal/rt,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/loader,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/option,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/bytedance/sonic/utf8,Apache-2.0,Copyright 2021 ByteDance Inc.
+pass-api,github.com/cloudwego/base64x,Apache-2.0,Copyright 2024 CloudWeGo Authors
+pass-api,github.com/eapache/queue/v2,MIT,Copyright (c) 2014 Evan Huus
+pass-api,github.com/ebitengine/purego,Apache-2.0,Copyright 2022 The Ebitengine Authors
+pass-api,github.com/ebitengine/purego/internal/cgo,Apache-2.0,Copyright 2022 The Ebitengine Authors
+pass-api,github.com/ebitengine/purego/internal/fakecgo,Apache-2.0,Copyright 2022 The Ebitengine Authors
+pass-api,github.com/ebitengine/purego/internal/strings,Apache-2.0,Copyright 2022 The Ebitengine Authors
+pass-api,github.com/gabriel-vasile/mimetype,MIT,Copyright (c) 2018 Gabriel Vasile
+pass-api,github.com/gabriel-vasile/mimetype/internal/charset,MIT,Copyright (c) 2018 Gabriel Vasile
+pass-api,github.com/gabriel-vasile/mimetype/internal/json,MIT,Copyright (c) 2018 Gabriel Vasile
+pass-api,github.com/gabriel-vasile/mimetype/internal/magic,MIT,Copyright (c) 2018 Gabriel Vasile
+pass-api,github.com/gin-contrib/sse,MIT,Copyright (c) 2014 Manuel Martínez-Almeida
+pass-api,github.com/gin-gonic/gin,MIT,Copyright (c) 2014 Manuel Martínez-Almeida
+pass-api,github.com/gin-gonic/gin/binding,MIT,Copyright (c) 2014 Manuel Martínez-Almeida
+pass-api,github.com/gin-gonic/gin/internal/bytesconv,MIT,Copyright (c) 2014 Manuel Martínez-Almeida
+pass-api,github.com/gin-gonic/gin/internal/json,MIT,Copyright (c) 2014 Manuel Martínez-Almeida
+pass-api,github.com/gin-gonic/gin/render,MIT,Copyright (c) 2014 Manuel Martínez-Almeida
+pass-api,github.com/go-playground/locales,MIT,Copyright (c) 2016 Go Playground
+pass-api,github.com/go-playground/locales/currency,MIT,Copyright (c) 2016 Go Playground
+pass-api,github.com/go-playground/universal-translator,MIT,Copyright (c) 2016 Go Playground
+pass-api,github.com/go-playground/validator/v10,MIT,Copyright (c) 2015 Dean Karn
+pass-api,github.com/goccy/go-json,MIT,Copyright (c) 2020 Masaaki Goshima
+pass-api,github.com/goccy/go-json/internal/decoder,MIT,Copyright (c) 2020 Masaaki Goshima
+pass-api,github.com/goccy/go-json/internal/encoder,MIT,Copyright (c) 2020 Masaaki Goshima
+pass-api,github.com/goccy/go-json/internal/encoder/vm,MIT,Copyright (c) 2020 Masaaki Goshima
+pass-api,github.com/goccy/go-json/internal/encoder/vm_color,MIT,Copyright (c) 2020 Masaaki Goshima
+pass-api,github.com/goccy/go-json/internal/encoder/vm_color_indent,MIT,Copyright (c) 2020 Masaaki Goshima
+pass-api,github.com/goccy/go-json/internal/encoder/vm_indent,MIT,Copyright (c) 2020 Masaaki Goshima
+pass-api,github.com/goccy/go-json/internal/errors,MIT,Copyright (c) 2020 Masaaki Goshima
+pass-api,github.com/goccy/go-json/internal/runtime,MIT,Copyright (c) 2020 Masaaki Goshima
+pass-api,github.com/golang-migrate/migrate/v4,MIT,Copyright (c) 2016 Matthias Kadenbach | Copyright (c) 2018 Dale Hui
+pass-api,github.com/golang-migrate/migrate/v4/database,MIT,Copyright (c) 2016 Matthias Kadenbach | Copyright (c) 2018 Dale Hui
+pass-api,github.com/golang-migrate/migrate/v4/database/multistmt,MIT,Copyright (c) 2016 Matthias Kadenbach | Copyright (c) 2018 Dale Hui
+pass-api,github.com/golang-migrate/migrate/v4/database/postgres,MIT,Copyright (c) 2016 Matthias Kadenbach | Copyright (c) 2018 Dale Hui
+pass-api,github.com/golang-migrate/migrate/v4/internal/url,MIT,Copyright (c) 2016 Matthias Kadenbach | Copyright (c) 2018 Dale Hui
+pass-api,github.com/golang-migrate/migrate/v4/source,MIT,Copyright (c) 2016 Matthias Kadenbach | Copyright (c) 2018 Dale Hui
+pass-api,github.com/golang-migrate/migrate/v4/source/file,MIT,Copyright (c) 2016 Matthias Kadenbach | Copyright (c) 2018 Dale Hui
+pass-api,github.com/golang-migrate/migrate/v4/source/iofs,MIT,Copyright (c) 2016 Matthias Kadenbach | Copyright (c) 2018 Dale Hui
+pass-api,github.com/google/pprof/profile,Apache-2.0,Andrew Hunter <andrewhhunter@gmail.com> | Google Inc. | Hyoun Kyu Cho <netforce@google.com> | Martin Spier <spiermar@gmail.com> | Raul Silvera <rsilvera@google.com> | Taco de Wolff <tacodewolff@gmail.com> | Tipp Moseley <tipp@google.com>
+pass-api,github.com/google/uuid,BSD-3-Clause,"Copyright (c) 2009,2014 Google Inc. All rights reserved | Paul Borman <borman@google.com> | bmatsuo | cd1 | dansouza | dsymonds | jboverfelt | shawnps | theory | wallclockbuilder"
+pass-api,github.com/hashicorp/errwrap,MPL-2.0,"Copyright © 2014-2018 HashiCorp, Inc"
+pass-api,github.com/hashicorp/go-multierror,MPL-2.0,"Copyright © 2014-2018 HashiCorp, Inc"
+pass-api,github.com/hashicorp/go-secure-stdlib/parseutil,MPL-2.0,"Copyright © 2014-2018 HashiCorp, Inc"
+pass-api,github.com/hashicorp/go-secure-stdlib/strutil,MPL-2.0,"Copyright © 2014-2018 HashiCorp, Inc"
+pass-api,github.com/hashicorp/go-sockaddr,MPL-2.0,"Copyright © 2014-2018 HashiCorp, Inc"
+pass-api,github.com/jmoiron/sqlx,MIT,"Copyright (c) 2013, Jason Moiron"
+pass-api,github.com/jmoiron/sqlx/reflectx,MIT,"Copyright (c) 2013, Jason Moiron"
+pass-api,github.com/json-iterator/go,MIT,Copyright (c) 2016 json-iterator
+pass-api,github.com/leodido/go-urn,MIT,Copyright (c) 2018 Leonardo Di Donato
+pass-api,github.com/leodido/go-urn/scim/schema,MIT,Copyright (c) 2018 Leonardo Di Donato
+pass-api,github.com/lib/pq,MIT,"Copyright (C) 2011 Blake Mizerany | Copyright (c) 2011-2013, 'pq' Contributors"
+pass-api,github.com/lib/pq/oid,MIT,"Copyright (C) 2011 Blake Mizerany | Copyright (c) 2011-2013, 'pq' Contributors"
+pass-api,github.com/lib/pq/scram,MIT,"Copyright (C) 2011 Blake Mizerany | Copyright (c) 2011-2013, 'pq' Contributors"
+pass-api,github.com/mattn/go-isatty,MIT,Copyright (c) Yasuhiro MATSUMOTO <mattn.jp@gmail.com>
+pass-api,github.com/mitchellh/mapstructure,MIT,Copyright (c) 2013 Mitchell Hashimoto
+pass-api,github.com/modern-go/concurrent,Apache-2.0,Copyright (c) 2018 Tao Wen
+pass-api,github.com/modern-go/reflect2,Apache-2.0,Copyright (c) 2018 Tao Wen
+pass-api,github.com/pelletier/go-toml/v2,MIT,Copyright (c) 2021 - 2023 Thomas Pelletier
+pass-api,github.com/pelletier/go-toml/v2/internal/characters,MIT,Copyright (c) 2021 - 2023 Thomas Pelletier
+pass-api,github.com/pelletier/go-toml/v2/internal/danger,MIT,Copyright (c) 2021 - 2023 Thomas Pelletier
+pass-api,github.com/pelletier/go-toml/v2/internal/tracker,MIT,Copyright (c) 2021 - 2023 Thomas Pelletier
+pass-api,github.com/pelletier/go-toml/v2/unstable,MIT,Copyright (c) 2021 - 2023 Thomas Pelletier
+pass-api,github.com/philhofer/fwd,MIT,"Copyright (c) 2014-2015, Philip Hofer"
+pass-api,github.com/pkg/errors,BSD-2-Clause,"Copyright (c) 2015, Dave Cheney <dave@cheney.net>"
+pass-api,github.com/richardartoul/molecule,MIT,Copyright (c) 2020 Richard Artoul
+pass-api,github.com/richardartoul/molecule/src/codec,Apache-2.0,Copyright (c) 2020 Richard Artoul
+pass-api,github.com/richardartoul/molecule/src/protowire,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved | Copyright (c) 2020 Richard Artoul
+pass-api,github.com/ryanuber/go-glob,MIT,Copyright (c) 2014 Ryan Uber
+pass-api,github.com/sirupsen/logrus,MIT,Copyright (c) 2014 Simon Eskildsen
+pass-api,github.com/spaolacci/murmur3,BSD-3-Clause,"Copyright 2013, Sébastien Paolacci"
+pass-api,github.com/tinylib/msgp/msgp,MIT,Copyright (c) 2009 The Go Authors (license at http://golang.org) where indicated | Copyright (c) 2014 Philip Hofer
+pass-api,github.com/twitchyliquid64/golang-asm/bio,BSD-3-Clause,Copyright (c) 2009 The Go Authors. All rights reserved
+pass-api,github.com/twitchyliquid64/golang-asm/dwarf,BSD-3-Clause,Copyright (c) 2009 The Go Authors. All rights reserved
+pass-api,github.com/twitchyliquid64/golang-asm/goobj,BSD-3-Clause,Copyright (c) 2009 The Go Authors. All rights reserved
+pass-api,github.com/twitchyliquid64/golang-asm/obj,BSD-3-Clause,Copyright (c) 2009 The Go Authors. All rights reserved
+pass-api,github.com/twitchyliquid64/golang-asm/obj/x86,BSD-3-Clause,Copyright (c) 2009 The Go Authors. All rights reserved
+pass-api,github.com/twitchyliquid64/golang-asm/objabi,BSD-3-Clause,Copyright (c) 2009 The Go Authors. All rights reserved
+pass-api,github.com/twitchyliquid64/golang-asm/src,BSD-3-Clause,Copyright (c) 2009 The Go Authors. All rights reserved
+pass-api,github.com/twitchyliquid64/golang-asm/sys,BSD-3-Clause,Copyright (c) 2009 The Go Authors. All rights reserved
+pass-api,github.com/twitchyliquid64/golang-asm/unsafeheader,BSD-3-Clause,Copyright (c) 2009 The Go Authors. All rights reserved
+pass-api,github.com/ugorji/go/codec,MIT,Copyright (c) 2012-2020 Ugorji Nwoke
+pass-api,go.uber.org/atomic,MIT,"Copyright (c) 2016 Uber Technologies, Inc"
+pass-api,golang.org/x/crypto/sha3,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/net/html,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/net/html/atom,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/net/http/httpguts,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/net/http2,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/net/http2/h2c,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/net/http2/hpack,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/net/idna,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/sys/cpu,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/sys/unix,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/sys/windows,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/sys/windows/registry,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/text/internal/language,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/text/internal/language/compact,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/text/internal/tag,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/text/language,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/text/secure/bidirule,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/text/transform,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/text/unicode/bidi,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/text/unicode/norm,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang.org/x/time/rate,BSD-3-Clause,Copyright 2009 The Go Authors
+pass-api,golang/go,BSD-3-Clause,Copyright (c) 2009 The Go Authors. All rights reserved.
+pass-api,google.golang.org/protobuf/encoding/prototext,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/encoding/protowire,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/descfmt,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/descopts,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/detrand,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/editiondefaults,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/encoding/defval,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/encoding/messageset,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/encoding/tag,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/encoding/text,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/errors,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/filedesc,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/filetype,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/flags,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/genid,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/impl,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/order,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/pragma,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/set,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/strs,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/internal/version,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/proto,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/reflect/protoreflect,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/reflect/protoregistry,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/runtime/protoiface,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,google.golang.org/protobuf/runtime/protoimpl,BSD-3-Clause,Copyright (c) 2018 The Go Authors. All rights reserved
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/appsec/events,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/contrib/database/sql,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/contrib/database/sql/internal,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/contrib/gin-gonic/gin,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/contrib/internal/httptrace,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/contrib/internal/options,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/contrib/jmoiron/sqlx,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/contrib/sirupsen/logrus,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/datastreams/options,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/ddtrace,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/ddtrace/ext,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/ddtrace/internal,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/config,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/dyngo,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/emitter/httpsec,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/emitter/httpsec/types,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/emitter/ossec,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/emitter/sharedsec,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/emitter/sqlsec,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/emitter/sqlsec/types,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/listener,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/listener/httpsec,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/listener/ossec,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/listener/sharedsec,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/listener/sqlsec,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/trace,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/appsec/trace/httptrace,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/civisibility/constants,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/datastreams,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/globalconfig,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/hostname,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/hostname/azure,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/hostname/cachedfetch,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/hostname/ec2,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/hostname/ecs,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/hostname/gce,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/hostname/httputils,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/hostname/validate,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/log,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/namingschema,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/normalizer,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/orchestrion,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/osinfo,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/remoteconfig,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/samplernames,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/stacktrace,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/telemetry,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/traceprof,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/internal/version,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/profiler,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/profiler/internal/fastdelta,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/profiler/internal/immutable,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/profiler/internal/pproflite,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/DataDog/dd-trace-go.v1/profiler/internal/pprofutils,Apache-2.0,"Copyright 2016-Present Datadog, Inc."
+pass-api,gopkg.in/yaml.v3,MIT,Copyright (c) 2006-2010 Kirill Simonov | Copyright 2011-2016 Canonical Ltd
+pass-summary-api,maven:io.quarkus:quarkus-arc:jar:3.14.1,Apache-2.0,"Copyright 2019-2024, Contributors to Quarkus"
+pass-summary-api,maven:io.quarkus:quarkus-rest:jar:3.14.1,Apache-2.0,"Copyright 2019-2024, Contributors to Quarkus"
+pass-summary-api,maven:io.quarkus:quarkus-rest-jackson:jar:3.14.1,Apache-2.0,"Copyright 2019-2024, Contributors to Quarkus"
+pass-summary-api,maven:io.quarkus:quarkus-rest-client-jackson:jar,Apache-2.0,"Copyright 2019-2024, Contributors to Quarkus"
+pass-summary-api,maven:io.quarkus:quarkus-junit5:jar:3.14.1,Apache-2.0,"Copyright 2019-2024, Contributors to Quarkus"
+pass-summary-api,maven:io.rest-assured:rest-assured:jar:5.5.0,Apache-2.0,"* Copyright 2018-2024 the original author or authors | * Copyright (c) j karef GmbH | * Copyright 2018 Johan Haleby"
+pass-summary-api,maven:org.wiremock:wiremock:jar:3.9.1,Apache-2.0,This product includes software developed at The Apache Software Foundation (http://www.apache.org/).

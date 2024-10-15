@@ -31,32 +31,52 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- gitRepo: https://github.com/quarkusio/quarkus -->
+        <!-- gitRepoPath: extensions/arc -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
         </dependency>
+
+        <!-- gitRepo: https://github.com/quarkusio/quarkus -->
+        <!-- gitRepoPath: extensions/rest/runtime -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest</artifactId>
         </dependency>
+
+        <!-- gitRepo: https://github.com/quarkusio/quarkus -->
+        <!-- gitRepoPath: extensions/resteasy-jackson/runtime -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-jackson</artifactId>
         </dependency>
+
+        <!-- gitRepo: https://github.com/quarkusio/quarkus -->
+        <!-- gitRepoPath: extensions/resteasy-reactive-jackson/runtime -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-client-jackson</artifactId>
         </dependency>
+
+        <!-- gitRepo: https://github.com/quarkusio/quarkus -->
+        <!-- gitRepoPath: integration-tests/junit5 -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- gitRepo: https://github.com/rest-assured/rest-assured -->
+        <!-- gitRepoPath: root -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- gitRepo: https://github.com/wiremock/wiremock -->
+        <!-- gitRepoPath: root -->
         <dependency>
             <groupId>org.wiremock</groupId>
             <artifactId>wiremock</artifactId>
@@ -67,6 +87,18 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.4.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>aggregate-download-licenses</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>${quarkus.platform.group-id}</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>
