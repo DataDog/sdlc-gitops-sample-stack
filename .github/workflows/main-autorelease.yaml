@@ -11,6 +11,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME_PASS_API: ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-api
   IMAGE_NAME_PASS_SUMMARY_API: ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-summary-api
+  REPOSITORY_URL: github.com/${{ github.repository }}
 
 jobs:
   #
@@ -33,7 +34,6 @@ jobs:
         run: | 
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "COMMIT_SHA_FULL=$(git rev-parse HEAD)" >> $GITHUB_ENV
-          echo "REPOSITORY_URL=${{ github.server_url }}/${{ github.repository }}" >> $GITHUB_ENV
 
       # Set up Go environment and build/test
       - name: Set up Go
@@ -99,7 +99,6 @@ jobs:
         run: | 
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "COMMIT_SHA_FULL=$(git rev-parse HEAD)" >> $GITHUB_ENV
-          echo "REPOSITORY_URL=github.com/${{ github.github.repository }}" >> $GITHUB_ENV
 
       - name: Set up Go
         uses: actions/setup-java@v4

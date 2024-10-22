@@ -83,8 +83,8 @@ ENV LANGUAGE='en_US:en'
 
 ARG GIT_COMMIT_SHA
 ARG GIT_REPOSITORY_URL
-ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL} 
-ENV DD_GIT_COMMIT_SHA=${DD_GIT_COMMIT_SHA}
+ENV DD_GIT_REPOSITORY_URL=${GIT_REPOSITORY_URL} 
+ENV DD_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
 
 # Add DD agent. We're using a path to a fixed version here which means we
 # must manually upgrade. On the other hand, this helps produce stable builds.
