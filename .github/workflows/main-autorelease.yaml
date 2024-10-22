@@ -47,6 +47,10 @@ jobs:
       - name: Test
         run: cd apps/pass-api && go test -v ./...
 
+      # Run container build
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Get Commit Info
         id: get_sha
         run: | 
