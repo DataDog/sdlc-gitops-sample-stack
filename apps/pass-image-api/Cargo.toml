@@ -1,0 +1,23 @@
+[package]
+name = "pass-image-api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bytes = "1.7.2"
+float-cmp = "0.10.0"
+futures = "0.3.31"
+futures-executor = { version = "0.2.0-beta" }
+image = "0.25.2"
+opentelemetry = "0.26.0"
+opentelemetry-http = "0.26.0"
+opentelemetry-otlp = "0.26.0"
+opentelemetry-semantic-conventions = "0.26.0"
+opentelemetry_sdk = { version = "0.26.0", features = ["rt-tokio"] }
+reqwest = "0.12.8"
+rocket = "0.5.1"
+tokio = "1.40.0"
+
+[[bin]]
+name = "pass-image-api"
+path = "src/main.rs"
