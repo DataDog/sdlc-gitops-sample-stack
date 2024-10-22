@@ -81,6 +81,11 @@ FROM registry.access.redhat.com/ubi8/openjdk-21:1.20
 
 ENV LANGUAGE='en_US:en'
 
+ARG GIT_COMMIT_SHA
+ARG GIT_REPOSITORY_URL
+ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL} 
+ENV DD_GIT_COMMIT_SHA=${DD_GIT_COMMIT_SHA}
+
 # Add DD agent. We're using a path to a fixed version here which means we
 # must manually upgrade. On the other hand, this helps produce stable builds.
 ADD --chown=185 'https://repo1.maven.org/maven2/com/datadoghq/dd-java-agent/1.38.1/dd-java-agent-1.38.1.jar' /opt/dd-java-agent.jar
