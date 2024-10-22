@@ -80,7 +80,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            GIT_COMMIT_SHA=${{ env.COMMIT_SHA }}
+            GIT_COMMIT_SHA=${{ env.COMMIT_SHA_FULL }}
             GIT_REPOSITORY_URL=${{ env.REPOSITORY_URL }}
 
   #
@@ -148,7 +148,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            GIT_COMMIT_SHA=${{ env.COMMIT_SHA }}
+            GIT_COMMIT_SHA=${{ env.COMMIT_SHA_FULL }}
             GIT_REPOSITORY_URL=${{ env.REPOSITORY_URL }}
 
   update-gitops-manifests:
