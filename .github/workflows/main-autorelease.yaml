@@ -27,10 +27,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Get the current commit SHA (shortened)
-      - name: Get Commit SHA
+      # Get the current commit SHA and repository URL (shortened)
+      - name: Get Commit Info
         id: get_sha
-        run: echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        run: | 
+          echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "COMMIT_SHA_FULL=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "REPOSITORY_URL=${{ github.server_url }}/${{ github.repository }}" >> $GITHUB_ENV
 
       # Set up Go environment and build/test
       - name: Set up Go
@@ -73,6 +76,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            GIT_COMMIT_SHA=${{ env.COMMIT_SHA_FULL }}
+            GIT_REPOSITORY_URL=${{ env.REPOSITORY_URL }}
 
   #
   # Builds the pass-summary-api java/quarkus app
@@ -88,10 +94,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Get the current commit SHA (shortened)
-      - name: Get Commit SHA
+      - name: Get Commit Info
         id: get_sha
-        run: echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        run: | 
+          echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "COMMIT_SHA_FULL=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "REPOSITORY_URL=github.com/${{ github.github.repository }}" >> $GITHUB_ENV
 
       - name: Set up Go
         uses: actions/setup-java@v4
@@ -137,6 +145,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            GIT_COMMIT_SHA=${{ env.COMMIT_SHA_FULL }}
+            GIT_REPOSITORY_URL=${{ env.REPOSITORY_URL }}
 
   update-gitops-manifests:
     runs-on: ubuntu-latest
@@ -155,10 +166,12 @@ jobs:
           # We need this to update the dev branch
           fetch-depth: 0
 
-      # Get the current commit SHA (shortened)
+      # Get the current commit SHA in shortened and full forms
       - name: Get Commit SHA
         id: get_sha
-        run: echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        run: | 
+          echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "COMMIT_SHA_FULL=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       # Configure Git user for the commit
       - name: Configure Git Identity
