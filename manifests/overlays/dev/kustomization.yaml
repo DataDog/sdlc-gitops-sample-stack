@@ -6,17 +6,17 @@ configMapGenerator:
     behavior: merge
     literals:
       - DD_ENVIRONMENT=dev
-      - DD_VERSION=4605ae1
+      - DD_VERSION=ec47b7c
 
   - name: pass-summary-api-config
     behavior: merge
     literals:
       - DD_ENVIRONMENT=dev
-      - DD_VERSION=4605ae1
+      - DD_VERSION=ec47b7c
 
 images:
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-api
-    newTag: "4605ae1"
+    newTag: "ec47b7c"
 
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-summary-api
-    newTag: "4605ae1"
+    newTag: "ec47b7c"
