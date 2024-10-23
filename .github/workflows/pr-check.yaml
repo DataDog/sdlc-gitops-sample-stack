@@ -70,7 +70,7 @@ jobs:
         build-args: |
           TARGETARCH=amd64
 
-  build-pass-images-api-docker:
+  build-pass-image-api-docker:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -112,7 +112,7 @@ jobs:
         id: push
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
-          context: apps/pass-images-api
+          context: apps/pass-image-api
           platforms: linux/amd64,linux/arm64
           push: false
           tags: ${{ steps.meta.outputs.tags }}
