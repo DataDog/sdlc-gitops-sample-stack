@@ -14,7 +14,7 @@ opentelemetry-http = "0.26.0"
 opentelemetry-otlp = "0.26.0"
 opentelemetry-semantic-conventions = "0.26.0"
 opentelemetry_sdk = { version = "0.26.0", features = ["rt-tokio"] }
-reqwest = "0.12.8"
+reqwest = { version = "0.12.8", features = [ "rustls-tls", "json" ], default-features = false }
 rocket = "0.5.1"
 tokio = "1.40.0"
 
