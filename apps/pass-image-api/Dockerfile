@@ -22,7 +22,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/
 
 ARG TARGETPLATFORM
-    
+
+# Linker incantation
+ENV CARGO_TARGET_AAARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc    
+
 # Fetch and build the deps. Put in a stubbed main so that 
 # we build everything and cache it
 COPY Cargo.toml Cargo.lock ./
