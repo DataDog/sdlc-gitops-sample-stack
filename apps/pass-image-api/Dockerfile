@@ -1,9 +1,5 @@
 # syntax=docker/dockerfile:1
 
-# Set the default target architecture to BUILDPLATFORM's architecture if TARGETARCH is not set
-# ARG TARGETARCH
-# ARG BUILDPLATFORM
-
 # 
 # Build the app. The base image we will use 
 # will be the same as the platform we are running on.
@@ -30,6 +26,7 @@ ARG TARGETPLATFORM
 COPY Cargo.toml Cargo.lock ./
 COPY scripts scripts
 RUN mkdir src && echo "fn main() {}" > src/main.rs
+RUN . scripts/target.sh && rustup target add $RUST_TARGET
 RUN . scripts/target.sh && echo RUST_TARGET: $RUST_TARGET && cargo fetch --target $RUST_TARGET
 RUN . scripts/target.sh && cargo build --release --target $RUST_TARGET
 RUN rm src/main.rs
