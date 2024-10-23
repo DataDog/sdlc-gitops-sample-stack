@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pass-image-api  
+  labels:
+    tags.datadoghq.com/service: "pass-image-api"
+
+spec:
+  selector:
+    app: pass-image-api
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

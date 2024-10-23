@@ -1,4 +1,7 @@
 resources:
+  - pass-image-api/configmap.yaml
+  - pass-image-api/deployment.yaml
+  - pass-image-api/service.yaml
   - pass-summary-api/configmap.yaml
   - pass-summary-api/deployment.yaml
   - pass-summary-api/service.yaml

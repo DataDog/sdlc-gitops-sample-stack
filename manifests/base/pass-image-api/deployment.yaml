@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pass-image-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pass-image-api
+  template:
+    metadata:
+      labels:
+        app: pass-image-api
+        admission.datadoghq.com/enabled: "true"
+        tags.datadoghq.com/env: "dev"
+        tags.datadoghq.com/service: "pass-image-api"
+    spec:
+      containers:
+        - name: pass-image-api
+          image: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-image-api:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8080              
+          env:
+            - name: DD_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-image-api-config
+                  key: DD_ENVIRONMENT
+            - name: DD_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-image-api-config
+                  key: DD_VERSION
+            - name: DD_SERVICE
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-image-api-config
+                  key: DD_SERVICE
+            - name: DD_LOGS_INJECTION
+              value: "true"
+            - name: DD_PROFILING_ENABLED
+              value: "true"
+
+

@@ -21,13 +21,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pkgconf \
     && rm -rf /var/lib/apt/lists/
 
-# Fetch and build the deps
+# Fetch and build the deps. Put in a stubbed main so that 
+# we build everything and cache it
 COPY Cargo.toml Cargo.lock ./
+RUN mkdir src && echo "fn main() {}" > src/main.rs
 RUN cargo fetch
-RUN cargo build || true 
+RUN cargo build --release
+RUN rm src/main.rs
+
 
 # Build the app itself 
-COPY src src
+COPY src ./src/
 RUN cargo build --release
 
 #

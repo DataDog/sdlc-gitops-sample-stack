@@ -18,14 +18,20 @@ fn index() -> &'static str {
     "Nothing here"
 }
 
-#[get("/health")]
+#[get("/ping")]
 fn health() -> status::Custom<content::RawJson<&'static str>> {
     status::Custom(Status::Ok, content::RawJson("{\"status\": \"ok\"}"))
 }
 
-#[get("/images/<long>/<lat>/<size_px>")]
-async fn get_image(long: f64, lat: f64, size_px: u32) -> (ContentType, Vec<u8>) {
-    let image = fetch_image_from_point(LatLong(lat, long), 1.0, size_px)
+#[get("/images/<long>/<lat>/<size_px>?<radius>")]
+async fn get_image(
+    long: f64,
+    lat: f64,
+    size_px: u32,
+    radius: Option<f32>,
+) -> (ContentType, Vec<u8>) {
+    let radius = radius.unwrap_or(1.0);
+    let image = fetch_image_from_point(LatLong(lat, long), radius, size_px)
         .await
         .expect("It should work")
         .to_vec();
@@ -56,7 +62,11 @@ async fn rocket() -> _ {
         .install_batch(runtime::Tokio)
         .unwrap();
 
-    rocket::build()
+    let figment = rocket::Config::figment()
+        .merge(("address", "0.0.0.0"))
+        .merge(("port", 8080));
+
+    rocket::custom(figment)
         .mount("/", routes![index])
         .mount("/", routes![health])
         .mount("/", routes![get_image])
