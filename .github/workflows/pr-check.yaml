@@ -8,6 +8,7 @@ on:
     branches: [ "main" ]
 
 env:
+  REGISTRY: ghcr.io
   REPOSITORY_URL: github.com/${{ github.repository }}
   IMAGE_NAME_PASS_IMAGES_API:  ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-images-api
 
