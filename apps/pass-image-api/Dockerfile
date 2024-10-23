@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     libssl-dev \
     pkgconf \
+    gcc-aarch64-linux-gnu \
     && rm -rf /var/lib/apt/lists/
 
 ARG TARGETPLATFORM
