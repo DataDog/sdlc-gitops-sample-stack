@@ -1,0 +1,61 @@
+resources:
+  - ../../base
+
+configMapGenerator:
+  - name: pass-api-config
+    behavior: merge
+    literals:
+      - DD_ENVIRONMENT=local
+      - DD_VERSION=latest
+
+  - name: pass-summary-api-config
+    behavior: merge
+    literals:
+      - DD_ENVIRONMENT=local
+      - DD_VERSION=latest
+
+  - name: pass-image-api-config
+    behavior: merge
+    literals:
+      - DD_ENVIRONMENT=local
+      - DD_VERSION=latest
+
+images:
+  - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-api
+    newName: pass-api
+    newTag: "latest"
+
+  - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-summary-api
+    newName: pass-summary-api
+    newTag: "latest"
+
+  - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-image-api
+    newName: pass-image-api
+    newTag: "latest"
+
+#
+# We need to make sure we don't pull images, either
+#
+patches:
+  - target:
+      kind: Deployment
+      name: pass-api
+    patch: |-
+        - op: replace
+          path: /spec/template/spec/containers/0/imagePullPolicy
+          value: Never
+
+  - target:
+      kind: Deployment
+      name: pass-summary-api
+    patch: |-
+        - op: replace
+          path: /spec/template/spec/containers/0/imagePullPolicy
+          value: Never
+  - target:
+      kind: Deployment
+      name: pass-image-api
+    patch: |-
+        - op: replace
+          path: /spec/template/spec/containers/0/imagePullPolicy
+          value: Never         

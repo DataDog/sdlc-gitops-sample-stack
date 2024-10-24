@@ -1,0 +1,66 @@
+# syntax=docker/dockerfile:1
+
+#
+# Build the app using Alpine as the base image.
+# We will cross-compile for aarch64.
+#
+FROM --platform=${BUILDPLATFORM} rust:1.82-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+#
+# Install building deps and cross-compilation toolchain for aarch64
+#
+RUN apk add --no-cache \
+    ca-certificates \
+    openssl-dev \
+    pkgconf \
+    build-base \
+    musl-dev \
+    linux-headers \
+    binutils-aarch64 \
+    gcc
+
+ARG TARGETPLATFORM
+
+# Linker incantation
+ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER=aarch64-linux-gnu-gcc    
+
+# Fetch and build the deps. Put in a stubbed main so that 
+# we build everything and cache it
+COPY Cargo.toml Cargo.lock ./
+COPY scripts scripts
+RUN mkdir src && echo "fn main() {}" > src/main.rs
+RUN . scripts/target.sh && rustup target add $RUST_TARGET
+RUN . scripts/target.sh && echo RUST_TARGET: $RUST_TARGET && cargo fetch --target $RUST_TARGET
+RUN . scripts/target.sh && cargo build --release --target $RUST_TARGET
+RUN rm src/main.rs
+
+# Build the app itself. Make sure to touch main.rs so that we don't
+# cache the results of our stub build
+COPY src ./src/
+RUN . scripts/target.sh && touch src/main.rs && cargo build --release --target $RUST_TARGET && cp target/$RUST_TARGET/release/pass-image-api target/pass-image-api
+
+#
+# Runtime image.
+# Use Alpine for a minimal runtime image.
+#
+FROM --platform=${TARGETARCH:-$BUILDPLATFORM} alpine:latest
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    ca-certificates
+
+# Set working directory
+WORKDIR /app
+
+# Copy the compiled binary from the builder stage
+COPY --from=builder /app/target/pass-image-api .
+
+# Expose the application's port
+EXPOSE 8000
+
+# Set the default command
+CMD ["./pass-image-api"]
+
