@@ -18,13 +18,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     pkgconf \
     gcc-aarch64-linux-gnu \
+    gcc-x86-64-linux-gnu \
     libc6-dev-arm64-cross \
+    libc6-dev-amd64-cross \
     && rm -rf /var/lib/apt/lists/
 
 ARG TARGETPLATFORM
 
 # Linker incantation
 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc    
+ENV CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=x86_64-linux-gnu-gcc
 
 # Fetch and build the deps. Put in a stubbed main so that 
 # we build everything and cache it
