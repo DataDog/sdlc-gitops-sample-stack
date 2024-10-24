@@ -18,5 +18,3 @@ reqwest = { version = "0.12.8", features = [ "rustls-tls", "json" ], default-fea
 rocket = "0.5.1"
 tokio = "1.40.0"
 
-[target.aarch64-unknown-linux-gnu]
-linker = "aarch64-linux-gnu-gcc"

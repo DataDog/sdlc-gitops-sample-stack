@@ -10,7 +10,7 @@ on:
 env:
   REGISTRY: ghcr.io
   REPOSITORY_URL: github.com/${{ github.repository }}
-  IMAGE_NAME_PASS_IMAGES_API:  ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-images-api
+  IMAGE_NAME_PASS_IMAGES_API:  ${{ github.repository_owner }}/sdlc-gitops-sample-stack/pass-image-api
 
 jobs:
 
@@ -113,7 +113,7 @@ jobs:
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: apps/pass-image-api
-          platforms: linux/arm64 # /linux/amd64
+          platforms: linux/arm64,linux/amd64
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
