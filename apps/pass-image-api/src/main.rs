@@ -6,6 +6,7 @@ use opentelemetry_sdk::trace::Config;
 use opentelemetry_sdk::{runtime, Resource};
 use rocket::http::{ContentType, Status};
 use rocket::response::{content, status};
+use tiles::TileSet;
 mod coordinates;
 mod tiles;
 
@@ -23,15 +24,24 @@ fn health() -> status::Custom<content::RawJson<&'static str>> {
     status::Custom(Status::Ok, content::RawJson("{\"status\": \"ok\"}"))
 }
 
-#[get("/images/<long>/<lat>/<size_px>?<radius>")]
+#[get("/images/<long>/<lat>/<size_px>?<radius>&<tileset>")]
 async fn get_image(
     long: f64,
     lat: f64,
     size_px: u32,
     radius: Option<f32>,
+    tileset: Option<String>,
 ) -> (ContentType, Vec<u8>) {
+    let target_tileset = match tileset {
+        Some(v) => match v.as_str() {
+            "swisstopo" => TileSet::Swisstopo,
+            _ => TileSet::OSM,
+        },
+        None => TileSet::OSM,
+    };
+
     let radius = radius.unwrap_or(1.0);
-    let image = fetch_image_from_point(LatLong(lat, long), radius, size_px)
+    let image = fetch_image_from_point(LatLong(lat, long), radius, size_px, target_tileset)
         .await
         .expect("It should work")
         .to_vec();

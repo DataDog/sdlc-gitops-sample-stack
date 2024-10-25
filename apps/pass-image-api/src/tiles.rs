@@ -13,14 +13,32 @@ use std::io::Cursor;
 // Define the public OSM tile URL pattern
 const TILE_URL: &str = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 
-// Function to fetch the tile from OSM
+#[derive(Copy, Clone)]
+pub enum TileSet {
+    OSM,
+    Swisstopo,
+}
+
+impl TileSet {
+    fn url_pattern(&self) -> &str {
+        match self {
+            TileSet::OSM => "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+            TileSet::Swisstopo => "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.landeskarte-farbe-10/default/current/3857/{z}/{x}/{y}.png"
+        }
+    }
+}
+
+// Function to fetch the tile
 // (x/y/z)
-pub async fn fetch_tile(x: u32, y: u32, z: u32) -> Result<Bytes, Error> {
+pub async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Error> {
     // Format the URL for the requested tile (zoom, x, y)
-    let url = TILE_URL
+    let url = t
+        .url_pattern()
         .replace("{z}", &z.to_string())
         .replace("{x}", &x.to_string())
         .replace("{y}", &y.to_string());
+
+    println!("{0}", url);
 
     let client = reqwest::ClientBuilder::new()
         .user_agent("dd-sdlc-demo")
@@ -43,6 +61,7 @@ pub async fn fetch_tile(x: u32, y: u32, z: u32) -> Result<Bytes, Error> {
 
 // The function to fetch tiles within the specified bounding box
 pub async fn fetch_tile_box(
+    tileset: TileSet,
     top_left: &TileCoordinate,
     bottom_right: &TileCoordinate,
     zoom: u32,
@@ -62,7 +81,7 @@ pub async fn fetch_tile_box(
     let tile_fetches = stream::iter(tile_coords.into_iter().map(|tile| {
         // For each tile, fetch the corresponding tile asynchronously
         async move {
-            fetch_tile(tile.0, tile.1, zoom)
+            fetch_tile(tileset.clone(), tile.0, tile.1, zoom)
                 .await
                 .map(|bytes| (tile, bytes))
         }
@@ -90,17 +109,23 @@ pub async fn fetch_image_from_point(
     center: LatLong,
     radius_km: f32,
     image_size: u32,
+    tileset: TileSet,
 ) -> Result<Bytes, Error> {
     // Find the center
     let (zoom, tile_box) = lat_long_and_image_size_to_bounding_box(center, radius_km, image_size);
 
     // Fetch the image
-    fetch_image(&tile_box, zoom).await
+    fetch_image(tileset, &tile_box, zoom).await
 }
 
-pub async fn fetch_image(tile_box: &ConstrainedTileBox, zoom: u32) -> Result<Bytes, Error> {
+pub async fn fetch_image(
+    tileset: TileSet,
+    tile_box: &ConstrainedTileBox,
+    zoom: u32,
+) -> Result<Bytes, Error> {
     // Fetch all tiles in the bounding box
     let tiles = fetch_tile_box(
+        tileset,
         &tile_box.tile_box.top_left,
         &tile_box.tile_box.bottom_right,
         zoom,
@@ -195,7 +220,7 @@ mod tests {
         let zoom = 12;
 
         // Replace the base URL with mockito’s server URL
-        let result = fetch_tile(tile.0, tile.1, zoom).await;
+        let result = fetch_tile(TileSet::OSM, tile.0, tile.1, zoom).await;
 
         // Assert the result is Ok and contains the correct number of bytes
         assert!(result.is_ok());
@@ -213,7 +238,7 @@ mod tests {
         let (zoom, tile_box) = lat_long_and_image_size_to_bounding_box(point, radius_km, 1024);
 
         // Generate the image using fetch_image
-        let result = fetch_image(&tile_box, zoom).await;
+        let result = fetch_image(TileSet::OSM, &tile_box, zoom).await;
         assert!(result.is_ok(), "Fetching image failed");
 
         let image_bytes = result.unwrap();
