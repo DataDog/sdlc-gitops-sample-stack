@@ -14,9 +14,18 @@ configMapGenerator:
       - DD_ENVIRONMENT=dev
       - DD_VERSION=latest
 
+  - name: pass-image-api-config
+    behavior: merge
+    literals:
+      - DD_ENVIRONMENT=dev
+      - DD_VERSION=latest
+
 images:
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-api
     newTag: "latest"
 
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-summary-api
+    newTag: "latest"
+
+  - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-image-api
     newTag: "latest"
