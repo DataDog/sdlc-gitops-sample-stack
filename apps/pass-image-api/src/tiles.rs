@@ -1,3 +1,7 @@
+// ! # Tiles
+// ! Provides functions for retrieving and mosaicing
+// tile imagery from public tile imagery sources.
+
 use crate::coordinates::{
     lat_long_and_image_size_to_bounding_box, lat_long_to_tile_coords, ConstrainedTileBox, LatLong,
     TileCoordinate,
@@ -10,35 +14,29 @@ use reqwest::Error;
 use std::collections::{HashMap, HashSet};
 use std::io::Cursor;
 
-// Define the public OSM tile URL pattern
-const TILE_URL: &str = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-
 #[derive(Copy, Clone)]
 pub enum TileSet {
-    OSM,
+    Osm,
     Swisstopo,
 }
 
 impl TileSet {
     fn url_pattern(&self) -> &str {
         match self {
-            TileSet::OSM => "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+            TileSet::Osm => "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
             TileSet::Swisstopo => "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.landeskarte-farbe-10/default/current/3857/{z}/{x}/{y}.png"
         }
     }
 }
 
-// Function to fetch the tile
-// (x/y/z)
-pub async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Error> {
+// Fetches a single tile from a given TileSet
+async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Error> {
     // Format the URL for the requested tile (zoom, x, y)
     let url = t
         .url_pattern()
         .replace("{z}", &z.to_string())
         .replace("{x}", &x.to_string())
         .replace("{y}", &y.to_string());
-
-    println!("{0}", url);
 
     let client = reqwest::ClientBuilder::new()
         .user_agent("dd-sdlc-demo")
@@ -59,19 +57,20 @@ pub async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Err
     response.error_for_status()?.bytes().await
 }
 
-// The function to fetch tiles within the specified bounding box
-pub async fn fetch_tile_box(
+// Fetches all of the tiles within a TileBox
+// Note - we assume that a TileBox is only 2D - e.g., all tiles
+// are within the same zoom level.
+async fn fetch_tile_box(
     tileset: TileSet,
     top_left: &TileCoordinate,
     bottom_right: &TileCoordinate,
-    zoom: u32,
 ) -> Result<HashMap<(u32, u32, u32), Bytes>, Error> {
     // Collect all tile coordinates in the bounding box
     let mut tile_coords = Vec::new();
 
     for x in top_left.x.floor() as u32..=bottom_right.x.ceil() as u32 {
         for y in top_left.y.floor() as u32..=bottom_right.y.ceil() as u32 {
-            tile_coords.push((x, y));
+            tile_coords.push((x, y, top_left.z));
         }
     }
 
@@ -81,7 +80,7 @@ pub async fn fetch_tile_box(
     let tile_fetches = stream::iter(tile_coords.into_iter().map(|tile| {
         // For each tile, fetch the corresponding tile asynchronously
         async move {
-            fetch_tile(tileset.clone(), tile.0, tile.1, zoom)
+            fetch_tile(tileset, tile.0, tile.1, tile.2)
                 .await
                 .map(|bytes| (tile, bytes))
         }
@@ -94,7 +93,7 @@ pub async fn fetch_tile_box(
     for tile_result in tile_fetches {
         match tile_result {
             Ok((tile, bytes)) => {
-                tile_map.insert((tile.0, tile.1, zoom), bytes); // Insert the successful result into the map
+                tile_map.insert((tile.0, tile.1, tile.2), bytes); // Insert the successful result into the map
             }
             Err(e) => {
                 return Err(e); // If any tile fetch fails, return the error immediately
@@ -105,6 +104,7 @@ pub async fn fetch_tile_box(
     Ok(tile_map)
 }
 
+// Fetches an image centered at the given point, using the provided TileSet.
 pub async fn fetch_image_from_point(
     center: LatLong,
     radius_km: f32,
@@ -112,23 +112,21 @@ pub async fn fetch_image_from_point(
     tileset: TileSet,
 ) -> Result<Bytes, Error> {
     // Find the center
-    let (zoom, tile_box) = lat_long_and_image_size_to_bounding_box(center, radius_km, image_size);
+    let tile_box = lat_long_and_image_size_to_bounding_box(center, radius_km, image_size);
 
     // Fetch the image
-    fetch_image(tileset, &tile_box, zoom).await
+    fetch_image(tileset, &tile_box).await
 }
 
-pub async fn fetch_image(
-    tileset: TileSet,
-    tile_box: &ConstrainedTileBox,
-    zoom: u32,
-) -> Result<Bytes, Error> {
+// Fetches an image at the given point using the provided TileSet and ConstrainedTileBox
+// This function will fetch enough tiles around the given point to allow it to crop the resulting
+// image down to ensure we have enough pixels to cover the requested resolution.
+async fn fetch_image(tileset: TileSet, tile_box: &ConstrainedTileBox) -> Result<Bytes, Error> {
     // Fetch all tiles in the bounding box
     let tiles = fetch_tile_box(
         tileset,
         &tile_box.tile_box.top_left,
         &tile_box.tile_box.bottom_right,
-        zoom,
     )
     .await?;
 
@@ -164,13 +162,14 @@ pub async fn fetch_image(
         (tile_box.tile_box.bottom_right.x - tile_box.tile_box.top_left.x) * 256.0;
     let full_image_height =
         (tile_box.tile_box.bottom_right.y - tile_box.tile_box.top_left.y) * 256.0;
-    println!(
+    debug!(
         "Full image size: {}x{}",
         full_image_width, full_image_height
     );
 
     // Work out the offsets from the left and top of the image, so that we can
-    let center_pos_abs = lat_long_to_tile_coords(&tile_box.center, zoom);
+    let center_pos_abs =
+        lat_long_to_tile_coords(&tile_box.center, tile_box.tile_box.bottom_right.z);
     let center_x_tile_offset = center_pos_abs.x - tile_box.tile_box.outer_top_left().0 as f32;
     let center_y_tile_offset = center_pos_abs.y - tile_box.tile_box.outer_top_left().1 as f32;
     let center_x_px = (center_x_tile_offset * 256.0) as u32;
@@ -182,9 +181,9 @@ pub async fn fetch_image(
     let offset_left = center_x_px - (tile_box.inner_size_px.0 / 2);
     let offset_top = center_y_px - (tile_box.inner_size_px.1 / 2);
 
-    println!("Center: {0}, {1}", center_x_px, center_y_px);
-    println!("Offset: {0}, {1}", offset_left, offset_top);
-    println!(
+    debug!("Center: {0}, {1}", center_x_px, center_y_px);
+    debug!("Offset: {0}, {1}", offset_left, offset_top);
+    debug!(
         "W/h   : {0}, {1}",
         tile_box.inner_size_px.0, tile_box.inner_size_px.1
     );
@@ -220,7 +219,7 @@ mod tests {
         let zoom = 12;
 
         // Replace the base URL with mockito’s server URL
-        let result = fetch_tile(TileSet::OSM, tile.0, tile.1, zoom).await;
+        let result = fetch_tile(TileSet::Osm, tile.0, tile.1, zoom).await;
 
         // Assert the result is Ok and contains the correct number of bytes
         assert!(result.is_ok());
@@ -235,10 +234,10 @@ mod tests {
         let radius_km = 1.0;
 
         // Use lat_lon_and_radius_to_tile_box to calculate the bounding box for tiles
-        let (zoom, tile_box) = lat_long_and_image_size_to_bounding_box(point, radius_km, 1024);
+        let tile_box = lat_long_and_image_size_to_bounding_box(point, radius_km, 1024);
 
         // Generate the image using fetch_image
-        let result = fetch_image(TileSet::OSM, &tile_box, zoom).await;
+        let result = fetch_image(TileSet::Osm, &tile_box).await;
         assert!(result.is_ok(), "Fetching image failed");
 
         let image_bytes = result.unwrap();
@@ -264,6 +263,6 @@ mod tests {
         file.write_all(&image_bytes)
             .expect("Failed to write image to temp file");
 
-        println!("Image saved to: {:?}", file_path);
+        debug!("Image saved to: {:?}", file_path);
     }
 }

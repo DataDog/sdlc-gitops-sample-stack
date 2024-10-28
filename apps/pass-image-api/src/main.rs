@@ -34,9 +34,9 @@ async fn get_image(
     let target_tileset = match tileset {
         Some(v) => match v.as_str() {
             "swisstopo" => TileSet::Swisstopo,
-            _ => TileSet::OSM,
+            _ => TileSet::Osm,
         },
-        None => TileSet::OSM,
+        None => TileSet::Osm,
     };
 
     let radius = radius.unwrap_or(1.0);
