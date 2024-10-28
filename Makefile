@@ -7,9 +7,14 @@ license-raw-pass-api.csv: apps/pass-api/go.sum
 license-raw-summary-api.csv: apps/pass-summary-api/LICENSE-3rdparty.csv
 	cp apps/pass-summary-api/LICENSE-3rdparty.csv license-raw-summary-api.csv
 
-license-raw-combined.csv: license-raw-pass-api.csv license-raw-summary-api.csv
+license-raw-pass-image-api.csv: apps/pass-image-api/LICENSE-3rdparty.csv
+	cp apps/pass-image-api/LICENSE-3rdparty.csv license-raw-pass-image-api.csv
+
+license-raw-combined.csv: license-raw-pass-api.csv license-raw-summary-api.csv license-raw-pass-image-api.csv
 	cat license-raw-pass-api.csv > license-raw-combined.csv
 	tail -n +2 license-raw-summary-api.csv >> license-raw-combined.csv
+	tail -n +2 license-raw-pass-image-api.csv >> license-raw-combined.csv
+	
 
 #
 # Clean up all the licenses that get reported out of our dependencies 

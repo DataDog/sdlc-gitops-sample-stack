@@ -242,3 +242,15 @@ pass-summary-api,maven:io.quarkus:quarkus-rest-client-jackson:jar,Apache-2.0,"Co
 pass-summary-api,maven:io.quarkus:quarkus-junit5:jar:3.14.1,Apache-2.0,"Copyright 2019-2024, Contributors to Quarkus"
 pass-summary-api,maven:io.rest-assured:rest-assured:jar:5.5.0,Apache-2.0,"* Copyright 2018-2024 the original author or authors | * Copyright (c) j karef GmbH | * Copyright 2018 Johan Haleby"
 pass-summary-api,maven:org.wiremock:wiremock:jar:3.9.1,Apache-2.0,This product includes software developed at The Apache Software Foundation (http://www.apache.org/).
+pass-image-api,crate:bytes:1.7.2,MIT,Copyright (c) 2018 Carl Lerche
+pass-image-api,crate:float-cmp:0.10.0,MIT,Copyright 2014-2020 Optimal Computing (NZ) Ltd.
+pass-image-api,crate:futures:0.3.31,MIT,Copyright (c) 2016 Alex Crichton| Copyright (c) 2017 The Tokio Authors| Copyright (c) 2010-2011 Dmitry Vyukov
+pass-image-api,crate:futures-executor:0.3.31,MIT,Copyright (c) 2016 Alex Crichton| Copyright (c) 2017 The Tokio Authors| Copyright (c) 2010-2011 Dmitry Vyukov
+pass-image-api,crate:image:0.25.2,MIT,Copyright (c) 2018 Guillaume Gomez| copyright (C) 1991-2014, Thomas G. Lane, Guido Vollbeding.| copyright to TrueVision, Inc.,
+pass-image-api,crate:opentelemetry:0.26.0,Apache-2.0,Copyright 2019, OpenTelemetry Authors
+pass-image-api,crate:opentelemetry-otlp:0.26.0,Apache-2.0,Copyright 2019, OpenTelemetry Authors
+pass-image-api,crate:opentelemetry-semantic-conventions:0.26.0,Copyright 2019, OpenTelemetry Authors
+pass-image-api,crate:opentelemetry_sdk:0.26.0,Copyright 2019, OpenTelemetry Authors
+pass-image-api,crate:reqwest:0.12.8,MIT,Copyright (c) 2016 Sean McArthur
+pass-image-api,crate:rocket:0.5.1,MIT,Copyright (c) 2016 Sergio Benitez
+pass-image-api,crate:tokio:1.40.0,MIT,Copyright (c) Tokio Contributors
