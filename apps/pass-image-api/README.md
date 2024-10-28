@@ -17,6 +17,8 @@ cargo run &
 # URL format is /images/<long>/<lat>/<size_in_px>
 # An optional ?radius=x.y can be provided to specify the radius in kilometers about the point
 # The default radius is 1.0km
+# An optional ?tileset=... can be added to specify the tileset.
+# The default is osm, 'swisstopo' is also supported for points in Switzerland
 
 # Get an 512x512 image centered over Perth, Western Australia
 curl "http://localhost:8080/images/115.85870047525302/-31.95271807274208/512" -o perth.png
