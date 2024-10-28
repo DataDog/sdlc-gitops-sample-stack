@@ -15,7 +15,6 @@ extern crate rocket;
 
 #[get("/")]
 fn index() -> &'static str {
-    _ = coordinates::test_fn();
     "Nothing here"
 }
 

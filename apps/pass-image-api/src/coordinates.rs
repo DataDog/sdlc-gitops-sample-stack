@@ -1,16 +1,23 @@
-pub fn test_fn() -> u32 {
-    0
-}
+// ! # coordinates
+// !
+// ! The coordinates module provides types and utilities for dealing with geospatial
+// ! coordinates. For our purposes this means converting between latitude/longitude WGS84
+// ! pairs and webmercator slippy-maps style tile coordinates.
+// !
 
+// A latitude/longitude pair
 #[derive(Debug, Clone, Copy)]
 pub struct LatLong(pub f64, pub f64);
 
+// A tile coordinate. Note that a 'zoomLevel' value
+// must be carried along with this too
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct TileCoordinate {
     pub x: f32,
     pub y: f32,
 }
 
+// Converts a lat/long pair to tile coordinates at a particular zoom
 pub fn lat_long_to_tile_coords(point: &LatLong, zoom: u32) -> TileCoordinate {
     let lat_rad = point.0.to_radians();
     let n = 2.0_f64.powi(zoom as i32);
@@ -25,6 +32,11 @@ pub fn lat_long_to_tile_coords(point: &LatLong, zoom: u32) -> TileCoordinate {
     }
 }
 
+// An extension of a TileBox that allows us to specify extra information to constrain it. The inner_size
+// is the number of pixels that are actually "used", and the center is the center the TileBox was taken around.
+// This is a bit of a funny type as it mixes coordinate systems; it would be better if we changed this so that
+// we have pixel offsets into the image here based on centering around the point we have created the ConstrainedTileBox
+// for.
 #[derive(Debug, Copy, Clone)]
 pub struct ConstrainedTileBox {
     pub center: LatLong,
@@ -32,6 +44,7 @@ pub struct ConstrainedTileBox {
     pub inner_size_px: (u32, u32),
 }
 
+// A box of tiles
 #[derive(Debug, Copy, Clone)]
 pub struct TileBox {
     pub top_left: TileCoordinate,
@@ -54,7 +67,9 @@ impl TileBox {
     }
 }
 
-pub fn lat_long_and_radius_to_tile_box(
+// Given a point on the earth, a radius, and a desired zoom level, this function produces a
+// ConstrainedTileBox that contains enough pixels to cover the given area.
+fn lat_long_and_radius_to_tile_box(
     point: &LatLong,
     radius_km: f32,
     zoom: u32,
@@ -107,6 +122,11 @@ fn tile_size_kms(zoom: u32, earth_radius_km: f64) -> f32 {
     ((earth_radius_km * 2.0 * std::f64::consts::PI) / n) as f32
 }
 
+// Given a center point, a desired image size, and a radius in kilometers, produces
+// a ConstrainedTileBox that provides enough pixels to cover the given area, ensuring
+// we have (image_size_px / 2) pixels available to the left/right/above/below of the
+// center point. This also means we have to pick an appropriate zoom level to get
+// the resolution we need.
 pub fn lat_long_and_image_size_to_bounding_box(
     center: LatLong,
     radius_km: f32,
