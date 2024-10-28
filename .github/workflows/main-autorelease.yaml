@@ -206,7 +206,7 @@ jobs:
     needs:
       - build-pass-api
       - build-pass-summary-api
-      - build-pass=image-api
+      - build-pass-image-api
     permissions:
       contents: write
       id-token: write
