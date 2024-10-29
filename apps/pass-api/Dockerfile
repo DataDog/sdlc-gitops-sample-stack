@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:1.22
+FROM --platform=${BUILDPLATFORM} golang:1.22 AS builder
 
 ARG GIT_COMMIT_SHA
 ARG GIT_REPOSITORY_URL
@@ -14,9 +14,20 @@ RUN go mod download
 
 # App
 COPY *.go ./
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/pass-api
+ARG TARGETPLATFORM
+RUN CGO_ENABLED=0 GOOS=linux GOARCH="${TARGETPLATFORM#*/}" go build \
+    -ldflags="-s -w" -trimpath -o /app/pass-api
 
 # Migrations
 COPY migrations /app/migrations/
 
-CMD ["/app/pass-api"]
+# Release stage (minimal image)
+FROM scratch
+
+# Set the workdir
+WORKDIR /app
+
+COPY --from=builder /app/pass-api /app/pass-api
+COPY --from=builder /app/migrations /app/migrations
+
+CMD ["./pass-api"]
