@@ -36,7 +36,8 @@ Review the changes. You should see that the action has updated references to the
 > [!IMPORTANT]
 > You should see no other changes outside of these files\! 
 
-Once you have validated this and seen the builds complete, merge to main. This will trigger the main build jobs. You can see them **Actions** tab:
+Once you have validated this and seen the builds complete, merge to main. This will trigger the main build jobs. You can see them by clicking into the 
+**Actions** tab:
 
 <p align='center'>
     <img alt="Initial build action" src="assets/actions-initial-build.jpeg" width="600px" />
