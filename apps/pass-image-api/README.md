@@ -10,8 +10,9 @@ This rust service provides an aerial image of a given location using openstreetm
 # Usage
 
 ```bash
+# Point the OTEL_EXPORTER_OTLP_ENDPOINT to either your OTel Collector endpoint or your Datadog Agent
 # Start the service
-cargo run &
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 OTEL_SERVICE_NAME=pass-image-api cargo run &
 
 #
 # URL format is /images/<long>/<lat>/<size_in_px>

@@ -1,18 +1,18 @@
 use crate::coordinates::LatLong;
 use crate::tiles::fetch_image_from_point;
-use opentelemetry::KeyValue;
-use opentelemetry_otlp::WithExportConfig;
-use opentelemetry_sdk::trace::Config;
-use opentelemetry_sdk::{runtime, Resource};
 use rocket::http::{ContentType, Status};
 use rocket::response::{content, status};
 use tiles::TileSet;
 mod coordinates;
 mod tiles;
 
+mod telemetry_conf;
+use telemetry_conf::init_otel;
+
 #[macro_use]
 extern crate rocket;
 
+#[tracing::instrument(name = "GET /", skip_all)]
 #[get("/")]
 fn index() -> &'static str {
     "Nothing here"
@@ -23,6 +23,7 @@ fn health() -> status::Custom<content::RawJson<&'static str>> {
     status::Custom(Status::Ok, content::RawJson("{\"status\": \"ok\"}"))
 }
 
+#[tracing::instrument(name = "GET /images/{long}/{lat}/{size_px}?{radius}&{tileset}", skip_all)]
 #[get("/images/<long>/<lat>/<size_px>?<radius>&<tileset>")]
 async fn get_image(
     long: f64,
@@ -52,24 +53,7 @@ async fn get_image(
 // tokio yet, and rocket isn't happy it can't find it
 #[launch]
 async fn rocket() -> _ {
-    // An example from here --> https://github.com/open-telemetry/opentelemetry-rust/blob/main/opentelemetry-otlp/examples/basic-otlp/src/main.rs
-    // or from here --> https://github.com/open-telemetry/opentelemetry-rust/blob/main/opentelemetry-otlp/examples/basic-otlp-http/src/main.rs
-
-    let resource = Resource::new(vec![KeyValue::new(
-        opentelemetry_semantic_conventions::resource::SERVICE_NAME,
-        "pass-image-api",
-    )]);
-
-    let exporter = opentelemetry_otlp::new_exporter()
-        .tonic()
-        .with_endpoint("http://localhost:1234");
-
-    let _tracer = opentelemetry_otlp::new_pipeline()
-        .tracing()
-        .with_exporter(exporter)
-        .with_trace_config(Config::default().with_resource(resource))
-        .install_batch(runtime::Tokio)
-        .unwrap();
+    init_otel();
 
     let figment = rocket::Config::figment()
         .merge(("address", "0.0.0.0"))

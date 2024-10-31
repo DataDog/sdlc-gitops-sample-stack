@@ -9,12 +9,20 @@ float-cmp = "0.10.0"
 futures = "0.3.31"
 futures-executor = { version = "0.2.0-beta" }
 image = "0.25.2"
-opentelemetry = "0.26.0"
-opentelemetry-http = "0.26.0"
-opentelemetry-otlp = "0.26.0"
+log = "0.4.21"
+opentelemetry = "0.24.0"
+opentelemetry-appender-tracing = "0.5.0"
+opentelemetry-otlp = { version = "0.17.0", features = ["grpc-tonic", "trace", "metrics", "logs"] }
+opentelemetry-resource-detectors = "0.3.0"
 opentelemetry-semantic-conventions = "0.26.0"
-opentelemetry_sdk = { version = "0.26.0", features = ["rt-tokio"] }
-reqwest = { version = "0.12.8", features = [ "rustls-tls", "json" ], default-features = false }
+opentelemetry_sdk = { version = "0.24.1", features = ["rt-tokio"] }
+reqwest = { version = "0.12.9", features = [ "rustls-tls", "json" ], default-features = false }
+reqwest-tracing = { version = "0.5.3", features = ["opentelemetry_0_24"] }
+reqwest-middleware = "0.3.3"
 rocket = "0.5.1"
 tokio = "1.40.0"
 
+tracing = "0.1"
+tracing-core = "0.1.32"
+tracing-subscriber = "0.3.0"
+tracing-opentelemetry = "0.25.0"

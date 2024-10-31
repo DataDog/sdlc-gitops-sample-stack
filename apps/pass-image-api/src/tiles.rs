@@ -9,8 +9,11 @@ use crate::coordinates::{
 use bytes::Bytes;
 use futures::stream::{self, StreamExt};
 use image::{DynamicImage, GenericImage, ImageBuffer};
+use opentelemetry::global;
 use reqwest::header::CONTENT_TYPE;
 use reqwest::Error;
+use reqwest_middleware::ClientBuilder;
+use reqwest_tracing::TracingMiddleware;
 use std::collections::{HashMap, HashSet};
 use std::io::Cursor;
 
@@ -38,12 +41,13 @@ async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Error> 
         .replace("{x}", &x.to_string())
         .replace("{y}", &y.to_string());
 
-    let client = reqwest::ClientBuilder::new()
-        .user_agent("dd-sdlc-demo")
-        .build()?;
+    let reqwest_client = reqwest::Client::builder().user_agent("dd-sdlc-demo").build().unwrap();
+    let client = ClientBuilder::new(reqwest_client)
+        .with(TracingMiddleware::default())
+        .build();
 
     // Make an HTTP GET request to fetch the tile
-    let response = client.get(&url).send().await?;
+    let response = client.get(&url).send().await.unwrap();
     let content_type = response
         .headers()
         .get(CONTENT_TYPE)
@@ -143,6 +147,10 @@ async fn fetch_image(tileset: TileSet, tile_box: &ConstrainedTileBox) -> Result<
     let img_width = num_tiles_x * tile_size;
     let img_height = num_tiles_y * tile_size;
 
+    let meter = global::meter("processing_time_meter");
+    let processing_time = meter.f64_histogram("processing_time").init();
+    let start = std::time::Instant::now();
+
     let mut full_image = ImageBuffer::new(img_width, img_height);
 
     // Draw each tile into the final image
@@ -200,8 +208,12 @@ async fn fetch_image(tileset: TileSet, tile_box: &ConstrainedTileBox) -> Result<
         .write_to(&mut Cursor::new(&mut png_buffer), image::ImageFormat::Png)
         .expect("I can write a PNG");
 
+    let buffer_to_bytes = Bytes::from(png_buffer);
+    
+    processing_time.record(start.elapsed().as_secs_f64(),&[],);
+
     // Return the image as Bytes
-    Ok(Bytes::from(png_buffer))
+    Ok(buffer_to_bytes)
 }
 
 #[cfg(test)]
