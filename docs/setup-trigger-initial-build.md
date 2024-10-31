@@ -1,6 +1,6 @@
 ## Create a PR to trigger builds
 
-Now that we have the integration between Datadog and GitHub setup, we can stage a PR to update our fork of the repository so it is deployable in ArgoCD. This will also trigger a new set of builds, which will now show up in Datadog’s **CI Visibility** dashboard. 
+Now that we have the integration between Datadog and GitHub setup, we can stage a PR to update our fork of the repository so it is deployable in ArgoCD. This will also trigger a set of builds, which will now show up in Datadog’s **CI Visibility** dashboard. 
 
 Return to **GitHub**, go to **Actions**, and manually trigger the **Setup After Fork job**:
 
@@ -23,5 +23,11 @@ Review the changes. You should see that the action has updated references to the
 > [!IMPORTANT]
 > You should see no other changes outside of these files\! 
 
-Once you have validated this and seen the builds complete, merge to main. This will re-trigger the main build jobs. 
+Once you have validated this and seen the builds complete, merge to main. This will trigger the main build jobs. 
+Wait for the build to complete, then validate that the images produced are visible in the Packages section of the repository home: 
+
+<p align='center'>
+    <img alt="Initial images released" src="assets/images-released.jpeg" width="600px" />
+</p>
+
 Next up we will jump over to the Datadog console where we should now be able to see the results of our build runs as well as the service definitions showing the services we'll be deploying. [Onwards!](setup-dev-lifecycle-visibility.md)
