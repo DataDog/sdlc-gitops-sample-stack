@@ -1,20 +1,18 @@
+use anyhow::{Context, Result};
 use log::Level as log_level;
 use opentelemetry::{global, trace::TracerProvider};
 use opentelemetry_appender_tracing::layer::OpenTelemetryTracingBridge;
-use opentelemetry_otlp;
+use opentelemetry_resource_detectors::{OsResourceDetector, ProcessResourceDetector};
 use opentelemetry_sdk::{
-    logs::{
-        LoggerProvider, Logger
-    },
+    logs::{Logger, LoggerProvider},
     propagation::TraceContextPropagator,
     resource::{
-        EnvResourceDetector, ResourceDetector, SdkProvidedResourceDetector, TelemetryResourceDetector,
+        EnvResourceDetector, ResourceDetector, SdkProvidedResourceDetector,
+        TelemetryResourceDetector,
     },
-    runtime, Resource,
-    trace::Tracer
-};
-use opentelemetry_resource_detectors::{
-    OsResourceDetector, ProcessResourceDetector
+    runtime,
+    trace::Tracer,
+    Resource,
 };
 use tracing_core::Level;
 use tracing_opentelemetry::OpenTelemetryLayer;
@@ -43,7 +41,7 @@ fn get_resource() -> Resource {
 // A Tracer Provider is a factory for Tracers
 // A Tracer creates spans containing more information about what is happening for a given operation,
 // such as a request in a service.
-fn init_tracer() -> Tracer {
+fn init_tracer() -> Result<Tracer> {
     global::set_text_map_propagator(TraceContextPropagator::new());
 
     let tracer_provider = opentelemetry_otlp::new_pipeline()
@@ -53,18 +51,20 @@ fn init_tracer() -> Tracer {
         )
         .with_exporter(opentelemetry_otlp::new_exporter().tonic())
         .install_batch(runtime::Tokio)
-        .expect("Failed to initialize tracer provider");
+        .with_context(|| "Initialising tracing pipeline")?;
 
-    global::set_tracer_provider(tracer_provider.clone());
-    
-    tracer_provider.tracer("tracing-otel-subscriber")
+    let ret = tracer_provider.tracer("tracing-otel-subscriber");
+    global::set_tracer_provider(tracer_provider);
+    Ok(ret)
 }
 
 // Initialize the tracing subscriber with the OpenTelemetry layer
 // The OpenTelemetry layer is responsible for creating spans and propagating context
 // The log layer is responsible for bridging the OpenTelemetry logs to the tracing crate
-fn init_tracing_subscriber(log_layer: OpenTelemetryTracingBridge<LoggerProvider, Logger>) -> () {
-    let tracer = init_tracer();
+fn init_tracing_subscriber(
+    log_layer: OpenTelemetryTracingBridge<LoggerProvider, Logger>,
+) -> Result<()> {
+    let tracer = init_tracer().with_context(|| "Initialising tracing provider")?;
 
     tracing_subscriber::registry()
         .with(tracing_subscriber::filter::LevelFilter::from_level(
@@ -74,38 +74,49 @@ fn init_tracing_subscriber(log_layer: OpenTelemetryTracingBridge<LoggerProvider,
         .with(OpenTelemetryLayer::new(tracer))
         .with(log_layer)
         .init();
+
+    Ok(())
 }
 
 // A Meter Provider is a factory for Meters
 // A Meter creates metric instruments, capturing measurements about a service at runtime.
-fn init_meter_provider() -> () {
+fn init_meter_provider() -> Result<()> {
     let meter_provider = opentelemetry_otlp::new_pipeline()
         .metrics(opentelemetry_sdk::runtime::Tokio)
         .with_exporter(opentelemetry_otlp::new_exporter().tonic())
         .with_resource(get_resource())
         .with_delta_temporality()
-        .build();
+        .build()
+        .with_context(|| "creating meter provider")?;
 
-    global::set_meter_provider(meter_provider.expect("Failed to initialize meter provider"));
+    global::set_meter_provider(meter_provider);
+
+    Ok(())
 }
 
 // A Logger Provider is a factory for Loggers
 // init_logger_provider returns a OpenTelemetryTracingBridge which is responsible for bridging
 // the OpenTelemetry logs to the tracing crate
-fn init_logger_provider() -> OpenTelemetryTracingBridge<opentelemetry_sdk::logs::LoggerProvider, opentelemetry_sdk::logs::Logger> {
+fn init_logger_provider() -> Result<
+    OpenTelemetryTracingBridge<
+        opentelemetry_sdk::logs::LoggerProvider,
+        opentelemetry_sdk::logs::Logger,
+    >,
+> {
     log::set_max_level(log_level::Debug.to_level_filter());
 
     let logger_provider = opentelemetry_otlp::new_pipeline()
         .logging()
         .with_exporter(opentelemetry_otlp::new_exporter().tonic())
         .with_resource(get_resource())
-        .install_batch(runtime::Tokio)
-        .expect("Failed to initialize logger provider");
+        .install_batch(runtime::Tokio)?;
 
-    OpenTelemetryTracingBridge::new(&logger_provider)
+    Ok(OpenTelemetryTracingBridge::new(&logger_provider))
 }
 
-pub fn init_otel() -> () {
-    init_tracing_subscriber(init_logger_provider());
-    init_meter_provider();
+pub fn init_otel() -> Result<()> {
+    let logger_provider = init_logger_provider().with_context(|| "initialising logger_provider")?;
+    init_tracing_subscriber(logger_provider).with_context(|| "Initialising tracing subscriber")?;
+    init_meter_provider().with_context(|| "initialising meter provider")?;
+    Ok(())
 }

@@ -24,7 +24,7 @@ spec:
             httpGet:
               path: /ping
               port: 8080              
-          env:
+          env:            
             - name: DD_ENVIRONMENT
               valueFrom:
                 configMapKeyRef:
@@ -44,5 +44,13 @@ spec:
               value: "true"
             - name: DD_PROFILING_ENABLED
               value: "true"
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://datadog-agent:4317"
+            - name: OTEL_SERVICE_NAME
+              value: "pass-image-api"              
 
 

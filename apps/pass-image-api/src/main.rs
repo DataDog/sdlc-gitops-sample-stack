@@ -23,7 +23,10 @@ fn health() -> status::Custom<content::RawJson<&'static str>> {
     status::Custom(Status::Ok, content::RawJson("{\"status\": \"ok\"}"))
 }
 
-#[tracing::instrument(name = "GET /images/{long}/{lat}/{size_px}?{radius}&{tileset}", skip_all)]
+#[tracing::instrument(
+    name = "GET /images/{long}/{lat}/{size_px}?{radius}&{tileset}",
+    skip_all
+)]
 #[get("/images/<long>/<lat>/<size_px>?<radius>&<tileset>")]
 async fn get_image(
     long: f64,
@@ -53,7 +56,20 @@ async fn get_image(
 // tokio yet, and rocket isn't happy it can't find it
 #[launch]
 async fn rocket() -> _ {
-    init_otel();
+    // Roll otel errors up to here and log them in aggregate.
+    // TODO - we should use whatever we need to structured logging, not
+    // println!
+    match init_otel() {
+        Ok(_) => {
+            println!("Started otel!");
+        }
+        Err(err) => {
+            println!(
+                "Couldn't start otel! Will proudly soldier on without telemetry: {0}",
+                err
+            );
+        }
+    };
 
     let figment = rocket::Config::figment()
         .merge(("address", "0.0.0.0"))
