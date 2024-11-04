@@ -6,6 +6,8 @@ use tiles::TileSet;
 mod coordinates;
 mod tiles;
 
+use tracing::{info, warn};
+
 mod telemetry_conf;
 use telemetry_conf::init_otel;
 
@@ -56,15 +58,13 @@ async fn get_image(
 // tokio yet, and rocket isn't happy it can't find it
 #[launch]
 async fn rocket() -> _ {
-    // Roll otel errors up to here and log them in aggregate.
-    // TODO - we should use whatever we need to structured logging, not
-    // println!
+    // Roll otel errors up to here and log them in aggregate
     match init_otel() {
         Ok(_) => {
-            println!("Started otel!");
+            info!("Successfully configured otel");
         }
         Err(err) => {
-            println!(
+            warn!(
                 "Couldn't start otel! Will proudly soldier on without telemetry: {0}",
                 err
             );
