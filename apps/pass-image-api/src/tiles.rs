@@ -13,7 +13,7 @@ use opentelemetry::global;
 use reqwest::header::CONTENT_TYPE;
 use reqwest::Error;
 use reqwest_middleware::ClientBuilder;
-use reqwest_tracing::TracingMiddleware;
+use reqwest_tracing::{SpanBackendWithUrl, TracingMiddleware};
 use std::collections::{HashMap, HashSet};
 use std::io::Cursor;
 
@@ -41,10 +41,13 @@ async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Error> 
         .replace("{x}", &x.to_string())
         .replace("{y}", &y.to_string());
 
-    let reqwest_client = reqwest::Client::builder().user_agent("dd-sdlc-demo").build().unwrap();
-    let client = ClientBuilder::new(reqwest_client)
-        .with(TracingMiddleware::default())
-        .build();
+    let reqwest_client = reqwest::Client::builder()
+        .user_agent("dd-sdlc-demo")
+        .build()
+        .unwrap();
+
+    let middleware = TracingMiddleware::<SpanBackendWithUrl>::new();
+    let client = ClientBuilder::new(reqwest_client).with(middleware).build();
 
     // Make an HTTP GET request to fetch the tile
     let response = client.get(&url).send().await.unwrap();
@@ -209,8 +212,8 @@ async fn fetch_image(tileset: TileSet, tile_box: &ConstrainedTileBox) -> Result<
         .expect("I can write a PNG");
 
     let buffer_to_bytes = Bytes::from(png_buffer);
-    
-    processing_time.record(start.elapsed().as_secs_f64(),&[],);
+
+    processing_time.record(start.elapsed().as_secs_f64(), &[]);
 
     // Return the image as Bytes
     Ok(buffer_to_bytes)
