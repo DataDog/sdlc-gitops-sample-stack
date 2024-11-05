@@ -1,6 +1,6 @@
 ## Fork Repo
 
-Fork this Repository [Datadog/sdlc-gitops-sample-stack](Datadog/sdlc-gitops-sample-stack) into your organisation or personal GitHub account. 
+Fork this Repository [Datadog/sdlc-gitops-sample-stack](github.com/Datadog/sdlc-gitops-sample-stack) into your organisation or personal GitHub account. 
 
 
 <p align='center'>
