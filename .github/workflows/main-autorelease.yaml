@@ -236,4 +236,4 @@ jobs:
       # Args to script: push for "dev" environment to the "dev" branch
       - name: Update Dev Branch
         run: |          
-          ./scripts/update_deploy_branch.sh ${{ env.COMMIT_SHA }} dev dev
+          ./scripts/update_deploy_branch.sh ${{ env.COMMIT_SHA_FULL }} dev dev
