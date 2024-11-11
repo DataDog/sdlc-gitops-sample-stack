@@ -77,7 +77,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .route("/", web::get().to(index))
-            .route("/health", web::get().to(health))
+            .route("/ping", web::get().to(health))
             .service(get_image)
     })
     .bind(("0.0.0.0", 8080))?
