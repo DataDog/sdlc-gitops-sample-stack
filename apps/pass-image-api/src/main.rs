@@ -1,63 +1,64 @@
+use std::collections::HashMap;
+
 use crate::coordinates::LatLong;
 use crate::tiles::fetch_image_from_point;
-use rocket::http::{ContentType, Status};
-use rocket::response::{content, status};
+use actix_web::{get, http::header::ContentType, web, App, HttpResponse, HttpServer, Responder};
 use tiles::TileSet;
 mod coordinates;
 mod tiles;
 
-use tracing::{info, warn};
+use tracing::{info, instrument, warn};
 
 mod telemetry_conf;
 use telemetry_conf::init_otel;
 
-#[macro_use]
-extern crate rocket;
-
 #[tracing::instrument(name = "GET /", skip_all)]
-#[get("/")]
-fn index() -> &'static str {
+async fn index() -> impl Responder {
     "Nothing here"
 }
 
-#[get("/ping")]
-fn health() -> status::Custom<content::RawJson<&'static str>> {
-    status::Custom(Status::Ok, content::RawJson("{\"status\": \"ok\"}"))
+async fn health() -> impl Responder {
+    HttpResponse::Ok()
+        .content_type(ContentType::json())
+        .body("{\"status\": \"ok\"}")
 }
 
-#[tracing::instrument(
+#[instrument(
     name = "GET /images/{long}/{lat}/{size_px}?{radius}&{tileset}",
     skip_all
 )]
-#[get("/images/<long>/<lat>/<size_px>?<radius>&<tileset>")]
+#[get("/images/{long}/{lat}/{size_px}")]
 async fn get_image(
-    long: f64,
-    lat: f64,
-    size_px: u32,
-    radius: Option<f32>,
-    tileset: Option<String>,
-) -> (ContentType, Vec<u8>) {
-    let target_tileset = match tileset {
-        Some(v) => match v.as_str() {
+    path: web::Path<(f64, f64, u32)>,
+    query: web::Query<HashMap<String, String>>,
+) -> impl Responder {
+    let (long, lat, size_px) = path.into_inner();
+
+    // Extract optional parameters from the query map
+    let radius = query
+        .get("radius")
+        .and_then(|r| r.parse().ok())
+        .unwrap_or(1.0);
+    let tileset = query
+        .get("tileset")
+        .map(|t| match t.as_str() {
             "swisstopo" => TileSet::Swisstopo,
             _ => TileSet::Osm,
-        },
-        None => TileSet::Osm,
-    };
+        })
+        .unwrap_or(TileSet::Osm);
 
-    let radius = radius.unwrap_or(1.0);
-    let image = fetch_image_from_point(LatLong(lat, long), radius, size_px, target_tileset)
+    let image = fetch_image_from_point(LatLong(lat, long), radius, size_px, tileset)
         .await
         .expect("It should work")
         .to_vec();
 
-    (ContentType::PNG, image)
+    HttpResponse::Ok()
+        .content_type(ContentType::png())
+        .body(image)
 }
 
-// We make this `async`, because if we don't, rocket hasn't started
-// tokio yet, and rocket isn't happy it can't find it
-#[launch]
-async fn rocket() -> _ {
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
     // Roll otel errors up to here and log them in aggregate
     match init_otel() {
         Ok(_) => {
@@ -71,12 +72,13 @@ async fn rocket() -> _ {
         }
     };
 
-    let figment = rocket::Config::figment()
-        .merge(("address", "0.0.0.0"))
-        .merge(("port", 8080));
-
-    rocket::custom(figment)
-        .mount("/", routes![index])
-        .mount("/", routes![health])
-        .mount("/", routes![get_image])
+    HttpServer::new(|| {
+        App::new()
+            .route("/", web::get().to(index))
+            .route("/health", web::get().to(health))
+            .service(get_image)
+    })
+    .bind(("0.0.0.0", 8080))?
+    .run()
+    .await
 }

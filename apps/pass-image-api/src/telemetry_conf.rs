@@ -66,7 +66,7 @@ fn init_tracing_subscriber(
 ) -> Result<()> {
     let tracer = init_tracer().with_context(|| "Initialising tracing provider")?;
 
-    tracing_subscriber::registry()
+    let subscriber = tracing_subscriber::registry()
         .with(tracing_subscriber::filter::LevelFilter::from_level(
             Level::INFO,
         ))
@@ -74,6 +74,8 @@ fn init_tracing_subscriber(
         .with(OpenTelemetryLayer::new(tracer))
         .with(log_layer)
         .init();
+
+    //    tracing::subscriber::set_global_default(subscriber);
 
     Ok(())
 }

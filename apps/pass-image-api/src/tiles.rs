@@ -9,6 +9,7 @@ use crate::coordinates::{
 use bytes::Bytes;
 use futures::stream::{self, StreamExt};
 use image::{DynamicImage, GenericImage, ImageBuffer};
+use log::debug;
 use opentelemetry::global;
 use reqwest::header::CONTENT_TYPE;
 use reqwest::Error;
