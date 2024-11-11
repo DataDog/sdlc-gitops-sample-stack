@@ -12,11 +12,12 @@ use tracing::{info, instrument, warn};
 mod telemetry_conf;
 use telemetry_conf::init_otel;
 
-#[tracing::instrument(name = "GET /", skip_all)]
+#[tracing::instrument(name = "GET /", fields(otel.kind = "server"), skip_all)]
 async fn index() -> impl Responder {
     "Nothing here"
 }
 
+#[tracing::instrument(name = "GET /health", fields(otel.kind = "server"), skip_all)]
 async fn health() -> impl Responder {
     HttpResponse::Ok()
         .content_type(ContentType::json())
@@ -25,6 +26,7 @@ async fn health() -> impl Responder {
 
 #[instrument(
     name = "GET /images/{long}/{lat}/{size_px}?{radius}&{tileset}",
+    fields(otel.kind = "server"),
     skip_all
 )]
 #[get("/images/{long}/{lat}/{size_px}")]
@@ -62,7 +64,7 @@ async fn main() -> std::io::Result<()> {
     // Roll otel errors up to here and log them in aggregate
     match init_otel() {
         Ok(_) => {
-            info!("Successfully configured otel");
+            info!("Successfully configured OTel");
         }
         Err(err) => {
             warn!(

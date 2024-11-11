@@ -30,21 +30,6 @@ spec:
               path: /ping
               port: 8080              
           env:            
-            - name: DD_ENVIRONMENT
-              valueFrom:
-                configMapKeyRef:
-                  name: pass-image-api-config
-                  key: DD_ENVIRONMENT
-            - name: DD_VERSION
-              valueFrom:
-                configMapKeyRef:
-                  name: pass-image-api-config
-                  key: DD_VERSION
-            - name: DD_SERVICE
-              valueFrom:
-                configMapKeyRef:
-                  name: pass-image-api-config
-                  key: DD_SERVICE
             - name: DD_LOGS_INJECTION
               value: "true"
             - name: DD_PROFILING_ENABLED
