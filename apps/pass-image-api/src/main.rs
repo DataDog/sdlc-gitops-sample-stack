@@ -14,7 +14,7 @@ use telemetry_conf::init_otel;
 #[macro_use]
 extern crate rocket;
 
-#[tracing::instrument(name = "GET /", skip_all)]
+#[tracing::instrument(name = "GET /", fields(otel.kind = "server"), skip_all)]
 #[get("/")]
 fn index() -> &'static str {
     "Nothing here"
@@ -27,6 +27,7 @@ fn health() -> status::Custom<content::RawJson<&'static str>> {
 
 #[tracing::instrument(
     name = "GET /images/{long}/{lat}/{size_px}?{radius}&{tileset}",
+    fields(otel.kind = "server"),
     skip_all
 )]
 #[get("/images/<long>/<lat>/<size_px>?<radius>&<tileset>")]
@@ -45,6 +46,7 @@ async fn get_image(
         None => TileSet::Osm,
     };
 
+    info!("Fetching image for lat: {}, long: {}, size: {}", lat, long, size_px);
     let radius = radius.unwrap_or(1.0);
     let image = fetch_image_from_point(LatLong(lat, long), radius, size_px, target_tileset)
         .await
@@ -61,7 +63,7 @@ async fn rocket() -> _ {
     // Roll otel errors up to here and log them in aggregate
     match init_otel() {
         Ok(_) => {
-            info!("Successfully configured otel");
+            info!("Successfully configured OTel");
         }
         Err(err) => {
             warn!(
