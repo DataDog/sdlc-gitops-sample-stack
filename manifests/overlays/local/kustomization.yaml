@@ -5,19 +5,19 @@ configMapGenerator:
   - name: pass-api-config
     behavior: merge
     literals:
-      - DD_ENVIRONMENT=local
+      - DD_ENV=local
       - DD_VERSION=latest
 
   - name: pass-summary-api-config
     behavior: merge
     literals:
-      - DD_ENVIRONMENT=local
+      - DD_ENV=local
       - DD_VERSION=latest
 
   - name: pass-image-api-config
     behavior: merge
     literals:
-      - DD_ENVIRONMENT=local
+      - DD_ENV=local
       - DD_VERSION=latest
 
 images:

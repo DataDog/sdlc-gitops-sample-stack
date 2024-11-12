@@ -28,11 +28,11 @@ spec:
               path: /ping
               port: 8080
           env:
-            - name: DD_ENVIRONMENT
+            - name: DD_ENV
               valueFrom:
                 configMapKeyRef:
                   name: pass-image-api-config
-                  key: DD_ENVIRONMENT
+                  key: DD_ENV
             - name: DD_VERSION
               valueFrom:
                 configMapKeyRef:
@@ -44,7 +44,7 @@ spec:
                   name: pass-image-api-config
                   key: DD_SERVICE
             - name: OTEL_RESOURCE_ATTRIBUTES
-              value: deployment.environment=$(DD_ENVIRONMENT),service.version=$(DD_VERSION)
+              value: deployment.environment=$(DD_ENV),service.version=$(DD_VERSION)
             - name: DD_PROFILING_ENABLED
               value: "true"
             - name: HOST_IP
@@ -52,7 +52,7 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://$(HOST_IP):4317"
+              value: "http://datadog-agent:4317"
           resources:
             limits:
               memory: "128Mi"
