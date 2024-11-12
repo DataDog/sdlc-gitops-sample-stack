@@ -44,7 +44,7 @@ spec:
                   name: pass-image-api-config
                   key: DD_SERVICE
             - name: OTEL_RESOURCE_ATTRIBUTES
-              value: deployment.environment=${DD_ENVIRONMENT},service.version=${DD_VERSION}
+              value: deployment.environment=$(DD_ENVIRONMENT),service.version=$(DD_VERSION)
             - name: DD_PROFILING_ENABLED
               value: "true"
             - name: HOST_IP
