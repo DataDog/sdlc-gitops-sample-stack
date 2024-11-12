@@ -1672,7 +1672,7 @@ dependencies = [
 
 [[package]]
 name = "pass-image-api"
-version = "0.2.6"
+version = "0.1.0"
 dependencies = [
  "actix-web",
  "actix-web-opentelemetry",

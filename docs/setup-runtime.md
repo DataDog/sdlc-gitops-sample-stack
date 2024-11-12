@@ -36,6 +36,8 @@ spec:
           protocols:
             grpc:
               enabled: true
+              hostPort:
+                enabled: true
 
     # Ensure APM is enabled, so that we can collect traces
     apm:
