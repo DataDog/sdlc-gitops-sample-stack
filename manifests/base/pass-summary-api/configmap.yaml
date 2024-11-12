@@ -4,6 +4,6 @@ metadata:
   name: pass-summary-api-config
 data:
   DD_SERVICE: "pass-summary-api"
-  DD_ENVIRONMENT: "dev"
+  DD_ENV: "dev"
   DD_VERSION: "latest"
   SIMPLEAPI_URL: "http://pass-api"

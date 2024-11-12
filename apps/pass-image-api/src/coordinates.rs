@@ -5,6 +5,8 @@
 // ! pairs and webmercator slippy-maps style tile coordinates.
 // !
 
+use log::debug;
+
 // A latitude/longitude pair
 #[derive(Debug, Clone, Copy)]
 pub struct LatLong(pub f64, pub f64);

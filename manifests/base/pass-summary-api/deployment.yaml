@@ -25,11 +25,11 @@ spec:
               path: /ping
               port: 8080               
           env:
-            - name: DD_ENVIRONMENT
+            - name: DD_ENV
               valueFrom:
                 configMapKeyRef:
                   name: pass-summary-api-config
-                  key: DD_ENVIRONMENT
+                  key: DD_ENV
             - name: DD_VERSION
               valueFrom:
                 configMapKeyRef:

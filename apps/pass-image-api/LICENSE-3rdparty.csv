@@ -3,11 +3,15 @@ pass-image-api,crate:bytes:1.7.2,MIT,Copyright (c) 2018 Carl Lerche
 pass-image-api,crate:float-cmp:0.10.0,MIT,Copyright 2014-2020 Optimal Computing (NZ) Ltd.
 pass-image-api,crate:futures:0.3.31,MIT,Copyright (c) 2016 Alex Crichton| Copyright (c) 2017 The Tokio Authors| Copyright (c) 2010-2011 Dmitry Vyukov
 pass-image-api,crate:futures-executor:0.3.31,MIT,Copyright (c) 2016 Alex Crichton| Copyright (c) 2017 The Tokio Authors| Copyright (c) 2010-2011 Dmitry Vyukov
-pass-image-api,crate:image:0.25.2,MIT,Copyright (c) 2018 Guillaume Gomez| copyright (C) 1991-2014, Thomas G. Lane, Guido Vollbeding.| copyright to TrueVision, Inc.,
-pass-image-api,crate:opentelemetry:0.26.0,Apache-2.0,Copyright 2019, OpenTelemetry Authors
-pass-image-api,crate:opentelemetry-otlp:0.26.0,Apache-2.0,Copyright 2019, OpenTelemetry Authors
-pass-image-api,crate:opentelemetry-semantic-conventions:0.26.0,Copyright 2019, OpenTelemetry Authors
-pass-image-api,crate:opentelemetry_sdk:0.26.0,Copyright 2019, OpenTelemetry Authors
-pass-image-api,crate:reqwest:0.12.8,MIT,Copyright (c) 2016 Sean McArthur
-pass-image-api,crate:rocket:0.5.1,MIT,Copyright (c) 2016 Sergio Benitez
+pass-image-api,crate:image:0.25.2,MIT,Copyright (c) 2018 Guillaume Gomez| copyright (C) 1991-2014 Thomas G. Lane and Guido Vollbeding.| copyright to TrueVision, Inc.
+pass-image-api,crate:log:0.4.22,MIT,Copyright (c) 2014 The Rust Project Developers
+pass-image-api,crate:opentelemetry:0.24.0,Apache-2.0,Copyright 2019 OpenTelemetry Authors
+pass-image-api,crate:opentelemetry-appender-log:0.5.0,Apache-2.0,Copyright 2019 OpenTelemetry Authors
+pass-image-api,crate:opentelemetry-otlp:0.17.0,Apache-2.0,Copyright 2019 OpenTelemetry Authors
+pass-image-api,crate:opentelemetry-resource-detectors:0.3.0,Apache-2.0,Copyright OpenTelemetry Contributors|Copright 2024 Google LLC
+pass-image-api,crate:opentelemetry_sdk:0.24.1,Apache-2.0,Copyright 2019 OpenTelemetry Authors
+pass-image-api,crate:anyhow:1.0.93,MIT,Copyright Anyhow Contributors
+pass-image-api,crate:actix-web:4.9.0,MIT,Copyright (c) 2017-NOW Actix Team
+pass-image-api,crate:actix-web-opentelemetry:0.19.0,MIT,Copyright (c) 2019 Out There Labs
+pass-image-api,crate:awc:3.5.1,MIT,Copyright (c) 2017-NOW Actix Team
 pass-image-api,crate:tokio:1.40.0,MIT,Copyright (c) Tokio Contributors

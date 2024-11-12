@@ -4,5 +4,5 @@ metadata:
   name: pass-api-config  
 data:
   DD_SERVICE: "pass-api"
-  DD_ENVIRONMENT: "dev"
+  DD_ENV: "dev"
   DD_VERSION: "latest"

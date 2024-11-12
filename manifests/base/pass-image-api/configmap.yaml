@@ -4,5 +4,5 @@ metadata:
   name: pass-image-api-config
 data:
   DD_SERVICE: "pass-image-api"
-  DD_ENVIRONMENT: "dev"
+  DD_ENV: "dev"
   DD_VERSION: "latest"
