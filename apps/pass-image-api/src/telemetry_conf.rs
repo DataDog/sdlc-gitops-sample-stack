@@ -36,7 +36,7 @@ fn get_resource() -> Resource {
 // A Tracer Provider is a factory for Tracers
 // A Tracer creates spans containing more information about what is happening for a given operation,
 // such as a request in a service.
-fn init_tracer() -> () {
+fn init_tracer() {
     global::set_text_map_propagator(TraceContextPropagator::new());
 
     let tracer_provider = opentelemetry_otlp::new_pipeline()
@@ -70,7 +70,7 @@ fn init_meter_provider() -> Result<()> {
 // A Logger Provider is a factory for Loggers
 // The init_logger_provider function initialises a Logger Provider
 // And sets up a Log Appender for the log crate, bridging logs to the OpenTelemetry Logger.
-fn init_logger_provider() -> () {
+fn init_logger_provider() {
     let logger_provider = opentelemetry_otlp::new_pipeline()
         .logging()
         .with_exporter(opentelemetry_otlp::new_exporter().tonic())
@@ -85,8 +85,8 @@ fn init_logger_provider() -> () {
 }
 
 pub fn init_otel() -> Result<()> {
-    let _ = init_logger_provider();
-    let _ = init_tracer();
+    init_logger_provider();
+    init_tracer();
     init_meter_provider().with_context(|| "initialising meter provider")?;
     Ok(())
 }
