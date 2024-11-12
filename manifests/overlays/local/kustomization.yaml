@@ -52,6 +52,7 @@ patches:
         - op: replace
           path: /spec/template/spec/containers/0/imagePullPolicy
           value: Never
+
   - target:
       kind: Deployment
       name: pass-image-api

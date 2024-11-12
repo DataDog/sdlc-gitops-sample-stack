@@ -28,6 +28,23 @@ spec:
               path: /ping
               port: 8080
           env:
+            - name: DD_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-image-api-config
+                  key: DD_ENVIRONMENT
+            - name: DD_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-image-api-config
+                  key: DD_VERSION
+            - name: OTEL_SERVICE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-image-api-config
+                  key: DD_SERVICE
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: deployment.environment=${DD_ENVIRONMENT},service.version=${DD_VERSION}
             - name: DD_PROFILING_ENABLED
               value: "true"
             - name: HOST_IP
@@ -36,12 +53,6 @@ spec:
                   fieldPath: status.hostIP
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: "http://$(HOST_IP):4317"
-            - name: OTEL_SERVICE_NAME
-              value: "pass-image-api"
-            - name: OTEL_RESOURCE_ATTRIBUTES
-              value: "deployment.environment=dev,service.version=0.2.6"
-            - name: DD_PROFILING_ENABLED
-              value: "true"
           resources:
             limits:
               memory: "128Mi"
