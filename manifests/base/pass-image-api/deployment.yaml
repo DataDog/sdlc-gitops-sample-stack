@@ -17,8 +17,6 @@ spec:
       labels:
         app: pass-image-api
         admission.datadoghq.com/enabled: "true"
-        tags.datadoghq.com/env: "dev"
-        tags.datadoghq.com/service: "pass-image-api"
     spec:
       containers:
         - name: pass-image-api
@@ -28,10 +26,8 @@ spec:
           readinessProbe:
             httpGet:
               path: /ping
-              port: 8080              
-          env:            
-            - name: DD_LOGS_INJECTION
-              value: "true"
+              port: 8080
+          env:
             - name: DD_PROFILING_ENABLED
               value: "true"
             - name: HOST_IP
@@ -39,8 +35,17 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://datadog-agent:4317"
+              value: "http://$(HOST_IP):4317"
             - name: OTEL_SERVICE_NAME
-              value: "pass-image-api"              
-
-
+              value: "pass-image-api"
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "deployment.environment=dev,service.version=0.2.6"
+            - name: DD_PROFILING_ENABLED
+              value: "true"
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
