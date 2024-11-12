@@ -17,7 +17,6 @@ opentelemetry-resource-detectors = "0.3.0"
 opentelemetry_sdk = { version = "0.24.1", features = ["rt-tokio"] }
 tokio = "1.40.0"
 anyhow = "1.0.92"
-actix-rt = "2.10.0"
 actix-web = "4.9.0"
 actix-web-opentelemetry = { version = "0.19.0", features = ["sync-middleware", "awc"] }
 awc = { version = "3.5.1", features = ["rustls"] }
