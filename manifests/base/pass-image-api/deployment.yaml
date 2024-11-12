@@ -9,11 +9,6 @@ spec:
       app: pass-image-api
   template:
     metadata:
-      annotations:
-        # This will be picked up over OTLP, so we don't need 
-        # to have the agent collect it directly.
-        # TODO - remove this comment once we're sure everything's going over OTLP
-        # ad.datadoghq.com/logs_exclude: "true"
       labels:
         app: pass-image-api
         admission.datadoghq.com/enabled: "true"
