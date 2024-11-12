@@ -6,15 +6,15 @@ use crate::coordinates::{
     lat_long_and_image_size_to_bounding_box, lat_long_to_tile_coords, ConstrainedTileBox, LatLong,
     TileCoordinate,
 };
+use actix_web::Error;
+use actix_web_opentelemetry::ClientExt;
+use awc::http::header::CONTENT_TYPE;
+use awc::http::StatusCode;
 use bytes::Bytes;
 use futures::stream::{self, StreamExt};
 use image::{DynamicImage, GenericImage, ImageBuffer};
 use log::debug;
 use opentelemetry::global;
-use reqwest::header::CONTENT_TYPE;
-use reqwest::Error;
-use reqwest_middleware::ClientBuilder;
-use reqwest_tracing::{SpanBackendWithUrl, TracingMiddleware};
 use std::collections::{HashMap, HashSet};
 use std::io::Cursor;
 
@@ -42,16 +42,25 @@ async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Error> 
         .replace("{x}", &x.to_string())
         .replace("{y}", &y.to_string());
 
-    let reqwest_client = reqwest::Client::builder()
-        .user_agent("dd-sdlc-demo")
-        .build()
-        .unwrap();
-
-    let middleware = TracingMiddleware::<SpanBackendWithUrl>::new();
-    let client = ClientBuilder::new(reqwest_client).with(middleware).build();
+    let client = awc::Client::new();
 
     // Make an HTTP GET request to fetch the tile
-    let response = client.get(&url).send().await.unwrap();
+    let mut response = client
+        .get(&url)
+        .insert_header(("User-Agent", "dd-sdlc-demo"))
+        .trace_request()
+        .send()
+        .await
+        .unwrap();
+
+    // Check if the response status is a success
+    if response.status() != StatusCode::OK {
+        // Return a custom error for non-successful status
+        return Err(actix_web::error::ErrorBadRequest(
+            "Request failed with non-OK status",
+        ));
+    }
+
     let content_type = response
         .headers()
         .get(CONTENT_TYPE)
@@ -61,8 +70,8 @@ async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Error> 
     assert!(content_type.eq("image/png"));
 
     // If the request was successful, return the tile bytes
-    // Otherwise, let reqwest's error handling take care of failures
-    response.error_for_status()?.bytes().await
+    // Extract and return the body as bytes
+    Ok(response.body().await?)
 }
 
 // Fetches all of the tiles within a TileBox

@@ -5,7 +5,7 @@
 // ! pairs and webmercator slippy-maps style tile coordinates.
 // !
 
-use tracing::debug;
+use log::debug;
 
 // A latitude/longitude pair
 #[derive(Debug, Clone, Copy)]

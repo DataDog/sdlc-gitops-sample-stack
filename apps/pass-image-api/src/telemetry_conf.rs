@@ -1,22 +1,17 @@
 use anyhow::{Context, Result};
-use log::Level as log_level;
-use opentelemetry::{global, trace::TracerProvider};
-use opentelemetry_appender_tracing::layer::OpenTelemetryTracingBridge;
+use log::Level;
+use opentelemetry::global;
+use opentelemetry_appender_log::OpenTelemetryLogBridge;
+
 use opentelemetry_resource_detectors::{OsResourceDetector, ProcessResourceDetector};
 use opentelemetry_sdk::{
-    logs::{Logger, LoggerProvider},
     propagation::TraceContextPropagator,
     resource::{
         EnvResourceDetector, ResourceDetector, SdkProvidedResourceDetector,
         TelemetryResourceDetector,
     },
-    runtime,
-    trace::Tracer,
-    Resource,
+    runtime, Resource,
 };
-use tracing_core::Level;
-use tracing_opentelemetry::OpenTelemetryLayer;
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 use std::time::Duration;
 
@@ -41,7 +36,7 @@ fn get_resource() -> Resource {
 // A Tracer Provider is a factory for Tracers
 // A Tracer creates spans containing more information about what is happening for a given operation,
 // such as a request in a service.
-fn init_tracer() -> Result<Tracer> {
+fn init_tracer() -> () {
     global::set_text_map_propagator(TraceContextPropagator::new());
 
     let tracer_provider = opentelemetry_otlp::new_pipeline()
@@ -51,33 +46,9 @@ fn init_tracer() -> Result<Tracer> {
         )
         .with_exporter(opentelemetry_otlp::new_exporter().tonic())
         .install_batch(runtime::Tokio)
-        .with_context(|| "Initialising tracing pipeline")?;
+        .expect("Failed to initialise tracing provider");
 
-    let ret = tracer_provider.tracer("tracing-otel-subscriber");
     global::set_tracer_provider(tracer_provider);
-    Ok(ret)
-}
-
-// Initialize the tracing subscriber with the OpenTelemetry layer
-// The OpenTelemetry layer is responsible for creating spans and propagating context
-// The log layer is responsible for bridging the OpenTelemetry logs to the tracing crate
-fn init_tracing_subscriber(
-    log_layer: OpenTelemetryTracingBridge<LoggerProvider, Logger>,
-) -> Result<()> {
-    let tracer = init_tracer().with_context(|| "Initialising tracing provider")?;
-
-    let subscriber = tracing_subscriber::registry()
-        .with(tracing_subscriber::filter::LevelFilter::from_level(
-            Level::INFO,
-        ))
-        .with(tracing_subscriber::fmt::layer())
-        .with(OpenTelemetryLayer::new(tracer))
-        .with(log_layer)
-        .init();
-
-    //    tracing::subscriber::set_global_default(subscriber);
-
-    Ok(())
 }
 
 // A Meter Provider is a factory for Meters
@@ -97,28 +68,25 @@ fn init_meter_provider() -> Result<()> {
 }
 
 // A Logger Provider is a factory for Loggers
-// init_logger_provider returns a OpenTelemetryTracingBridge which is responsible for bridging
-// the OpenTelemetry logs to the tracing crate
-fn init_logger_provider() -> Result<
-    OpenTelemetryTracingBridge<
-        opentelemetry_sdk::logs::LoggerProvider,
-        opentelemetry_sdk::logs::Logger,
-    >,
-> {
-    log::set_max_level(log_level::Debug.to_level_filter());
-
+// The init_logger_provider function initialises a Logger Provider
+// And sets up a Log Appender for the log crate, bridging logs to the OpenTelemetry Logger.
+fn init_logger_provider() -> () {
     let logger_provider = opentelemetry_otlp::new_pipeline()
         .logging()
         .with_exporter(opentelemetry_otlp::new_exporter().tonic())
         .with_resource(get_resource())
-        .install_batch(runtime::Tokio)?;
+        .install_batch(runtime::Tokio)
+        .expect("Failed to initialise logger provider");
 
-    Ok(OpenTelemetryTracingBridge::new(&logger_provider))
+    // Setup Log Appender for the log crate
+    let otel_log_appender = OpenTelemetryLogBridge::new(&logger_provider);
+    log::set_boxed_logger(Box::new(otel_log_appender)).unwrap();
+    log::set_max_level(Level::Info.to_level_filter());
 }
 
 pub fn init_otel() -> Result<()> {
-    let logger_provider = init_logger_provider().with_context(|| "initialising logger_provider")?;
-    init_tracing_subscriber(logger_provider).with_context(|| "Initialising tracing subscriber")?;
+    let _ = init_logger_provider();
+    let _ = init_tracer();
     init_meter_provider().with_context(|| "initialising meter provider")?;
     Ok(())
 }

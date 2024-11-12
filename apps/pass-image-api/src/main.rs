@@ -3,32 +3,25 @@ use std::collections::HashMap;
 use crate::coordinates::LatLong;
 use crate::tiles::fetch_image_from_point;
 use actix_web::{get, http::header::ContentType, web, App, HttpResponse, HttpServer, Responder};
+use actix_web_opentelemetry::RequestTracing;
+use log::{info, warn};
 use tiles::TileSet;
 mod coordinates;
 mod tiles;
 
-use tracing::{info, instrument, warn};
-
 mod telemetry_conf;
 use telemetry_conf::init_otel;
 
-#[tracing::instrument(name = "GET /", fields(otel.kind = "server"), skip_all)]
 async fn index() -> impl Responder {
     "Nothing here"
 }
 
-#[tracing::instrument(name = "GET /health", fields(otel.kind = "server"), skip_all)]
 async fn health() -> impl Responder {
     HttpResponse::Ok()
         .content_type(ContentType::json())
         .body("{\"status\": \"ok\"}")
 }
 
-#[instrument(
-    name = "GET /images/{long}/{lat}/{size_px}?{radius}&{tileset}",
-    fields(otel.kind = "server"),
-    skip_all
-)]
 #[get("/images/{long}/{lat}/{size_px}")]
 async fn get_image(
     path: web::Path<(f64, f64, u32)>,
@@ -49,6 +42,10 @@ async fn get_image(
         })
         .unwrap_or(TileSet::Osm);
 
+    info!(
+        "Fetching image for lat: {}, long: {}, size: {}",
+        lat, long, size_px
+    );
     let image = fetch_image_from_point(LatLong(lat, long), radius, size_px, tileset)
         .await
         .expect("It should work")
@@ -68,7 +65,7 @@ async fn main() -> std::io::Result<()> {
         }
         Err(err) => {
             warn!(
-                "Couldn't start otel! Will proudly soldier on without telemetry: {0}",
+                "Couldn't start OTel! Will proudly soldier on without telemetry: {0}",
                 err
             );
         }
@@ -76,6 +73,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
+            .wrap(RequestTracing::new())
             .route("/", web::get().to(index))
             .route("/ping", web::get().to(health))
             .service(get_image)
