@@ -6,26 +6,26 @@ configMapGenerator:
     behavior: merge
     literals:
       - DD_ENV=dev
-      - DD_VERSION=latest
+      - DD_VERSION=b7517af4a32366bf0b837502bfdb8a41a76f9a64
 
   - name: pass-summary-api-config
     behavior: merge
     literals:
       - DD_ENV=dev
-      - DD_VERSION=latest
+      - DD_VERSION=b7517af4a32366bf0b837502bfdb8a41a76f9a64
 
   - name: pass-image-api-config
     behavior: merge
     literals:
       - DD_ENV=dev
-      - DD_VERSION=latest
+      - DD_VERSION=b7517af4a32366bf0b837502bfdb8a41a76f9a64
 
 images:
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-api
-    newTag: "latest"
+    newTag: "b7517af4a32366bf0b837502bfdb8a41a76f9a64"
 
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-summary-api
-    newTag: "latest"
+    newTag: "b7517af4a32366bf0b837502bfdb8a41a76f9a64"
 
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-image-api
-    newTag: "latest"
+    newTag: "b7517af4a32366bf0b837502bfdb8a41a76f9a64"
