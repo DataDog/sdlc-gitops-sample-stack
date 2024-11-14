@@ -9,7 +9,7 @@ float-cmp = "0.10.0"
 futures = "0.3.31"
 futures-executor = { version = "0.2.0-beta" }
 image = "0.25.2"
-log = "0.4.22"
+log = { version = "0.4.22", features = ["kv"] }
 opentelemetry = "0.24.0"
 opentelemetry-appender-log = "0.5.0"
 opentelemetry-otlp = { version = "0.17.0", features = ["grpc-tonic", "trace", "metrics", "logs"] }
