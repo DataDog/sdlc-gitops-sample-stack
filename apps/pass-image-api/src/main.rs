@@ -43,7 +43,7 @@ async fn get_image(
         .unwrap_or(TileSet::Osm);
 
     info!(
-        latitude = lat, 
+        latitude = lat,
         longitude = long;
         "Fetching image"
     );

@@ -14,7 +14,9 @@ use bytes::Bytes;
 use futures::stream::{self, StreamExt};
 use image::{DynamicImage, GenericImage, ImageBuffer};
 use log::debug;
-use opentelemetry::global;
+use opentelemetry::trace::{SpanKind, Status, TraceContextExt, Tracer};
+use opentelemetry::{global, Context};
+use std::borrow::Borrow;
 use std::collections::{HashMap, HashSet};
 use std::io::Cursor;
 
@@ -34,7 +36,7 @@ impl TileSet {
 }
 
 // Fetches a single tile from a given TileSet
-async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Error> {
+async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32, cx: Context) -> Result<Bytes, Error> {
     // Format the URL for the requested tile (zoom, x, y)
     let url = t
         .url_pattern()
@@ -48,7 +50,7 @@ async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Error> 
     let mut response = client
         .get(&url)
         .insert_header(("User-Agent", "dd-sdlc-demo"))
-        .trace_request()
+        .trace_request_with_context(cx.clone())
         .send()
         .await
         .unwrap();
@@ -82,6 +84,17 @@ async fn fetch_tile_box(
     top_left: &TileCoordinate,
     bottom_right: &TileCoordinate,
 ) -> Result<HashMap<(u32, u32, u32), Bytes>, Error> {
+    // Create a manual span for this function
+    // This span will be the parent of all outgoing calls
+    let tracer = global::tracer("fetch_image_tracer");
+    let span = tracer
+        .span_builder("fetch_image")
+        .with_kind(SpanKind::Internal)
+        .start(&tracer);
+
+    let cx = Context::current_with_span(span);
+    let ctx = cx.borrow();
+
     // Collect all tile coordinates in the bounding box
     let mut tile_coords = Vec::new();
 
@@ -97,7 +110,7 @@ async fn fetch_tile_box(
     let tile_fetches = stream::iter(tile_coords.into_iter().map(|tile| {
         // For each tile, fetch the corresponding tile asynchronously
         async move {
-            fetch_tile(tileset, tile.0, tile.1, tile.2)
+            fetch_tile(tileset, tile.0, tile.1, tile.2, ctx.clone())
                 .await
                 .map(|bytes| (tile, bytes))
         }
@@ -113,10 +126,18 @@ async fn fetch_tile_box(
                 tile_map.insert((tile.0, tile.1, tile.2), bytes); // Insert the successful result into the map
             }
             Err(e) => {
-                return Err(e); // If any tile fetch fails, return the error immediately
+                // If any tile fetch fails, set the span status to Error and return the error
+                cx.span().set_status(Status::Error {
+                    description: e.to_string().into(),
+                });
+                return Err(e);
             }
         }
     }
+
+    // Set the span status to OK and end the span
+    cx.span().set_status(Status::Ok);
+    cx.span().end();
 
     Ok(tile_map)
 }
@@ -242,9 +263,10 @@ mod tests {
     async fn test_fetch_tile() {
         let tile = (3366, 2431);
         let zoom = 12;
+        let cx = Context::current();
 
         // Replace the base URL with mockito’s server URL
-        let result = fetch_tile(TileSet::Osm, tile.0, tile.1, zoom).await;
+        let result = fetch_tile(TileSet::Osm, tile.0, tile.1, zoom, cx).await;
 
         // Assert the result is Ok and contains the correct number of bytes
         assert!(result.is_ok());
