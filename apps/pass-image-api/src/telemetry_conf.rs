@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use log::{warn, Level};
+use log::Level;
 use opentelemetry::global;
 use opentelemetry_appender_log::OpenTelemetryLogBridge;
 
@@ -83,16 +83,13 @@ fn init_logger_provider() {
     let otel_log_appender = OpenTelemetryLogBridge::new(&logger_provider);
     log::set_boxed_logger(Box::new(otel_log_appender)).unwrap();
 
-    // Set the log level based on the LOG_LEVEL environment variable
-    let env_log_level = env::var("LOG_LEVEL").unwrap_or_else(|_| "info".to_string());
-    let log_level = Level::from_str(env_log_level.to_lowercase().as_str());
-
-    if let Ok(log_level) = log_level {
-        log::set_max_level(log_level.to_level_filter());
-    } else {
-        // Default to Info level if the LOG_LEVEL environment variable is not set
-        log::set_max_level(Level::Info.to_level_filter());
-    }
+    // Read maximum log level from the enironment, using INFO if it's missing or
+    // we can't parse it.
+    let max_level = env::var("LOG_LEVEL")
+        .ok()
+        .and_then(|l| Level::from_str(l.to_lowercase().as_str()).ok())
+        .unwrap_or(Level::Info);
+    log::set_max_level(max_level.to_level_filter());
 }
 
 pub fn init_otel() -> Result<()> {
