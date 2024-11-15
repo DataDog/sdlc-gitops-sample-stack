@@ -43,8 +43,9 @@ async fn get_image(
         .unwrap_or(TileSet::Osm);
 
     info!(
-        "Fetching image for lat: {}, long: {}, size: {}",
-        lat, long, size_px
+        latitude = lat,
+        longitude = long;
+        "Fetching image"
     );
     let image = fetch_image_from_point(LatLong(lat, long), radius, size_px, tileset)
         .await

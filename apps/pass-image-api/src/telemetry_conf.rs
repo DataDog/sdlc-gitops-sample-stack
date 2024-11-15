@@ -14,6 +14,7 @@ use opentelemetry_sdk::{
 };
 
 use std::time::Duration;
+use std::{env, str::FromStr};
 
 // get_resource returns a Resource containing information about the environment
 // The Resource is used to provide context to Traces, Metrics and Logs
@@ -81,7 +82,14 @@ fn init_logger_provider() {
     // Setup Log Appender for the log crate
     let otel_log_appender = OpenTelemetryLogBridge::new(&logger_provider);
     log::set_boxed_logger(Box::new(otel_log_appender)).unwrap();
-    log::set_max_level(Level::Info.to_level_filter());
+
+    // Read maximum log level from the enironment, using INFO if it's missing or
+    // we can't parse it.
+    let max_level = env::var("LOG_LEVEL")
+        .ok()
+        .and_then(|l| Level::from_str(l.to_lowercase().as_str()).ok())
+        .unwrap_or(Level::Info);
+    log::set_max_level(max_level.to_level_filter());
 }
 
 pub fn init_otel() -> Result<()> {
