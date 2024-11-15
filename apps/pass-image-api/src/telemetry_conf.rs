@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use log::Level;
+use log::{warn, Level};
 use opentelemetry::global;
 use opentelemetry_appender_log::OpenTelemetryLogBridge;
 
@@ -14,6 +14,7 @@ use opentelemetry_sdk::{
 };
 
 use std::time::Duration;
+use std::{env, str::FromStr};
 
 // get_resource returns a Resource containing information about the environment
 // The Resource is used to provide context to Traces, Metrics and Logs
@@ -81,7 +82,17 @@ fn init_logger_provider() {
     // Setup Log Appender for the log crate
     let otel_log_appender = OpenTelemetryLogBridge::new(&logger_provider);
     log::set_boxed_logger(Box::new(otel_log_appender)).unwrap();
-    log::set_max_level(Level::Info.to_level_filter());
+
+    // Set the log level based on the LOG_LEVEL environment variable
+    let env_log_level = env::var("LOG_LEVEL").unwrap_or_else(|_| "info".to_string());
+    let log_level = Level::from_str(env_log_level.to_lowercase().as_str());
+
+    if let Ok(log_level) = log_level {
+        log::set_max_level(log_level.to_level_filter());
+    } else {
+        // Default to Info level if the LOG_LEVEL environment variable is not set
+        log::set_max_level(Level::Info.to_level_filter());
+    }
 }
 
 pub fn init_otel() -> Result<()> {
