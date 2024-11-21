@@ -1,0 +1,28 @@
+services:
+  otelcol:
+    image: otel/opentelemetry-collector-contrib:0.112.0
+    container_name: otel-col
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+    restart: unless-stopped
+    command: [ "--config=/etc/otelcol-config.yaml" ]
+    ports:
+      - 4317:4317
+      - 4318:4318
+    volumes:
+      - ./otelcol-config.yaml:/etc/otelcol-config.yaml
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.61.0
+    container_name: jaeger
+    deploy:
+      resources:
+        limits:
+          memory: 400M
+    restart: unless-stopped
+    ports:
+      - "16686:16686"
+      - 4317
+      - 4318

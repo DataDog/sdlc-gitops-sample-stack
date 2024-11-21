@@ -3,16 +3,23 @@ use std::collections::HashMap;
 use crate::coordinates::LatLong;
 use crate::tiles::fetch_image_from_point;
 use actix_web::{get, http::header::ContentType, web, App, HttpResponse, HttpServer, Responder};
-use actix_web_opentelemetry::RequestTracing;
-use log::{info, warn};
+use opentelemetry::trace::{Tracer, TracerProvider as _};
+use opentelemetry_sdk::trace::TracerProvider;
 use tiles::TileSet;
+use tracing_actix_web::TracingLogger;
 mod coordinates;
 mod tiles;
 
+use tracing::{error, event, info, span, Level};
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::Registry;
+
 mod telemetry_conf;
 use telemetry_conf::init_otel;
+use tracing_subscriber::{fmt::format::FmtSpan, util::SubscriberInitExt};
 
 async fn index() -> impl Responder {
+    info!("Hit index, but there's nothing there!");
     "Nothing here"
 }
 
@@ -42,11 +49,8 @@ async fn get_image(
         })
         .unwrap_or(TileSet::Osm);
 
-    info!(
-        latitude = lat,
-        longitude = long;
-        "Fetching image"
-    );
+    info!(latitude = lat, longitude = long);
+
     let image = fetch_image_from_point(LatLong(lat, long), radius, size_px, tileset)
         .await
         .expect("It should work")
@@ -57,24 +61,60 @@ async fn get_image(
         .body(image)
 }
 
+enum TracingMode {
+    TracingStdOut,
+    OtelStdOut,
+    OtelOtlpMode,
+}
+
+const TRACING_MODE: TracingMode = TracingMode::OtelOtlpMode;
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // Roll otel errors up to here and log them in aggregate
-    match init_otel() {
-        Ok(_) => {
-            info!("Successfully configured OTel");
+    match TRACING_MODE {
+        TracingMode::TracingStdOut => {
+            println!("TracingStdOut mode");
+            tracing_subscriber::fmt()
+                .with_span_events(FmtSpan::ENTER)
+                .init();
         }
-        Err(err) => {
-            warn!(
-                "Couldn't start OTel! Will proudly soldier on without telemetry: {0}",
-                err
-            );
+        TracingMode::OtelStdOut => {
+            println!("OtelStdOut mode");
+            // Create the OTEL STD Out provider
+            let exporter = opentelemetry_stdout::SpanExporter::default();
+            let provider = TracerProvider::builder()
+                .with_simple_exporter(exporter)
+                .build();
+            let tracer = provider.tracer("pass-image-api");
+
+            // Create our OTEL tracing subscriber and subscribe it
+            let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
+            let _subscriber = Registry::default().with(telemetry).init();
         }
-    };
+        TracingMode::OtelOtlpMode => {
+            println!("OtelOtlp Mode");
+
+            let exporter = opentelemetry_otlp::SpanExporter::builder()
+                .with_tonic()
+                .build()
+                .expect("I can build an exporter");
+
+            let provider = TracerProvider::builder()
+                .with_batch_exporter(exporter, opentelemetry_sdk::runtime::Tokio)
+                .build();
+            let tracer = provider.tracer("pass-image-api");
+
+            // Create our OTEL tracing subscriber, and subscribe it
+            let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
+            let _subscriber = Registry::default().with(telemetry).init();
+        }
+    }
+
+    println!("Starting things up");
 
     HttpServer::new(|| {
         App::new()
-            .wrap(RequestTracing::new())
+            .wrap(TracingLogger::default())
             .route("/", web::get().to(index))
             .route("/ping", web::get().to(health))
             .service(get_image)

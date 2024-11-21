@@ -7,20 +7,17 @@ use crate::coordinates::{
     TileCoordinate,
 };
 use actix_web::Error;
-use actix_web_opentelemetry::ClientExt;
 use awc::http::header::CONTENT_TYPE;
 use awc::http::StatusCode;
 use bytes::Bytes;
 use futures::stream::{self, StreamExt};
 use image::{DynamicImage, GenericImage, ImageBuffer};
-use log::debug;
-use opentelemetry::trace::{SpanKind, Status, TraceContextExt, Tracer};
-use opentelemetry::{global, Context};
 use std::borrow::Borrow;
 use std::collections::{HashMap, HashSet};
 use std::io::Cursor;
+use tracing::debug;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub enum TileSet {
     Osm,
     Swisstopo,
@@ -36,7 +33,8 @@ impl TileSet {
 }
 
 // Fetches a single tile from a given TileSet
-async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32, cx: Context) -> Result<Bytes, Error> {
+// #[tracing::instrument]
+async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32) -> Result<Bytes, Error> {
     // Format the URL for the requested tile (zoom, x, y)
     let url = t
         .url_pattern()
@@ -50,7 +48,6 @@ async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32, cx: Context) -> Result<B
     let mut response = client
         .get(&url)
         .insert_header(("User-Agent", "dd-sdlc-demo"))
-        .trace_request_with_context(cx.clone())
         .send()
         .await
         .unwrap();
@@ -79,23 +76,12 @@ async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32, cx: Context) -> Result<B
 // Fetches all of the tiles within a TileBox
 // Note - we assume that a TileBox is only 2D - e.g., all tiles
 // are within the same zoom level.
+#[tracing::instrument]
 async fn fetch_tile_box(
     tileset: TileSet,
     top_left: &TileCoordinate,
     bottom_right: &TileCoordinate,
 ) -> Result<HashMap<(u32, u32, u32), Bytes>, Error> {
-    // Create a manual span for this function
-    // This span will be the parent of all outgoing calls
-    let tracer = global::tracer("fetch_image_tracer");
-    let span = tracer
-        .span_builder("fetch_image")
-        .with_kind(SpanKind::Internal)
-        .start(&tracer);
-
-    let cx = Context::current_with_span(span);
-    let ctx = cx.borrow();
-
-    // Collect all tile coordinates in the bounding box
     let mut tile_coords = Vec::new();
 
     for x in top_left.x.floor() as u32..=bottom_right.x.ceil() as u32 {
@@ -110,7 +96,7 @@ async fn fetch_tile_box(
     let tile_fetches = stream::iter(tile_coords.into_iter().map(|tile| {
         // For each tile, fetch the corresponding tile asynchronously
         async move {
-            fetch_tile(tileset, tile.0, tile.1, tile.2, ctx.clone())
+            fetch_tile(tileset, tile.0, tile.1, tile.2)
                 .await
                 .map(|bytes| (tile, bytes))
         }
@@ -126,23 +112,16 @@ async fn fetch_tile_box(
                 tile_map.insert((tile.0, tile.1, tile.2), bytes); // Insert the successful result into the map
             }
             Err(e) => {
-                // If any tile fetch fails, set the span status to Error and return the error
-                cx.span().set_status(Status::Error {
-                    description: e.to_string().into(),
-                });
                 return Err(e);
             }
         }
     }
 
-    // Set the span status to OK and end the span
-    cx.span().set_status(Status::Ok);
-    cx.span().end();
-
     Ok(tile_map)
 }
 
 // Fetches an image centered at the given point, using the provided TileSet.
+#[tracing::instrument]
 pub async fn fetch_image_from_point(
     center: LatLong,
     radius_km: f32,
@@ -181,8 +160,6 @@ async fn fetch_image(tileset: TileSet, tile_box: &ConstrainedTileBox) -> Result<
     let img_width = num_tiles_x * tile_size;
     let img_height = num_tiles_y * tile_size;
 
-    let meter = global::meter("processing_time_meter");
-    let processing_time = meter.f64_histogram("processing_time").init();
     let start = std::time::Instant::now();
 
     let mut full_image = ImageBuffer::new(img_width, img_height);
@@ -244,7 +221,8 @@ async fn fetch_image(tileset: TileSet, tile_box: &ConstrainedTileBox) -> Result<
 
     let buffer_to_bytes = Bytes::from(png_buffer);
 
-    processing_time.record(start.elapsed().as_secs_f64(), &[]);
+    // TODO - emit a metric here
+    // processing_time.record(start.elapsed().as_secs_f64(), &[]);
 
     // Return the image as Bytes
     Ok(buffer_to_bytes)
