@@ -14,7 +14,7 @@ anyhow = "1.0.93"
 actix-web = "4.9.0"
 awc = { version = "3.5.1", features = ["rustls"] }
 tracing-actix-web = "0.7.15"
-tracing = "0.1.40"
+tracing = {version = "0.1.40", features = ["log"] }
 tracing-core = "0.1.32"
 tracing-opentelemetry = "0.28.0"
 tracing-subscriber = "0.3.18"
