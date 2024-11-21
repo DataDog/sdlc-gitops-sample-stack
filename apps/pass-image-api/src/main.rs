@@ -11,8 +11,8 @@ mod coordinates;
 mod tiles;
 
 use tracing::{error, event, info, span, Level};
-use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::Registry;
+use tracing_subscriber::{layer::SubscriberExt, Layer};
 
 mod telemetry_conf;
 use telemetry_conf::init_otel;
@@ -105,8 +105,12 @@ async fn main() -> std::io::Result<()> {
             let tracer = provider.tracer("pass-image-api");
 
             // Create our OTEL tracing subscriber, and subscribe it
-            let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
-            let _subscriber = Registry::default().with(telemetry).init();
+            let otel_layer = tracing_opentelemetry::layer()
+                .with_tracer(tracer)
+                .with_filter(tracing_subscriber::filter::LevelFilter::from_level(
+                    tracing_core::Level::INFO,
+                ));
+            let _subscriber = Registry::default().with(otel_layer).init();
         }
     }
 
