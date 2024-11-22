@@ -4,6 +4,10 @@ use crate::coordinates::LatLong;
 use crate::tiles::fetch_image_from_point;
 use actix_web::{get, http::header::ContentType, web, App, HttpResponse, HttpServer, Responder};
 use opentelemetry::trace::{Tracer, TracerProvider as _};
+use opentelemetry_appender_tracing::layer::OpenTelemetryTracingBridge;
+use opentelemetry_otlp::LogExporter;
+use opentelemetry_sdk::logs::{BatchLogProcessor, LoggerProvider};
+use opentelemetry_sdk::runtime;
 use opentelemetry_sdk::trace::TracerProvider;
 use tiles::TileSet;
 use tracing_actix_web::TracingLogger;
@@ -61,24 +65,24 @@ async fn get_image(
         .body(image)
 }
 
-enum TracingMode {
+enum InstrumentationMode {
     TracingStdOut,
     OtelStdOut,
     OtelOtlpMode,
 }
 
-const TRACING_MODE: TracingMode = TracingMode::OtelOtlpMode;
+const TRACING_MODE: InstrumentationMode = InstrumentationMode::OtelOtlpMode;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     match TRACING_MODE {
-        TracingMode::TracingStdOut => {
+        InstrumentationMode::TracingStdOut => {
             println!("TracingStdOut mode");
             tracing_subscriber::fmt()
                 .with_span_events(FmtSpan::ENTER)
                 .init();
         }
-        TracingMode::OtelStdOut => {
+        InstrumentationMode::OtelStdOut => {
             println!("OtelStdOut mode");
             // Create the OTEL STD Out provider
             let exporter = opentelemetry_stdout::SpanExporter::default();
@@ -91,9 +95,12 @@ async fn main() -> std::io::Result<()> {
             let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
             let _subscriber = Registry::default().with(telemetry).init();
         }
-        TracingMode::OtelOtlpMode => {
+        InstrumentationMode::OtelOtlpMode => {
             println!("OtelOtlp Mode");
 
+            //
+            // First, tracing
+            //
             let exporter = opentelemetry_otlp::SpanExporter::builder()
                 .with_tonic()
                 .build()
@@ -110,7 +117,32 @@ async fn main() -> std::io::Result<()> {
                 .with_filter(tracing_subscriber::filter::LevelFilter::from_level(
                     tracing_core::Level::INFO,
                 ));
-            let _subscriber = Registry::default().with(otel_layer).init();
+
+            //
+            // Now logging
+            //
+            let log_exporter = LogExporter::builder()
+                .with_tonic()
+                .build()
+                .expect("I can make a log exporter");
+
+            let logger_provider = LoggerProvider::builder()
+                .with_log_processor(
+                    BatchLogProcessor::builder(log_exporter, runtime::Tokio).build(),
+                )
+                .build();
+            let otel_tracing_bridge = OpenTelemetryTracingBridge::new(&logger_provider)
+                .with_filter(tracing_subscriber::filter::LevelFilter::from_level(
+                    tracing_core::Level::INFO,
+                ));
+            tracing_subscriber::registry()
+                .with(otel_layer)
+                .with(otel_tracing_bridge)
+                .init();
+
+            info!(name: "my-event-name", target: "started-up", event_id = 20, user_name = "otel", user_email = "otel@opentelemetry.io", message = "This is an example message");
+
+            println!("Started telemetry config");
         }
     }
 
