@@ -6,26 +6,26 @@ configMapGenerator:
     behavior: merge
     literals:
       - DD_ENV=dev
-      - DD_VERSION=02d6b56ba2ca23d8e09aaf35d0203b2cfe10e3ff
+      - DD_VERSION=b1628a837de505371a8ab8733412af1d2b95d0bb
 
   - name: pass-summary-api-config
     behavior: merge
     literals:
       - DD_ENV=dev
-      - DD_VERSION=02d6b56ba2ca23d8e09aaf35d0203b2cfe10e3ff
+      - DD_VERSION=b1628a837de505371a8ab8733412af1d2b95d0bb
 
   - name: pass-image-api-config
     behavior: merge
     literals:
       - DD_ENV=dev
-      - DD_VERSION=02d6b56ba2ca23d8e09aaf35d0203b2cfe10e3ff
+      - DD_VERSION=b1628a837de505371a8ab8733412af1d2b95d0bb
 
 images:
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-api
-    newTag: "02d6b56ba2ca23d8e09aaf35d0203b2cfe10e3ff"
+    newTag: "b1628a837de505371a8ab8733412af1d2b95d0bb"
 
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-summary-api
-    newTag: "02d6b56ba2ca23d8e09aaf35d0203b2cfe10e3ff"
+    newTag: "b1628a837de505371a8ab8733412af1d2b95d0bb"
 
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-image-api
-    newTag: "02d6b56ba2ca23d8e09aaf35d0203b2cfe10e3ff"
+    newTag: "b1628a837de505371a8ab8733412af1d2b95d0bb"
