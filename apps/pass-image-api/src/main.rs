@@ -47,14 +47,13 @@ async fn get_image(
         longitude = long;
         "Fetching image"
     );
-    let image = fetch_image_from_point(LatLong(lat, long), radius, size_px, tileset)
-        .await
-        .expect("It should work")
-        .to_vec();
 
-    HttpResponse::Ok()
-        .content_type(ContentType::png())
-        .body(image)
+    match fetch_image_from_point(LatLong(lat, long), radius, size_px, tileset).await {
+        Ok(image) => HttpResponse::Ok()
+            .content_type(ContentType::png())
+            .body(image),
+        Err(_) => HttpResponse::InternalServerError().into(),
+    }
 }
 
 #[actix_web::main]
