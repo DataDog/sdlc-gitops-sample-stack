@@ -6,8 +6,9 @@ use crate::coordinates::{
     lat_long_and_image_size_to_bounding_box, lat_long_to_tile_coords, ConstrainedTileBox, LatLong,
     TileCoordinate,
 };
-use actix_web::Error;
+
 use actix_web_opentelemetry::ClientExt;
+use anyhow::Result;
 use awc::http::header::CONTENT_TYPE;
 use awc::http::StatusCode;
 use bytes::Bytes;
@@ -36,7 +37,8 @@ impl TileSet {
 }
 
 // Fetches a single tile from a given TileSet
-async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32, cx: Context) -> Result<Bytes, Error> {
+// Fetches a single tile from a given TileSet
+async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32, cx: Context) -> Result<Bytes> {
     // Format the URL for the requested tile (zoom, x, y)
     let url = t
         .url_pattern()
@@ -53,27 +55,38 @@ async fn fetch_tile(t: TileSet, x: u32, y: u32, z: u32, cx: Context) -> Result<B
         .trace_request_with_context(cx.clone())
         .send()
         .await
-        .unwrap();
+        .map_err(|e| anyhow::anyhow!("Failed to send request to {}: {}", url, e))?;
 
     // Check if the response status is a success
     if response.status() != StatusCode::OK {
-        // Return a custom error for non-successful status
-        return Err(actix_web::error::ErrorBadRequest(
-            "Request failed with non-OK status",
+        return Err(anyhow::anyhow!(
+            "Request to {} failed with status: {}",
+            url,
+            response.status()
         ));
     }
 
+    // Check the content type
     let content_type = response
         .headers()
         .get(CONTENT_TYPE)
         .and_then(|val| val.to_str().ok())
         .unwrap_or("")
         .to_string();
-    assert!(content_type.eq("image/png"));
 
-    // If the request was successful, return the tile bytes
+    if content_type != "image/png" {
+        return Err(anyhow::anyhow!(
+            "Unexpected content type from {}: {}",
+            url,
+            content_type
+        ));
+    }
+
     // Extract and return the body as bytes
-    Ok(response.body().await?)
+    response
+        .body()
+        .await
+        .map_err(|e| anyhow::anyhow!("Failed to read response body from {}: {}", url, e))
 }
 
 // Fetches all of the tiles within a TileBox
@@ -83,7 +96,7 @@ async fn fetch_tile_box(
     tileset: TileSet,
     top_left: &TileCoordinate,
     bottom_right: &TileCoordinate,
-) -> Result<HashMap<(u32, u32, u32), Bytes>, Error> {
+) -> Result<HashMap<(u32, u32, u32), Bytes>> {
     // Create a manual span for this function
     // This span will be the parent of all outgoing calls
     let tracer = global::tracer("fetch_image_tracer");
@@ -148,7 +161,7 @@ pub async fn fetch_image_from_point(
     radius_km: f32,
     image_size: u32,
     tileset: TileSet,
-) -> Result<Bytes, Error> {
+) -> Result<Bytes> {
     // Find the center
     let tile_box = lat_long_and_image_size_to_bounding_box(center, radius_km, image_size);
 
@@ -159,7 +172,7 @@ pub async fn fetch_image_from_point(
 // Fetches an image at the given point using the provided TileSet and ConstrainedTileBox
 // This function will fetch enough tiles around the given point to allow it to crop the resulting
 // image down to ensure we have enough pixels to cover the requested resolution.
-async fn fetch_image(tileset: TileSet, tile_box: &ConstrainedTileBox) -> Result<Bytes, Error> {
+async fn fetch_image(tileset: TileSet, tile_box: &ConstrainedTileBox) -> Result<Bytes> {
     // Fetch all tiles in the bounding box
     let tiles = fetch_tile_box(
         tileset,
