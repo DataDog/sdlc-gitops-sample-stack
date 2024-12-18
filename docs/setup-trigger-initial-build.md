@@ -50,14 +50,15 @@ Wait for the build to complete, then validate that the images produced are visib
 </p>
 
 Now in addition to our own copy of the code, we've got container images for each service, hosted in our own GitHub that our GitOps manifests point at. 
-Go back to the main page of the repository, select the branch drop-down where **main** is highlighted, and change to the **dev** branch. This branch is updated
-each time the build actions for main complete successfully to point at the most recent set of released container images. 
+Go back to the main page of the repository, select the branch drop-down where **main** is highlighted, and change to the **deploy** branch. This branch is updated each time the build actions for main complete successfully to point at the most recent set of released container images. 
 
 <p align='center'>
     <img alt="Show dev environment image hashes" src="assets/setup-trigger-initial-build-show-branch.jpeg" width="600px" />
 </p>
 
-The idea here is for each ArgoCD deployment up to sync to this branch, and then each successful build will roll the image tags forward on `dev` automatically, 
-which will redeploy our development environment.
+The idea here is for each ArgoCD deployment up to sync to this branch, and then each successful build will roll the image tags forward on the `deploy` automatically,  which will redeploy our development environment.
+
+> [!IMPORTANT]
+> We use a separate branch in this repository to keep things simple for this demo. For a production-grade deployment, we'd encourage you to use a seperate repository for your GitOps manifests!
 
 Next up we will jump over to the Datadog console where we should now be able to see the results of our build runs as well as the service definitions showing the services we'll be deploying. [Onwards!](setup-dev-lifecycle-visibility.md)

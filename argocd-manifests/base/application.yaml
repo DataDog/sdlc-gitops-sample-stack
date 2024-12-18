@@ -16,7 +16,7 @@ spec:
   source:
     path: manifests/overlays/dev
     repoURL: https://github.com/datadog/sdlc-gitops-sample-stack.git
-    targetRevision: HEAD
+    targetRevision: deploy
   syncPolicy:
     automated:
       prune: true
