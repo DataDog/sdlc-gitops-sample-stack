@@ -64,4 +64,4 @@ As you work through the setup docs, you will be get a chance to play with each o
 
 Although you don’t need a Datadog account to use this stack, using one will provide visibility end-to-end visibility from the CI pipelines right through to the running application observability. You can sign up for a free 2-week trial [here](https://www.datadoghq.com/free-datadog-trial/)!
 
-The documentation walks you through setting up the application, linking it to Datadog, and getting it running in your cluster using ArgoCD. When you're ready to go, you can start by [setting up a fork of the repository](docs/setup-fork.md)!
+The documentation walks you through setting up the application, linking it to Datadog, and getting it running in your cluster using ArgoCD. When you're ready to go, you can start by [setting up a fork of the repository](docs/setup-fork.md)! 
