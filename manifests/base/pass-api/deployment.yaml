@@ -25,6 +25,8 @@ spec:
               path: /ping
               port: 8080            
           env:
+            - name: DD_HOST
+              value: datadog-agent
             - name: POSTGRES_HOST
               value: "pass-db"
             - name: POSTGRES_USER

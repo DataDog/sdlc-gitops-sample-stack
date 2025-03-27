@@ -30,7 +30,7 @@ Wait for the stack to come up, and then forward a port to **pass-summary-api**:
 
 Then, in another shell:
 ```bash
-curl http://localhost:8080/downstream
+curl http://localhost:8080/pass-summary
 ```
 Which should return something like `{"total_ascent":6518,"pass_count":3}`
 
