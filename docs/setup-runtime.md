@@ -36,7 +36,7 @@ spec:
           protocols:
             grpc:
               enabled: true
-              hostPort:
+              hostPortConfig:
                 enabled: true
 
     # Ensure APM is enabled, so that we can collect traces
@@ -53,6 +53,12 @@ spec:
       enabled: true
     processDiscovery:
       enabled: true
+    kubeStateMetricsCore:
+      enabled: true 
+    clusterChecks:
+      enabled: true
+    eventCollection:
+      collectKubernetesEvents: true
 ```
 
 > [!TIP]
