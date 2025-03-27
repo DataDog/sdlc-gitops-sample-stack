@@ -38,16 +38,16 @@ Clicking on **Main Autorelease**, we can quickly analyze the time spent building
 
 Why could this be? A hint can be found in the main-autorelease.yaml build file, and the platforms targeted for the Go build 🙂
 
-### Code Analysis
+### Code Security & Analysis
 
 > [!TIP]
 > Datadog Code Analysis evaluates your code for security, performance, best practices, and more without needing to executing the code. 
 > TODO - link here to more info about static analysis and SCA
 
 
-Using the **Go To** dialog, jump to **Code Analysis**. Code Analysis can be setup using a runner within your code pipelines, or on the Datadog side, with Datadog itself cloning and analyzing your repository.
+Using the **Go To** dialog, jump to **Code Security**. Code Security can be setup using a runner within your code pipelines, or on the Datadog side, with Datadog itself cloning and analyzing your repository.
 
-The simplest option is to enable the analysis on the Datadog side. Select **Setup Code Analysis**, and then next to your GitHub repository, select **Edit**. Toggle on **Static Analysis** and **SCA** for your repository.   
+The simplest option is to enable the analysis on the Datadog side. Select **Settings** and then **Manage Repositories**, and then next to your GitHub repository, select **Edit**. Toggle on **Static Analysis** and **SCA** for your repository.   
 
 <p align='center'>
     <img alt="Enable Static Analysis and SCA" src="assets/setup-dev-lifecycle-visibility-code-analysis.jpeg" width="600px" />
@@ -61,15 +61,15 @@ Once our repository is connected and a scan has been completed, we will see both
     <img alt="Static analysis dashboard" src="assets/setup-dev-lifecycle-visibility-code-analysis-results.jpeg" width="600px" />
 </p>
 
-### Test Visibility 
+### Test Runs 
 
 > [!TIP]
-> Datadog Test Visibility provides a test-first view into your CI health by displaying important metrics and results from your tests. It can help you investigate performance problems and test failures that are most relevant to your work, focusing on the code you are responsible for, rather than the pipelines which run your tests.
+> Datadog Test Runs provides a test-first view into your CI health by displaying important metrics and results from your tests. It can help you investigate performance problems and test failures that are most relevant to your work, focusing on the code you are responsible for, rather than the pipelines which run your tests.
 > TODO - link here to more info about test analysis
 
-If you want to use test visibility, you need to setup the Github actions secrets as described above in the **Code Analysis** section. If this is turned off the unit tests will run regardless, but will not post their results to Datadog. 
+If you want to use Test Runs, you need to setup the Github actions secrets as described above in the **Code Analysis** section. If this is turned off the unit tests will run regardless, but will not post their results to Datadog. 
 
-Using **Go To**, jump over to **Test Visibility** to see the state of tests in the Datadog console grouped up by branch:  
+Using **Go To**, jump over to **Test Runs** to see the state of tests in the Datadog console grouped up by branch:  
 
 <p align='center'>
     <img alt="Test analysis branch view" src="assets/setup-dev-lifecycle-test-branch-view.jpeg" width="600px" />
@@ -83,6 +83,6 @@ Clicking through to Test Executions allows you to see detailed information for e
 </p>
 
 
-If you like, you can additionally enable **Github Comments** and **Auto Test Retries** from the **Test Visibility Sections** pane in the Datadog console. 
+If you like, you can additionally enable **Github Comments** and **Auto Test Retries** from the **Test Runs Sections** pane in the Datadog console. 
 
 Next up, you can [deploy the mountain passes stack](setup-runtime.md) with ArgoCD. 
