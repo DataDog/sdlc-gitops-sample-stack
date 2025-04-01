@@ -7,6 +7,9 @@ package main
 
 import (
 	"errors"
+	"log"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
@@ -21,8 +24,6 @@ import (
 	dd_logrus "gopkg.in/DataDog/dd-trace-go.v1/contrib/sirupsen/logrus"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 	"gopkg.in/DataDog/dd-trace-go.v1/profiler"
-	"log"
-	"os"
 )
 
 type mountainPass struct {
@@ -115,9 +116,22 @@ func main() {
 	router.Use(gintrace.Middleware("pass-api"))
 
 	router.GET("/passes", respondToGetPasses)
-	router.GET("/passes/:id", respondToGetSinglePass)
+
+	// Group pass ID routes together
+	passRoutes := router.Group("/passes/:id")
+	{
+		passRoutes.GET("", respondToGetSinglePass)
+		passRoutes.DELETE("", respondToDeletePass)
+
+		// Nested route under a specific pass
+		passRoutes.GET("/image", respondToGetPassImage)
+	}
+
 	router.POST("/passes", respondToPostPasses)
-	router.DELETE("/passes/:id", respondToDeletePass)
+
+	// Register the other endpoints
+	router.GET("/passes/elevation", respondToSearchByElevation)
+
 	router.GET("/primes/v1/:num", makeRespondToCheckPrime(false))
 	router.GET("/primes/v2/:num", makeRespondToCheckPrime(true))
 	router.GET("/ping", func(c *gin.Context) {
