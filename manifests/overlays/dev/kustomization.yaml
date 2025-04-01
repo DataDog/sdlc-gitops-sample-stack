@@ -20,6 +20,12 @@ configMapGenerator:
       - DD_ENV=dev
       - DD_VERSION=latest
 
+  - name: load-test-service-config
+    behavior: merge
+    literals:
+      - DD_ENV=dev
+      - DD_VERSION=latest
+
 images:
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-api
     newTag: "latest"
@@ -28,4 +34,7 @@ images:
     newTag: "latest"
 
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-image-api
+    newTag: "latest"
+
+  - name: ghcr.io/datadog/sdlc-gitops-sample-stack/load-test-service
     newTag: "latest"

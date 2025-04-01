@@ -19,6 +19,12 @@ configMapGenerator:
     literals:
       - DD_ENV=local
       - DD_VERSION=latest
+      
+  - name: load-test-service-config
+    behavior: merge
+    literals:
+      - DD_ENV=local
+      - DD_VERSION=latest
 
 images:
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-api
@@ -31,6 +37,10 @@ images:
 
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-image-api
     newName: pass-image-api
+    newTag: "latest"
+    
+  - name: ghcr.io/datadog/sdlc-gitops-sample-stack/load-test-service
+    newName: load-test-service
     newTag: "latest"
 
 #
@@ -56,6 +66,14 @@ patches:
   - target:
       kind: Deployment
       name: pass-image-api
+    patch: |-
+        - op: replace
+          path: /spec/template/spec/containers/0/imagePullPolicy
+          value: Never         
+          
+  - target:
+      kind: Deployment
+      name: load-test-service
     patch: |-
         - op: replace
           path: /spec/template/spec/containers/0/imagePullPolicy

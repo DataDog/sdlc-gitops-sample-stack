@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: load-test-service-config
+data:
+  PASS_API_URL: "http://pass-api:8080"
+  PASS_IMAGE_API_URL: "http://pass-image-api:8080"
+  PASS_SUMMARY_API_URL: "http://pass-summary-api:8080"
+  PASS_API_RPS: "2"
+  PASS_IMAGE_API_RPS: "1" 
+  PASS_SUMMARY_API_RPS: "1" 

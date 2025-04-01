@@ -77,6 +77,27 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  # Load Testing Service (k6)
+  load-test-service:
+    build:
+      context: ./apps/load-test-service
+      dockerfile: Dockerfile
+    environment:
+      - PASS_API_URL=http://pass-api:8080
+      - PASS_IMAGE_API_URL=http://pass-image-api:8080
+      - PASS_SUMMARY_API_URL=http://pass-summary-api:8080
+      - K6_SCRIPT=/app/scripts/main.js
+      # Optional load configuration
+      - PASS_API_RPS=2
+      - PASS_IMAGE_API_RPS=1
+      - PASS_SUMMARY_API_RPS=2
+    depends_on:
+      - pass-api
+      - pass-image-api
+      - pass-summary-api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
   # Shared PostgreSQL Database
   db:
     image: postgres:15

@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-test-service
+  labels:
+    app: load-test-service
+spec:
+  replicas: 0 # Disable by default!
+  selector:
+    matchLabels:
+      app: load-test-service
+  template:
+    metadata:
+      labels:
+        app: load-test-service
+    spec:
+      containers:
+      - name: load-test-service
+        image: load-test-service
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: K6_SCRIPT
+          value: /app/scripts/continuous.js
+        - name: PASS_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: load-test-service-config
+              key: PASS_API_URL
+        - name: PASS_IMAGE_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: load-test-service-config
+              key: PASS_IMAGE_API_URL
+        - name: PASS_SUMMARY_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: load-test-service-config
+              key: PASS_SUMMARY_API_URL
+        - name: PASS_API_RPS
+          valueFrom:
+            configMapKeyRef:
+              name: load-test-service-config
+              key: PASS_API_RPS
+        - name: PASS_IMAGE_API_RPS
+          valueFrom:
+            configMapKeyRef:
+              name: load-test-service-config
+              key: PASS_IMAGE_API_RPS
+        - name: PASS_SUMMARY_API_RPS
+          valueFrom:
+            configMapKeyRef:
+              name: load-test-service-config
+              key: PASS_SUMMARY_API_RPS
+        - name: DD_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: load-test-service-config
+              key: DD_ENV
+              optional: true
+        - name: DD_VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: load-test-service-config
+              key: DD_VERSION
+              optional: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi 
