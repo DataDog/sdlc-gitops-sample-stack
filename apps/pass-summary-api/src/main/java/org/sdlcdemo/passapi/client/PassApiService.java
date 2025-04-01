@@ -19,6 +19,6 @@ public interface PassApiService {
 
     @GET
     @Path("/{id}")
-    Set<Pass> passId(@PathParam("id") String id);
+    Pass getById(@PathParam("id") int id);
 
 }
