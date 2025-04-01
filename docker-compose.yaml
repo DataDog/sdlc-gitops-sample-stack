@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  # Pass API Service (Go)
+  pass-api:
+    build:
+      context: ./apps/pass-api
+      dockerfile: Dockerfile
+      args:
+        - GIT_COMMIT_SHA=${GIT_COMMIT_SHA:-unknown}
+        - GIT_REPOSITORY_URL=${GIT_REPOSITORY_URL:-unknown}
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: ${POSTGRES_USER:-passuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-passpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-passdb}
+      DD_ENV: ${DD_ENV:-dev}
+      DD_SERVICE: pass-api
+      DD_VERSION: ${DD_VERSION:-0.0.1}
+      DD_AGENT_HOST: host.docker.internal
+      DD_TRACE_AGENT_PORT: 8136
+      DD_PROFILING_ENABLED: "true"
+      DD_PROFILING_EXECUTION_TRACE_ENABLED: "true"
+      DD_PROFILING_EXECUTION_TRACE_PERIOD: "15m"
+    ports:
+      - "8082:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # Pass Image API Service (Rust)
+  pass-image-api:
+    build:
+      context: ./apps/pass-image-api
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    restart: on-failure
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4317
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=dev,service.version=0.0.1
+      - DD_AGENT_HOST=host.docker.internal
+      - OTEL_SERVICE_NAME=pass-image-api
+
+  # Pass Summary API Service (Java/Quarkus)
+  pass-summary-api:
+    build:
+      context: ./apps/pass-summary-api
+      dockerfile: src/main/docker/Dockerfile.jvm
+      args:
+        - GIT_COMMIT_SHA=${GIT_COMMIT_SHA:-unknown}
+        - GIT_REPOSITORY_URL=${GIT_REPOSITORY_URL:-unknown}
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    environment:
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://db:5432/${POSTGRES_DB:-passdb}
+      - QUARKUS_DATASOURCE_USERNAME=${POSTGRES_USER:-passuser}
+      - QUARKUS_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-passpassword}
+      - DD_ENV=${DD_ENV:-dev}
+      - DD_SERVICE=pass-summary-api
+      - DD_VERSION=${DD_VERSION:-0.0.1}
+      - DD_AGENT_HOST=host.docker.internal
+      - DD_TRACE_AGENT_PORT=8136      
+      - DD_LOGS_INJECTION=true
+      - DD_PROFILING_ENABLED=true
+      - DD_PROFILING_EXECUTION_TRACE_ENABLED=true
+      - DD_PROFILING_EXECUTION_TRACE_PERIOD=15m
+    depends_on:
+      db:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # Shared PostgreSQL Database
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-passuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-passpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-passdb}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-passuser} -d ${POSTGRES_DB:-passdb}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  postgres_data: 
