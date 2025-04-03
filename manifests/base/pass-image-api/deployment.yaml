@@ -24,7 +24,10 @@ spec:
               port: 8080
           env:
             - name: DD_HOST
-              value: datadog-agent          
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-image-api-config
+                  key: DD_HOST
             - name: DD_ENV
               valueFrom:
                 configMapKeyRef:

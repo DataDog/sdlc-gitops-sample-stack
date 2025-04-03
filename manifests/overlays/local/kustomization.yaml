@@ -1,3 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 resources:
   - ../../base
 
@@ -7,14 +10,29 @@ configMapGenerator:
     literals:
       - DD_ENV=local
       - DD_VERSION=latest
+      - DD_HOST=datadog-agent
+      - DD_AGENT_HOST=datadog-agent
+      - DD_TRACE_AGENT_PORT=8136
 
   - name: pass-summary-api-config
     behavior: merge
     literals:
       - DD_ENV=local
       - DD_VERSION=latest
+      - DD_HOST=datadog-agent
+      - DD_AGENT_HOST=datadog-agent
+      - DD_TRACE_AGENT_PORT=8136
 
   - name: pass-image-api-config
+    behavior: merge
+    literals:
+      - DD_ENV=local
+      - DD_VERSION=latest
+      - DD_HOST=datadog-agent
+      - DD_AGENT_HOST=datadog-agent
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://datadog-agent:4317
+      
+  - name: load-test-service-config
     behavior: merge
     literals:
       - DD_ENV=local
@@ -31,6 +49,10 @@ images:
 
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-image-api
     newName: pass-image-api
+    newTag: "latest"
+    
+  - name: ghcr.io/datadog/sdlc-gitops-sample-stack/load-test-service
+    newName: load-test-service
     newTag: "latest"
 
 #
@@ -59,4 +81,12 @@ patches:
     patch: |-
         - op: replace
           path: /spec/template/spec/containers/0/imagePullPolicy
-          value: Never         
+          value: Never
+          
+  - target:
+      kind: Deployment
+      name: load-test-service
+    patch: |-
+        - op: replace
+          path: /spec/template/spec/containers/0/imagePullPolicy
+          value: Never
