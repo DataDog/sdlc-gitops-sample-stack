@@ -24,7 +24,10 @@ spec:
               port: 8080
           env:
             - name: DD_HOST
-              value: datadog-agent          
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-image-api-config
+                  key: DD_HOST
             - name: DD_ENV
               valueFrom:
                 configMapKeyRef:
@@ -49,7 +52,10 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://$(HOST_IP):4317"
+              valueFrom:
+                configMapKeyRef:
+                  name: pass-image-api-config
+                  key: OTEL_EXPORTER_OTLP_ENDPOINT
           resources:
             limits:
               memory: "128Mi"

@@ -6,3 +6,5 @@ data:
   DD_SERVICE: "pass-image-api"
   DD_ENV: "dev"
   DD_VERSION: "latest"
+  DD_HOST: "datadog-agent"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://datadog-agent:4317"

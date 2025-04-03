@@ -26,6 +26,10 @@ pushd apps/pass-image-api
 docker buildx build . -t pass-image-api:latest
 popd
 
+pushd apps/load-test-service
+docker build . -t load-test-service:latest
+popd
+
 # 
 # Apply our manifests and force a restart of our pods
 #
@@ -33,3 +37,4 @@ kubectl apply -k manifests/overlays/local
 kubectl rollout restart deployment pass-image-api
 kubectl rollout restart deployment pass-api
 kubectl rollout restart deployment pass-summary-api
+kubectl rollout restart deployment load-test-service

@@ -42,4 +42,30 @@ public class PassSummaryResource {
 
         return response;
     }
+    
+    /**
+     * This is an intentionally poorly implemented endpoint to demonstrate
+     * the performance impact of inefficient code. It should be very apparent
+     * in the traces!
+     */
+    @GET
+    @Path("/slow")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, Object> passSummarySlow() {
+        // Get all passes first
+        Set<Pass> allPasses = passApiService.all();
+        
+        // Inefficient approach: fetch each pass by ID individually and sum ascent
+        int totalAscent = allPasses.stream()
+                .mapToInt(pass -> passApiService.getById(pass.id()).ascent())
+                .sum();
+ 
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("pass_count", allPasses.size());
+        response.put("total_ascent", totalAscent);
+        response.put("method", "inefficient-individual-requests");
+        
+        return response;
+    }
 }

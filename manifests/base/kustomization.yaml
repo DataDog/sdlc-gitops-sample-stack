@@ -10,6 +10,8 @@ resources:
   - pass-api/service.yaml
   - db/deployment.yaml
   - db/service.yaml
+  - load-test-service/deployment.yaml
+  - load-test-service/configmap.yaml
 
 secretGenerator:
   - name: postgres-secret
