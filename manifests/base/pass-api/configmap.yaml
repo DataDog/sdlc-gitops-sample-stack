@@ -6,3 +6,4 @@ data:
   DD_SERVICE: "pass-api"
   DD_ENV: "dev"
   DD_VERSION: "latest"
+  DD_HOST: "datadog-agent"

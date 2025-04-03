@@ -7,3 +7,4 @@ data:
   DD_ENV: "dev"
   DD_VERSION: "latest"
   SIMPLEAPI_URL: "http://pass-api"
+  DD_HOST: "datadog-agent"
