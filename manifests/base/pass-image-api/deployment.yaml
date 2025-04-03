@@ -52,10 +52,7 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              valueFrom:
-                configMapKeyRef:
-                  name: pass-image-api-config
-                  key: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://$(HOST_IP):4317
           resources:
             limits:
               memory: "128Mi"
