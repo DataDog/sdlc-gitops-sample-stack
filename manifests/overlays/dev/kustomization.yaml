@@ -27,13 +27,13 @@ configMapGenerator:
       - DD_VERSION=latest
 
 images:
-  - name: ghcr.io/scottgerring/sdlc-gitops-sample-stack/pass-api
+  - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-api
     newTag: "latest"
 
-  - name: ghcr.io/scottgerring/sdlc-gitops-sample-stack/pass-summary-api
+  - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-summary-api
     newTag: "latest"
 
-  - name: ghcr.io/scottgerring/sdlc-gitops-sample-stack/pass-image-api
+  - name: ghcr.io/datadog/sdlc-gitops-sample-stack/pass-image-api
     newTag: "latest"
 
   - name: ghcr.io/datadog/sdlc-gitops-sample-stack/load-test-service
