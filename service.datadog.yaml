@@ -16,11 +16,11 @@ links:
   - name: Source
     type: repo
     provider: github
-    url: https://github.com/scottgerring/sdlc-gitops-sample-stack
+    url: https://github.com/DataDog/sdlc-gitops-sample-stack
   - name: docs
     type: doc
     provider: link
-    url: https://github.com/scottgerring/sdlc-gitops-sample-stack
+    url: https://github.com/DataDog/sdlc-gitops-sample-stack
 tags:
   - cost-center:engineering
 ---
@@ -39,11 +39,11 @@ links:
   - name: Source
     type: repo
     provider: github
-    url: https://github.com/scottgerring/sdlc-gitops-sample-stack
+    url: https://github.com/DataDog/sdlc-gitops-sample-stack
   - name: docs
     type: doc
     provider: link
-    url: https://github.com/scottgerring/sdlc-gitops-sample-stack
+    url: https://github.com/DataDog/sdlc-gitops-sample-stack
 tags:
   - cost-center:engineering
 

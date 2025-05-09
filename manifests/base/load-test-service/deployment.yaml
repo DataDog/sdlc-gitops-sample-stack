@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: load-test-service
-        image: ghcr.io/scottgerring/sdlc-gitops-sample-stack/load-test-service:latest
+        image: ghcr.io/datadog/sdlc-gitops-sample-stack/load-test-service:latest
         imagePullPolicy: IfNotPresent
         env:
         - name: K6_SCRIPT
