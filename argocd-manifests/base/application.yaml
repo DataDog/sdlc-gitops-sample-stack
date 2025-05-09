@@ -15,7 +15,7 @@ spec:
   project: default
   source:
     path: manifests/overlays/dev
-    repoURL: https://github.com/scottgerring/sdlc-gitops-sample-stack.git
+    repoURL: https://github.com/DataDog/sdlc-gitops-sample-stack.git
     targetRevision: deploy
   syncPolicy:
     automated:
