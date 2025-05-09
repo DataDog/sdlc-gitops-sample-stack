@@ -32,7 +32,11 @@ if [ "$BRANCH_NAME" != "main" ]; then
 
   # Merge 'main' into the branch
   echo "Merging 'main' into '$BRANCH_NAME'..."
-  git merge main --no-edit
+    git merge main --no-edit || {
+    git checkout --theirs .        # Checkout all conflicted files from main
+    git add .                      # Stage them
+    git commit -m "Resolve merge conflicts in favor of main"
+  }
 fi
 
 # Run the update script
