@@ -3,8 +3,10 @@ use log::Level;
 use opentelemetry::global;
 use opentelemetry_appender_log::OpenTelemetryLogBridge;
 
+use dd_trace::Config;
 use opentelemetry_resource_detectors::{OsResourceDetector, ProcessResourceDetector};
-use opentelemetry_sdk::{propagation::TraceContextPropagator, Resource};
+use opentelemetry_sdk::trace::TracerProviderBuilder;
+use opentelemetry_sdk::Resource;
 
 use std::{env, str::FromStr};
 
@@ -18,25 +20,6 @@ fn get_resource() -> Resource {
         .with_detector(Box::new(OsResourceDetector))
         .with_detector(Box::new(ProcessResourceDetector))
         .build()
-}
-
-// A Tracer Provider is a factory for Tracers
-// A Tracer creates spans containing more information about what is happening for a given operation,
-// such as a request in a service.
-fn init_tracer() {
-    global::set_text_map_propagator(TraceContextPropagator::new());
-
-    let exporter = opentelemetry_otlp::SpanExporter::builder()
-        .with_tonic()
-        .build()
-        .expect("Failed to create span exporter");
-
-    let tracer_provider = opentelemetry_sdk::trace::SdkTracerProvider::builder()
-        .with_batch_exporter(exporter)
-        .with_resource(get_resource())
-        .build();
-
-    global::set_tracer_provider(tracer_provider);
 }
 
 // A Meter Provider is a factory for Meters
@@ -54,6 +37,22 @@ fn init_meter_provider() -> Result<()> {
         .build();
 
     global::set_meter_provider(meter_provider);
+
+    Ok(())
+}
+
+// Initialize DataDog tracing with OpenTelemetry compatibility
+// This replaces the previous OTLP setup with DataDog-specific tracing
+// while maintaining full OpenTelemetry API compatibility for integrations like actix-web
+fn init_datadog_tracing() -> Result<()> {
+    // Create DataDog configuration
+    let datadog_config = Config::builder()
+        .set_service("pass-image-api".to_string())
+        .build();
+
+    // Initialize DataDog with OpenTelemetry compatibility
+    // This automatically registers the tracer provider and propagator globally
+    datadog_opentelemetry::init_datadog(datadog_config, TracerProviderBuilder::default());
 
     Ok(())
 }
@@ -87,7 +86,7 @@ fn init_logger_provider() {
 
 pub fn init_otel() -> Result<()> {
     init_logger_provider();
-    init_tracer();
+    init_datadog_tracing().with_context(|| "initialising DataDog tracing")?;
     init_meter_provider().with_context(|| "initialising meter provider")?;
     Ok(())
 }
