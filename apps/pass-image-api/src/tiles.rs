@@ -7,7 +7,7 @@ use crate::coordinates::{
     TileCoordinate,
 };
 
-use actix_web_opentelemetry::ClientExt;
+use opentelemetry_instrumentation_actix_web::ClientExt;
 use anyhow::Result;
 use awc::http::header::CONTENT_TYPE;
 use awc::http::StatusCode;
@@ -195,7 +195,7 @@ async fn fetch_image(tileset: TileSet, tile_box: &ConstrainedTileBox) -> Result<
     let img_height = num_tiles_y * tile_size;
 
     let meter = global::meter("processing_time_meter");
-    let processing_time = meter.f64_histogram("processing_time").init();
+    let processing_time = meter.f64_histogram("processing_time").build();
     let start = std::time::Instant::now();
 
     let mut full_image = ImageBuffer::new(img_width, img_height);

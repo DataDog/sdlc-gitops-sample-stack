@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use crate::coordinates::LatLong;
 use crate::tiles::fetch_image_from_point;
 use actix_web::{get, http::header::ContentType, web, App, HttpResponse, HttpServer, Responder};
-use actix_web_opentelemetry::RequestTracing;
+use opentelemetry_instrumentation_actix_web::RequestTracing;
 use log::{info, warn};
 use tiles::TileSet;
 mod coordinates;
