@@ -4,16 +4,8 @@ use opentelemetry::global;
 use opentelemetry_appender_log::OpenTelemetryLogBridge;
 
 use opentelemetry_resource_detectors::{OsResourceDetector, ProcessResourceDetector};
-use opentelemetry_sdk::{
-    propagation::TraceContextPropagator,
-    resource::{
-        EnvResourceDetector, ResourceDetector, SdkProvidedResourceDetector,
-        TelemetryResourceDetector,
-    },
-    runtime, Resource,
-};
+use opentelemetry_sdk::{propagation::TraceContextPropagator, Resource};
 
-use std::time::Duration;
 use std::{env, str::FromStr};
 
 // get_resource returns a Resource containing information about the environment
@@ -21,17 +13,11 @@ use std::{env, str::FromStr};
 // It is created by merging the results of multiple ResourceDetectors
 // The ResourceDetectors are responsible for detecting information about the environment
 fn get_resource() -> Resource {
-    let os_resource = OsResourceDetector.detect(Duration::from_secs(0));
-    let process_resource = ProcessResourceDetector.detect(Duration::from_secs(0));
-    let sdk_resource = SdkProvidedResourceDetector.detect(Duration::from_secs(0));
-    let env_resource = EnvResourceDetector::new().detect(Duration::from_secs(0));
-    let telemetry_resource = TelemetryResourceDetector.detect(Duration::from_secs(0));
-
-    os_resource
-        .merge(&process_resource)
-        .merge(&sdk_resource)
-        .merge(&env_resource)
-        .merge(&telemetry_resource)
+    Resource::builder()
+        .with_service_name("pass-image-api") // Default service name, can be overridden by OTEL_SERVICE_NAME env var
+        .with_detector(Box::new(OsResourceDetector))
+        .with_detector(Box::new(ProcessResourceDetector))
+        .build()
 }
 
 // A Tracer Provider is a factory for Tracers
@@ -40,14 +26,15 @@ fn get_resource() -> Resource {
 fn init_tracer() {
     global::set_text_map_propagator(TraceContextPropagator::new());
 
-    let tracer_provider = opentelemetry_otlp::new_pipeline()
-        .tracing()
-        .with_trace_config(
-            opentelemetry_sdk::trace::Config::default().with_resource(get_resource()),
-        )
-        .with_exporter(opentelemetry_otlp::new_exporter().tonic())
-        .install_batch(runtime::Tokio)
-        .expect("Failed to initialise tracing provider");
+    let exporter = opentelemetry_otlp::SpanExporter::builder()
+        .with_tonic()
+        .build()
+        .expect("Failed to create span exporter");
+
+    let tracer_provider = opentelemetry_sdk::trace::SdkTracerProvider::builder()
+        .with_batch_exporter(exporter)
+        .with_resource(get_resource())
+        .build();
 
     global::set_tracer_provider(tracer_provider);
 }
@@ -55,13 +42,16 @@ fn init_tracer() {
 // A Meter Provider is a factory for Meters
 // A Meter creates metric instruments, capturing measurements about a service at runtime.
 fn init_meter_provider() -> Result<()> {
-    let meter_provider = opentelemetry_otlp::new_pipeline()
-        .metrics(opentelemetry_sdk::runtime::Tokio)
-        .with_exporter(opentelemetry_otlp::new_exporter().tonic())
-        .with_resource(get_resource())
-        .with_delta_temporality()
+    let exporter = opentelemetry_otlp::MetricExporter::builder()
+        .with_tonic()
+        .with_temporality(opentelemetry_sdk::metrics::Temporality::Delta)
         .build()
-        .with_context(|| "creating meter provider")?;
+        .with_context(|| "creating metric exporter")?;
+
+    let meter_provider = opentelemetry_sdk::metrics::SdkMeterProvider::builder()
+        .with_reader(opentelemetry_sdk::metrics::PeriodicReader::builder(exporter).build())
+        .with_resource(get_resource())
+        .build();
 
     global::set_meter_provider(meter_provider);
 
@@ -72,12 +62,15 @@ fn init_meter_provider() -> Result<()> {
 // The init_logger_provider function initialises a Logger Provider
 // And sets up a Log Appender for the log crate, bridging logs to the OpenTelemetry Logger.
 fn init_logger_provider() {
-    let logger_provider = opentelemetry_otlp::new_pipeline()
-        .logging()
-        .with_exporter(opentelemetry_otlp::new_exporter().tonic())
+    let exporter = opentelemetry_otlp::LogExporter::builder()
+        .with_tonic()
+        .build()
+        .expect("Failed to create log exporter");
+
+    let logger_provider = opentelemetry_sdk::logs::SdkLoggerProvider::builder()
+        .with_batch_exporter(exporter)
         .with_resource(get_resource())
-        .install_batch(runtime::Tokio)
-        .expect("Failed to initialise logger provider");
+        .build();
 
     // Setup Log Appender for the log crate
     let otel_log_appender = OpenTelemetryLogBridge::new(&logger_provider);
