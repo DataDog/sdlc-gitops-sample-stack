@@ -7,7 +7,6 @@ use crate::coordinates::{
     TileCoordinate,
 };
 
-use opentelemetry_instrumentation_actix_web::ClientExt;
 use anyhow::Result;
 use awc::http::header::CONTENT_TYPE;
 use awc::http::StatusCode;
@@ -17,6 +16,7 @@ use image::{DynamicImage, GenericImage, ImageBuffer};
 use log::debug;
 use opentelemetry::trace::{SpanKind, Status, TraceContextExt, Tracer};
 use opentelemetry::{global, Context};
+use opentelemetry_instrumentation_actix_web::ClientExt;
 use std::borrow::Borrow;
 use std::collections::{HashMap, HashSet};
 use std::io::Cursor;
