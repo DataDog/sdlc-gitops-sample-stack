@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use crate::coordinates::LatLong;
 use crate::tiles::fetch_image_from_point;
 use actix_web::{get, http::header::ContentType, web, App, HttpResponse, HttpServer, Responder};
-use opentelemetry_instrumentation_actix_web::RequestTracing;
 use log::{info, warn};
+use opentelemetry_instrumentation_actix_web::RequestTracing;
 use tiles::TileSet;
 mod coordinates;
 mod tiles;
@@ -59,19 +59,22 @@ async fn get_image(
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     // Roll otel errors up to here and log them in aggregate
-    match init_otel() {
-        Ok(_) => {
+    // Hold providers to keep them alive until shutdown
+    let otel_providers = match init_otel() {
+        Ok(providers) => {
             info!("Successfully configured OTel");
+            Some(providers)
         }
         Err(err) => {
             warn!(
                 "Couldn't start OTel! Will proudly soldier on without telemetry: {0}",
                 err
             );
+            None
         }
     };
 
-    HttpServer::new(|| {
+    let server_result = HttpServer::new(|| {
         App::new()
             .wrap(RequestTracing::new())
             .route("/", web::get().to(index))
@@ -80,5 +83,26 @@ async fn main() -> std::io::Result<()> {
     })
     .bind(("0.0.0.0", 8080))?
     .run()
-    .await
+    .await;
+
+    // Explicitly shutdown OpenTelemetry providers before exiting
+    if let Some((tracer_provider, meter_provider, logger_provider)) = otel_providers {
+        info!("Shutting down OpenTelemetry providers");
+
+        if let Err(err) = tracer_provider.shutdown() {
+            warn!("Error shutting down tracer provider: {:?}", err);
+        }
+
+        if let Err(err) = meter_provider.shutdown() {
+            warn!("Error shutting down meter provider: {:?}", err);
+        }
+
+        if let Some(logger_provider) = logger_provider {
+            if let Err(err) = logger_provider.shutdown() {
+                warn!("Error shutting down logger provider: {:?}", err);
+            }
+        }
+    }
+
+    server_result
 }
