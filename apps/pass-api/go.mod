@@ -1,6 +1,6 @@
 module apps/pass-api
 
-go 1.22.5
+go 1.25.7
 
 require (
 	github.com/gin-gonic/gin v1.10.0

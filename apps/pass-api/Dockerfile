@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM --platform=${BUILDPLATFORM} golang:1.22 AS builder
+FROM --platform=${BUILDPLATFORM} golang:1.25 AS builder
 
 ARG GIT_COMMIT_SHA
 ARG GIT_REPOSITORY_URL
