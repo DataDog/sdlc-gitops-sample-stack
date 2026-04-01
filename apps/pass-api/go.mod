@@ -2,6 +2,8 @@ module apps/pass-api
 
 go 1.22.5
 
+toolchain go1.26.1
+
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-migrate/migrate/v4 v4.18.1
