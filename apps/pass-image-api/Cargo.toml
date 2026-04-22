@@ -7,7 +7,7 @@ edition = "2021"
 bytes = "1.7.2"
 float-cmp = "0.10.0"
 futures = "0.3.31"
-futures-executor = { version = "0.2.0-beta" }
+futures-executor = { version = "0.3.0" }
 image = "0.25.2"
 log = { version = "0.4.22", features = ["kv"] }
 env_logger = "0.11.8"
